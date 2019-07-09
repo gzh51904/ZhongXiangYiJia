@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<button onclick="alert('自动点击。。。');" class="btn"></button>
+
+<body>
+    <script type="text/javascript">
+        /* ClassOrId_name：id或class的名字 */
+        var ClassOrId_name = ".btn";
+
+        var time_run = 8000; /* 多少毫秒 */
+        setInterval(function () {
+
+            if (document.all) {
+                /* ie */
+                document.querySelector(ClassOrId_name).click();
+
+            } else {
+                /* 其他浏览器 */
+                var e = document.createEvent("MouseEvents");
+
+                e.initEvent("click", true, true);
+
+                document.querySelector(ClassOrId_name).dispatchEvent(e);
+
+            }
+
+        }, time_run);
+    </script>
+
+
+
+</body>
+
+</html>
