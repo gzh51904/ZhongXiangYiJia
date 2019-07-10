@@ -173,7 +173,6 @@ export default {
 
     // 重复商品图
     let goodimg = data.data.slice(9);
-    // console.log(goodimg);
 
     for (var i = 0; i < goodimg.length; i++) {
       if (goodimg[i].type == "banner") {
@@ -191,7 +190,7 @@ export default {
             goodimg[i].data +
             "&version=1.0&terminal=3"
         );
-        console.log(goodlistImg);
+        // console.log(goodlistImg);
       }
     }
   },
@@ -315,24 +314,24 @@ export default {
   background-repeat: no-repeat;
 }
 .goodlist .goodlist-top {
-  margin-top: .293333rem;
+  margin-top: 0.293333rem;
   display: flex;
   justify-content: space-between;
   padding: 0 0.293333rem 0 0.373333rem;
-  margin-bottom: .56rem
+  margin-bottom: 0.56rem;
 }
-.goodlist .goodlist-top .tuijian{
-  font-size: .373333rem;
+.goodlist .goodlist-top .tuijian {
+  font-size: 0.373333rem;
 }
-.goodlist .goodlist-top .gengduo{
+.goodlist .goodlist-top .gengduo {
   color: #928f8d;
-  font-size: .293333rem;
+  font-size: 0.293333rem;
 }
-.goodlist .goodlist-top .gengduo::after{
+.goodlist .goodlist-top .gengduo::after {
   content: ">";
-  font-size: .4rem;
+  font-size: 0.4rem;
   font-weight: 600;
-  line-height: .4rem
+  line-height: 0.4rem;
 }
 
 .goodlist .goodlist-flex {
