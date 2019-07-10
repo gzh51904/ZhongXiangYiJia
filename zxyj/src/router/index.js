@@ -1,10 +1,47 @@
+// import Vue from "vue";
+// import VueRouter from "vue-router"
+
+// // 底部四件套
+// import Home from '../Foot/Home'
+// import Classify from '../Foot/Classify'
+// import Cart from '../Foot/Cart'
+// import Mine from "../Foot/Mine";
+
+
+// Vue.use(VueRouter);
+
+// const router = new VueRouter({
+//     routes: [{
+//             name: "Home",
+//             path: "/home",
+//             components: Home
+//         },
+//         {
+//             name: "Classify",
+//             path: "/classify",
+//             components: Classify
+
+//         }, {
+//             name: "Cart",
+//             path: "/cart",
+//             components: Cart
+
+//         }, {
+//             name: "Mine",
+//             path: "/mine",
+//             components: Mine
+//         }
+//     ]
+// })
+
+
+// export default router
 
 import Vue from "vue"
 
 //VueRouter的使用步骤
 //1、引入
 import VueRouter from 'vue-router'
-import axios from 'axios';
 
 Vue.use(VueRouter)
 
@@ -13,8 +50,7 @@ Vue.use(VueRouter)
 import Home from '../Foot/Home'
 import Classify from '../Foot/Classify'
 import Cart from '../Foot/Cart'
-import Mine from "../Foot/Mine"
-import Login from "../pages/login"
+import Mine from "../Foot/Mine";
 
 
 //实例化router配置参数
@@ -35,44 +71,13 @@ let router = new VueRouter({
         name: "Cart",
         path: "/cart",
         component: Cart,
-         // 本组件需要登录权限才可访问
-        meta: { requiresAuth: false }
       
     }, {
         name: "Mine",
         path: "/mine",
         component: Mine,
-           // 本组件需要登录权限才可访问
-        meta: { requiresAuth: true }
      
-    },
-    {   name: 'Login',
-        path: '/login',
-        component: Login
-    },]
+    }]
 })
 
-router.beforeEach((to,from,next)=>{
-    console.log('全局：beforeEach to',to);
-     // 判断目标路由是否需要登录权限才可访问
-     if(to.matched.some(item=>item.meta.requiresAuth)){
-        let token = localStorage.getItem('User');
-        axios.get('/verify')
-        // 用户已登录
-        if(token){
-            next();
-        }
-        // 用户未登录
-        else{
-            next({
-                path:'/login',
-                query:{
-                    redirectTo:to.fullPath
-                }
-            })
-        }
-    }else{
-        next();
-    } 
-})
 export default router;
