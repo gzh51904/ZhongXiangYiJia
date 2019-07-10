@@ -56,7 +56,7 @@ router.beforeEach((to,from,next)=>{
     console.log('全局：beforeEach to',to);
      // 判断目标路由是否需要登录权限才可访问
      if(to.matched.some(item=>item.meta.requiresAuth)){
-        let token = localStorage.getItem('Authorization');
+        let token = localStorage.getItem('User');
         axios.get('/verify')
         // 用户已登录
         if(token){
