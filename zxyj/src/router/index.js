@@ -50,7 +50,8 @@ Vue.use(VueRouter)
 import Home from '../Foot/Home'
 import Classify from '../Foot/Classify'
 import Cart from '../Foot/Cart'
-import Mine from "../Foot/Mine";
+import Mine from "../Foot/Mine"
+
 
 
 //实例化router配置参数
@@ -68,6 +69,11 @@ let router = new VueRouter({
         component: Classify,
      
     }, {
+        name: "Classify",
+        path: "/classify/:category",
+        component: Classify,
+     
+    },{
         name: "Cart",
         path: "/cart",
         component: Cart,
@@ -77,7 +83,7 @@ let router = new VueRouter({
         path: "/mine",
         component: Mine,
      
-    }]
+    } ]
 })
 
 export default router;

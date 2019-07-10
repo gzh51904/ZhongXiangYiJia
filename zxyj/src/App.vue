@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header>
-      <mt-search cancel-text="取消" placeholder="搜索"></mt-search>
+      <mt-search cancel-text="取消" placeholder="搜索" class="header-search"></mt-search>
     </header>
     <main>
       <router-view></router-view>
@@ -9,7 +9,7 @@
     <footer>
       <ul class="item">
         <a v-for="item in pages" :key="item.name" class="item-btn">
-          <router-link :to="item.path" class="active">
+          <router-link :to="item.path">
             <li>
               <i class="iconfont" :class=" item.font"></i>
               <p class="footer-item-font-size">{{item.title}}</p>
@@ -96,11 +96,35 @@
   header {
     height: 1.066667rem;
   }
-
+header .header-search{
+  height: 100%;
+}
+.mint-searchbar {
+-webkit-box-align: center;
+-ms-flex-align: center;
+align-items: center;
+background-color:white;
+border-radius: 2px;
+display: -webkit-box;
+display: -ms-flexbox;
+display: flex;
+-webkit-box-flex: 1;
+-ms-flex: 1;
+flex: 1;
+height: 28px;
+padding: 3px 6px;
+height: 100%;
+}
   /* 内容区 */
-  main {
-    flex: 1;
-  }
+ main {
+flex: 1;
+height: 100%;
+overflow: auto;
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+
+}
 
   /* 底部四件套 */
   footer {
