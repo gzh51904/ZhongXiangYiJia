@@ -1,15 +1,30 @@
 import Vue from 'vue'
+import App from './App.vue'
+import router from './router';
+import axios from 'axios'
+Vue.prototype.$axios = axios;
+// 配置基础路径
+axios.defaults.baseURL = 'http://localhost:1904';
 
-import App from './App.vue';
+// 响应拦截：校验token
+axios.interceptors.response.use(res=>{
+  // 判断token是否校验成功
+  // 校验不成功：过期或被伪造
 
-// 路由
-import router from "./router";
+  if(router.currentRoute.matched.some(item=>item.meta.requiresAuth)){
+    router.replace({
+      path:'/login',
+      query:{
+        redirectTo:router.currentRoute.fullPath
+      }
+    })
+  }
+  return res;
+}, error=>{
+    // Do something with response error
+    return Promise.reject(error);
+});
 
-// ajax模块
-import axios from "axios";
-
-// 设置到原型
-Vue.prototype.$axios=axios;
 
 
 Vue.config.productionTip = false;

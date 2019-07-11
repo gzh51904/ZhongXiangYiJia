@@ -7,11 +7,13 @@
     </div>
     <div class="classify-right clearfix" >
       <!-- <router-view></router-view> -->
-      <div class="itemmain" v-for="fy in fylist" :key="fy.categoryId">
+      <div class="itemmain" v-for="fy in fylist" :key="fy.categoryId" @click="godess(fy.categoryId,fy.categoryName)">
+        <!-- <router-link :to="'/classify/'+fy.categoryId"> -->
         <div class="itemmain-img">
            <img :src="fy.iconUrl" class="icon">
         </div>
         <div class="label">{{fy.categoryName}}</div>
+        <!-- </router-link> -->
       </div>
     </div>
     </div>
@@ -20,8 +22,10 @@
 import Vue from "vue";
 import MintUI from "mint-ui";
 import "mint-ui/lib/style.css";
+
 Vue.use(MintUI);
 export default {
+
   data() {
     return {
       fylist: [],
@@ -119,7 +123,15 @@ export default {
 
   },
   methods: {
-
+ godess(categoryId,categoryName){
+      // console.log("123123");
+      
+      // console.log(fy);
+      
+        this.$router.push({name:'Fydess',params:{categoryId,categoryName},path:"/Classify/"+categoryId})
+        console.log("mm",this.$router);
+        console.log("666",this.$route);
+    },
    async goto(list) {
       // 把当前点击元素的index，赋值给activeClass,改变css样式
         this.activeClass = list.name;
@@ -134,13 +146,15 @@ export default {
     //将请求来的数据放进空数组
           console.log("z",this.fylist);
     }
-  }
+   
+  },
 };
 </script>
 <style scope>
 .classify-main {
   height: 100%;
    background: #fff;
+   
 }
 .classify-left {
   width: 90px;
@@ -198,6 +212,7 @@ export default {
   text-align: center;
   height: 36px;
   background: #fff;
+  color: #333;
 }
 .changes {
   border-left: 2px solid #F4578B;
@@ -217,5 +232,6 @@ export default {
   overflow: hidden;
   visibility: hidden;
   height: 0;
+ 
 }
 </style>
