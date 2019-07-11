@@ -203,6 +203,8 @@ export default {
     display: flex;
     flex-direction: row;
     position: relative;
+    background-color: white;
+        margin-bottom: 10px;
 }
 .dessleft{
     flex-direction: row;
