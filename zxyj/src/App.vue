@@ -9,7 +9,13 @@
     <footer v-show="dishide">
       <ul class="item">
         <a v-for="item in pages" :key="item.name" class="item-btn" @click="goto(item)">
-          <mt-badge type="error" size="small" v-if="item.name=='Cart'" class="badge" v-show="logined">3</mt-badge>
+          <mt-badge
+            type="error"
+            size="small"
+            v-if="item.name=='Cart'"
+            class="badge"
+            v-show="logined"
+          >3</mt-badge>
           <router-link :to="item.path" class="active-title">
             <li>
               <i class="iconfont" :class=" item.font"></i>
@@ -23,71 +29,71 @@
 </template>
 
 <script>
-  import Vue from "vue";
-  import MintUI from "mint-ui";
-  import "mint-ui/lib/style.css";
-  import App from "./App.vue";
-  import css from "./font/iconfont.css";
-  import rem from "./rem/rem.js";
+import Vue from "vue";
+import MintUI from "mint-ui";
+import "mint-ui/lib/style.css";
+import App from "./App.vue";
+import css from "./font/iconfont.css";
+import rem from "./rem/rem.js";
 import { Badge } from "mint-ui";
 
 Vue.use(MintUI);
 Vue.component(Badge.name, Badge);
-  export default {
-    name: "app",
-    data() {
-      return {
-        pages: [{
-            title: "首页",
-            path: "/home",
-            name: "Home",
-            font: "icon-shouye"
-          },
-          {
-            title: "分类",
-            path: "/classify",
-            name: "Classify",
-            font: "icon-ziyuan"
-          },
-          {
-            title: "购物车",
-            path: "/cart",
-            name: "Cart",
-            font: "icon-gouwuche"
-          },
-          {
-            title: "我的",
-            path: "/mine",
-            name: "Mine",
-            font: "icon-wode"
-          }
-        ],
-        dishide:true
-      };
-    },
-    components: {
-      App
-    },
-    //进行判断当fullpath为home或者分类的时候。让底部栏和搜索框隐藏，否则显示
-    watch: {
-      $route(val){
-        if(val.fullPath =="/home" || val.fullPath =="/classify"){
-          this.dishide=true
-        }else{
-           this.dishide=false
+export default {
+  name: "app",
+  data() {
+    return {
+      pages: [
+        {
+          title: "首页",
+          path: "/home",
+          name: "Home",
+          font: "icon-shouye"
+        },
+        {
+          title: "分类",
+          path: "/classify",
+          name: "Classify",
+          font: "icon-ziyuan"
+        },
+        {
+          title: "购物车",
+          path: "/cart",
+          name: "Cart",
+          font: "icon-gouwuche"
+        },
+        {
+          title: "我的",
+          path: "/mine",
+          name: "Mine",
+          font: "icon-wode"
         }
-        console.log(val);
-        
+      ],
+      dishide: true
+    };
+  },
+  components: {
+    App
+  },
+  //进行判断当fullpath为home或者分类的时候。让底部栏和搜索框隐藏，否则显示
+  watch: {
+    $route(val) {
+      if (val.fullPath == "/home" || val.fullPath == "/classify") {
+        this.dishide = true;
+      } else {
+        this.dishide = false;
       }
-    },
-     methods: {
+      console.log(val);
+    }
+  },
+  methods: {
     goto(item) {
       /* 点击的页面是cart或是mine页面，搜索框都会是隐藏 */
       this.showed = item.path == "/cart" || item.path == "/mine" ? true : false;
       console.log(item.path);
 
       /* 测试，设置假的User用户 */
-      localStorage.setItem('User',"LXW");
+      localStorage.setItem("User", "LXW");
     }
   },
   created() {
@@ -101,17 +107,14 @@ Vue.component(Badge.name, Badge);
     /* 判断登录是否，登录显示购物车数量 */
     let token = localStorage.getItem("User");
     this.logined = token ? true : false;
-  },
-
   }
-
-
+};
 </script>
 
 <style scope>
-  a {
-    text-decoration: none;
-  }
+a {
+  text-decoration: none;
+}
 
 html,
 body {
@@ -158,46 +161,46 @@ ul li {
   flex-wrap: wrap;
 }
 
-  /* 头部 */
-  header {
-    height: 1.066667rem;
-  }
-header .header-search{
+/* 头部 */
+header {
+  height: 1.066667rem;
+}
+header .header-search {
   height: 100%;
 }
 .mint-searchbar {
--webkit-box-align: center;
--ms-flex-align: center;
-align-items: center;
-background-color:white;
-border-radius: 2px;
-display: -webkit-box;
-display: -ms-flexbox;
-display: flex;
--webkit-box-flex: 1;
--ms-flex: 1;
-flex: 1;
-height: 28px;
-padding: 3px 6px;
-height: 100%;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 2px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 28px;
+  padding: 3px 6px;
+  height: 100%;
 }
 
-  /* 内容区 */
- main {
-width:100%;
-height: 100%;
-overflow: auto;
-display: flex;
-flex-direction: column;
-flex-wrap: wrap;
-flex: 1;
-background: #efeff4;
+/* 内容区 */
+main {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  flex: 1;
+  background: #efeff4;
 }
 
-  /* 底部四件套 */
-  footer {
-    height: 1.146667rem;
-  }
+/* 底部四件套 */
+footer {
+  height: 1.146667rem;
+}
 .item .item-btn {
   height: 1.146667rem;
   display: flex;
@@ -208,33 +211,33 @@ background: #efeff4;
   position: relative;
 }
 
-  .item {
-    width: 100%;
-    display: flex;
-  }
+.item {
+  width: 100%;
+  display: flex;
+}
 
-  .item .item-btn {
-    height: 1.146667rem;
-    display: flex;
-    justify-content: center;
-    width: 25%;
-    padding-top: 0.133333rem;
-    box-sizing: border-box;
-  }
+.item .item-btn {
+  height: 1.146667rem;
+  display: flex;
+  justify-content: center;
+  width: 25%;
+  padding-top: 0.133333rem;
+  box-sizing: border-box;
+}
 
-  .item .item-btn .iconfont {
-    font-size: 0.506667rem;
-    color: #101010;
-  }
+.item .item-btn .iconfont {
+  font-size: 0.506667rem;
+  color: #101010;
+}
 
-  .item .item-btn .active-title {
-    width: 100%;
-    height: 100%;
-    text-align: center;
-  }
+.item .item-btn .active-title {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
 
-  .item .item-btn .footer-item-font-size {
-    color: #7c7e86;
-    font-size: 0.24rem;
-  }
+.item .item-btn .footer-item-font-size {
+  color: #7c7e86;
+  font-size: 0.24rem;
+}
 </style>
