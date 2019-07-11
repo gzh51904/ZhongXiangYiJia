@@ -85,7 +85,7 @@ let router = new VueRouter({
      
     }, {
         name: "Fydess",
-        path: "/fydess",
+        path: "/fydess/:categoryId",
         component: Fydess,
      
     }]

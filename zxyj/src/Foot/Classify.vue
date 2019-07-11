@@ -1,8 +1,5 @@
 <template>
     <div class="classify-main">
-      <div class="desshead">
-        
-      </div>
     <div class="classify-left">
     <mt-cell v-for="list in lists" :key="list.name" :class="activeClass == list.name ? 'changes':''"  @click.native.stop="goto(list)" >
       {{list.title}}
@@ -10,7 +7,7 @@
     </div>
     <div class="classify-right clearfix" >
       <!-- <router-view></router-view> -->
-      <div class="itemmain" v-for="fy in fylist" :key="fy.categoryId" @click="godess(fy.categoryId)">
+      <div class="itemmain" v-for="fy in fylist" :key="fy.categoryId" @click="godess(fy.categoryId,fy.categoryName)">
         <!-- <router-link :to="'/classify/'+fy.categoryId"> -->
         <div class="itemmain-img">
            <img :src="fy.iconUrl" class="icon">
@@ -126,12 +123,12 @@ export default {
 
   },
   methods: {
- godess(categoryId){
+ godess(categoryId,categoryName){
       // console.log("123123");
       
       // console.log(fy);
       
-        this.$router.push({name:'Fydess',params:{categoryId},path:"/Classify/"+categoryId})
+        this.$router.push({name:'Fydess',params:{categoryId,categoryName},path:"/Classify/"+categoryId})
         console.log("mm",this.$router);
         console.log("666",this.$route);
     },

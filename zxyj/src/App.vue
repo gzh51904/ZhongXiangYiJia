@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <header>
+    <header v-show="dishide">
       <mt-search cancel-text="取消" placeholder="搜索" class="header-search"></mt-search>
     </header>
     <main>
       <router-view></router-view>
     </main>
-    <footer>
+    <footer v-show="dishide">
       <ul class="item">
         <a v-for="item in pages" :key="item.name" class="item-btn">
           <router-link :to="item.path">
@@ -59,12 +59,25 @@
             name: "Mine",
             font: "icon-wode"
           }
-        ]
+        ],
+        dishide:true
       };
     },
     components: {
       App
-    }
+    },
+    //进行判断当fullpath为home或者分类的时候。让底部栏和搜索框隐藏，否则显示
+    watch: {
+      $route(val){
+        if(val.fullPath =="/home" || val.fullPath =="/classify"){
+          this.dishide=true
+        }else{
+           this.dishide=false
+        }
+        console.log(val);
+        
+      }
+    },
   };
 </script>
 
@@ -123,6 +136,7 @@ overflow: auto;
 display: flex;
 flex-direction: column;
 flex-wrap: wrap;
+
 
 }
 
