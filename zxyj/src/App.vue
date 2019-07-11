@@ -184,6 +184,7 @@ height: 100%;
 
   /* 内容区 */
  main {
+width:100%;
 height: 100%;
 overflow: auto;
 display: flex;
