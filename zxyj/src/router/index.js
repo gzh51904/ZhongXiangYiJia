@@ -51,7 +51,7 @@ import Home from '../Foot/Home'
 import Classify from '../Foot/Classify'
 import Cart from '../Foot/Cart'
 import Mine from "../Foot/Mine"
-
+import Fydess from '../pages/Fydess'
 
 
 //实例化router配置参数
@@ -83,7 +83,12 @@ let router = new VueRouter({
         path: "/mine",
         component: Mine,
      
-    } ]
+    }, {
+        name: "Fydess",
+        path: "/fydess",
+        component: Fydess,
+     
+    }]
 })
 
 export default router;
