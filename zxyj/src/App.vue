@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <header>
+    <header v-show="dishide">
       <mt-search class="header-search" cancel-text="取消" placeholder="搜索"></mt-search>
     </header>
     <main>
       <router-view></router-view>
     </main>
-    <footer>
+    <footer v-show="dishide">
       <ul class="item">
         <a v-for="item in pages" :key="item.name" class="item-btn">
-          <router-link :to="item.path" class="active">
+          <router-link :to="item.path">
             <li>
               <i class="iconfont" :class=" item.font"></i>
               <p class="footer-item-font-size">{{item.title}}</p>
@@ -59,11 +59,25 @@ export default {
           name: "Mine",
           font: "icon-wode"
         }
-      ]
+      ],
+      dishide: true
     };
+  },
+  created() {
+   
   },
   components: {
     App
+  },
+  watch: {
+    $route(newVal) {
+      if (newVal.fullPath == "/home" || newVal.fullPath == "/classify") {
+        this.dishide = true;
+      } else {
+        this.dishide = false;
+      }
+      console.log(newVal);
+    }
   }
 };
 </script>

@@ -1,42 +1,3 @@
-// import Vue from "vue";
-// import VueRouter from "vue-router"
-
-// // 底部四件套
-// import Home from '../Foot/Home'
-// import Classify from '../Foot/Classify'
-// import Cart from '../Foot/Cart'
-// import Mine from "../Foot/Mine";
-
-
-// Vue.use(VueRouter);
-
-// const router = new VueRouter({
-//     routes: [{
-//             name: "Home",
-//             path: "/home",
-//             components: Home
-//         },
-//         {
-//             name: "Classify",
-//             path: "/classify",
-//             components: Classify
-
-//         }, {
-//             name: "Cart",
-//             path: "/cart",
-//             components: Cart
-
-//         }, {
-//             name: "Mine",
-//             path: "/mine",
-//             components: Mine
-//         }
-//     ]
-// })
-
-
-// export default router
-
 import Vue from "vue"
 
 //VueRouter的使用步骤
@@ -53,6 +14,12 @@ import Cart from '../Foot/Cart'
 import Mine from "../Foot/Mine";
 
 
+// 首页跳转路由
+import Uplibao from "../Home/Uplibao"
+import Brand from "../Home/Brand"
+
+
+
 //实例化router配置参数
 
 let router = new VueRouter({
@@ -61,22 +28,29 @@ let router = new VueRouter({
         name: "Home",
         path: "/home",
         component: Home,
-     
     }, {
         name: "Classify",
         path: "/classify",
         component: Classify,
-     
+
     }, {
         name: "Cart",
         path: "/cart",
         component: Cart,
-      
+
     }, {
         name: "Mine",
         path: "/mine",
         component: Mine,
-     
+
+    }, {
+        name: "Uplibao",
+        path: "/uplibao/:target",
+        component: Uplibao,
+    }, {
+        name: "Brand",
+        path: "/brand/:target",
+        component: Brand,
     }]
 })
 

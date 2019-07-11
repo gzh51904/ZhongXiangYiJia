@@ -11,7 +11,10 @@ import axios from "axios";
 // 设置到原型
 Vue.prototype.$axios=axios;
 
+
 Vue.config.productionTip = false;
+
+import "./rem/rem.js";
 
 
 new Vue({
