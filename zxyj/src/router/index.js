@@ -14,7 +14,8 @@ import Classify from '../Foot/Classify'
 import Cart from '../Foot/Cart'
 import Mine from "../Foot/Mine"
 import Fydess from '../pages/Fydess'
-
+//引入详情页组件
+import Gooditem from "../pages/Gooditem"
 
 
 // 首页跳转路由
@@ -69,11 +70,17 @@ let router = new VueRouter({
         path: "/fydess/:categoryId",
         component: Fydess,
      
+    },
+    {
+        name:"Gooditem",
+        path:"/gooditem/:target",
+        component:Gooditem
     }
    ]
 })
 
 router.beforeEach((to,from,next)=>{
+    console.log('全局：beforeEach from',from);
     console.log('全局：beforeEach to',to);
      // 判断目标路由是否需要登录权限才可访问
      if(to.matched.some(item=>item.meta.requiresAuth)){

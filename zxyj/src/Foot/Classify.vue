@@ -7,7 +7,7 @@
     </div>
     <div class="classify-right clearfix" >
       <!-- <router-view></router-view> -->
-      <div class="itemmain" v-for="fy in fylist" :key="fy.categoryId" @click="godess(fy.categoryId,fy.categoryName)">
+      <div class="itemmain" v-for="fy in fylist" :key="fy.categoryId" @click="godess(fy.categoryId,fy.categoryName,fy.parentId)">
         <!-- <router-link :to="'/classify/'+fy.categoryId"> -->
         <div class="itemmain-img">
            <img :src="fy.iconUrl" class="icon">
@@ -112,6 +112,7 @@ export default {
   },
 
   async created() {
+    
     //刷新保持高亮、并且发起第一个数据请求
      this.activeClass='nvzhuang'
     let { data } = await this.$axios.get(
@@ -120,15 +121,17 @@ export default {
     // let {data}=await this.$axios.get("https://api.zxyjsc.com/flyapi/category/child?parentCategoryId="+data.data.datas.parentId+"&version=1.0&terminal=3")
     // console.log("data", data);
     this.fylist = data.data.datas;
-
+  
+      
   },
   methods: {
- godess(categoryId,categoryName){
+    //跳转到列表页，传入id和名字
+ godess(categoryId,categoryName,parentId){
       // console.log("123123");
       
       // console.log(fy);
       
-        this.$router.push({name:'Fydess',params:{categoryId,categoryName},path:"/Classify/"+categoryId})
+        this.$router.push({name:'Fydess',params:{categoryId,categoryName,parentId},path:"/Classify/"+categoryId})
         console.log("mm",this.$router);
         console.log("666",this.$route);
     },
@@ -137,7 +140,9 @@ export default {
         this.activeClass = list.name;
       // console.log("name", list.name);
       // // console.log("$route",this.$route)
-      // this.$router.push("/classify/" + list.name);
+      this.$router.push("/classify/" + list.id);
+   
+      
       // console.log("$route", this.$route);
 //当点击事件发生，就发起请求，，请求路径根据list的id来获取
  let {data}=await this.$axios.get("https://api.zxyjsc.com/flyapi/category/child?parentCategoryId="+list.id+"&version=1.0&terminal=3")
@@ -157,7 +162,7 @@ export default {
    
 }
 .classify-left {
-  width: 90px;
+  width: 2.4rem;
   left: 0;
   top: 1.066667rem;
   bottom: 1.146667rem;
@@ -169,15 +174,17 @@ export default {
   text-align: center;
 }
 .mint-cell-wrapper {
-  padding: 0px 16px;
+  padding: 0px .426667rem;
+  
 }
 .mint-cell-value {
-  font-size: 14px;
+  font-size: .373333rem;
 }
 .classify-right {
   height: 100%;
   /* background-color: yellow; */
-  padding: 5px 5px 5px 95px;
+ 
+   padding: .133333rem .133333rem .133333rem 2.533333rem;
  overflow: auto;
   
  
@@ -186,7 +193,7 @@ export default {
   background-color: red;
 }
 .itemmain {
-  padding: 5px;
+  padding: .133333rem;
   float: left;
   width: 33.333333%;
   box-sizing: border-box;
@@ -207,15 +214,15 @@ export default {
   height: 100%;
 }
 .itemmain .label {
-  line-height: 36px;
-  font-size: 12px;
+  line-height: .96rem;
+  font-size: .32rem;
   text-align: center;
-  height: 36px;
+  height: .96rem;
   background: #fff;
   color: #333;
 }
 .changes {
-  border-left: 2px solid #F4578B;
+  border-left: .026667rem solid #F4578B;
   background-color:#EFEFF4;
  
 }

@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <header v-show="dishide">
+    <header v-show="showed">
       <mt-search cancel-text="取消" placeholder="搜索" class="header-search"></mt-search>
     </header>
     <main>
       <router-view></router-view>
     </main>
-    <footer v-show="dishide">
+    <footer>
       <ul class="item">
         <a v-for="item in pages" :key="item.name" class="item-btn" @click="goto(item)">
           <mt-badge
@@ -69,27 +69,27 @@ export default {
           font: "icon-wode"
         }
       ],
-      dishide: true
+      showed: true
     };
   },
   components: {
     App
   },
   //进行判断当fullpath为home或者分类的时候。让底部栏和搜索框隐藏，否则显示
-  watch: {
-    $route(val) {
-      if (val.fullPath == "/home" || val.fullPath == "/classify") {
-        this.dishide = true;
-      } else {
-        this.dishide = false;
-      }
-      console.log(val);
-    }
-  },
+  // watch: {
+  //   $route(val) {
+  //     if (val.fullPath == "/home" || val.fullPath == "/classify") {
+  //       this.dishide = true;
+  //     } else {
+  //       this.dishide = false;
+  //     }
+  //     console.log(val);
+  //   }
+  // },
   methods: {
     goto(item) {
       /* 点击的页面是cart或是mine页面，搜索框都会是隐藏 */
-      this.showed = item.path == "/cart" || item.path == "/mine" ? true : false;
+      this.showed = item.path == "/cart" || item.path == "/mine" ? false : true;
       console.log(item.path);
 
       /* 测试，设置假的User用户 */
@@ -97,13 +97,15 @@ export default {
     }
   },
   created() {
+    
     /* 刷新后，如果是cart或是mine页面，搜索框都会是隐藏 */
-    // this.showed =
-    //   this.$router.history.current.path == "/cart" ||
-    //   this.$router.history.current.path == "/mine" ||
-    //   this.$router.history.current.path == "/login"
-    //     ? true
-    //     : false;
+    this.showed =
+      this.$router.history.current.path == "/cart" ||
+      this.$router.history.current.path == "/mine" ||
+      this.$router.history.current.path == "/login"||
+       this.$router.history.current.path == "/classify"
+        ? true
+        : false;
     /* 判断登录是否，登录显示购物车数量 */
     let token = localStorage.getItem("User");
     this.logined = token ? true : false;
