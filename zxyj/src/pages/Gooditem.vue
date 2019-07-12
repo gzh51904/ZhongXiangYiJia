@@ -1,5 +1,5 @@
 <template>
-  <div class="content" >
+  <div class="content">
     <!-- 轮播图 -->
     <div class="bannerItem">
       <mt-swipe :auto="4000">
@@ -11,11 +11,11 @@
     <div class="auto">
       <!-- 标题 -->
       <div class="title">
-        <div class="baoyou">{{goodlist.tags[0].tagName}}</div>
+        <div class="baoyou" v-for="na in goodlist.tags" :key="na.tagName">{{na.tagName}}</div>
         <div class="biaoti">{{goodlist.productName}}</div>
       </div>
       <!-- 价格 -->
-      <div class="readme">{{info[0].intro}}</div>
+      <div class="readme" v-for="inf in info" :key="inf.intro">{{inf.intro}}</div>
       <div class="describe">
         <div class="china">
           <img :src="goodlist.country.flag" />
@@ -30,15 +30,19 @@
           <p>喜欢</p>
         </div>
         <div class="pirce">
-          <span class="pirceNew">￥{{(info[0].retailPrice/100).toFixed(2)}}</span>
+          <span
+            class="pirceNew"
+            v-for="inf in info"
+            :key="inf.intro"
+          >￥{{(inf.retailPrice/100).toFixed(2)}}</span>
           <span class="pirceOld">
-            <del>￥{{(info[0].marketPrice/100).toFixed(2)}}</del>
+            <del v-for="inf in info" :key="inf.intro">￥{{(inf.marketPrice/100).toFixed(2)}}</del>
           </span>
         </div>
       </div>
       <!-- 优惠券 -->
       <div class="youhui">
-        <p>立省￥{{(info[0].weight/10).toFixed(2)}}</p>
+        <p v-for="inf in info" :key="inf.intro">立省￥{{(inf.weight/10).toFixed(2)}}</p>
       </div>
       <!-- 开通VIP -->
       <div class="vip">
@@ -47,7 +51,7 @@
       </div>
       <!-- 发货地 -->
       <div class="fahuodi">
-        <div>热度：{{info[0].saleCount}}</div>
+        <div v-for="inf in info" :key="inf.intro">热度：{{inf.saleCount}}</div>
         <div>快递：{{msg.expressName}}</div>
         <div>{{msg.shipAddress}}</div>
       </div>
@@ -87,13 +91,12 @@
       <div>该店铺已参与满额包邮活动</div>
     </div>
     <!-- 点击店铺优惠活动弹出 -->
-    <div class="dpyouhui-click" v-show="displayDiscounts">
-    </div>
+    <div class="dpyouhui-click" v-show="displayDiscounts"></div>
     <!-- 斑马条，失误没看好布局，只能这样写了 -->
     <div style="background:#efeff4;width:100%;height:.266667rem"></div>
     <!-- 商品规格 -->
     <div class="properties">
-      <div>{{info[0].properties}}</div>
+      <div v-for="inf in info" :key="inf.intro">{{inf.properties}}</div>
     </div>
     <!-- 斑马条，失误没看好布局，只能这样写了 -->
     <div style="background:#efeff4;width:100%;height:.266667rem"></div>
@@ -203,7 +206,7 @@ export default {
       info: [],
       msg: [],
       displayPledge: false,
-      displayDiscounts:true
+      displayDiscounts: true
     };
   },
   methods: {
@@ -215,39 +218,40 @@ export default {
     }
   },
   async created() {
-    let { target } = this.$route.params;
+    let { productId, skuId } = this.$route.params;
     // 请求1主要是标题和买家秀
     let { data } = await this.$axios(
       "https://api.zxyjsc.com/flyapi/product/spuDetail?spuId=" +
-        target +
+        productId +
         "&version=3.0&terminal=3"
     );
 
-    // 请求2商品介绍
-    let product = data.data.skus[1].skuId;
+    // // 请求2商品介绍
+    // let product = data.data.skus[1].skuId;
 
     let itemlist = await this.$axios(
       "https://api.zxyjsc.com/flyapi/product/skuDetail?skuId=" +
-        product +
+        skuId +
         "&version=2.0&terminal=3"
     );
+    console.log("item", itemlist);
 
-    // 请求店铺相关
+    // // 请求店铺相关
     let dianpu = await this.$axios(
       "https://api.zxyjsc.com/flyapi/product/storeDetail?spuId=" +
-        target +
+        productId +
         "&version=1.0&terminal=3"
     );
     this.msg = dianpu.data.data;
-    // console.log(this.msg);
+    console.log("msg", this.msg);
 
     this.info.push(itemlist.data.data);
-    // console.log(this.info);
+    console.log("info", this.info);
 
     this.content = data.data.content;
     this.goodlist = data.data;
-
-    console.log(this.goodlist);
+    console.log("xiangqing", data);
+    console.log("list", this.goodlist);
   }
 };
 </script>
@@ -572,7 +576,6 @@ body {
 .content .zaixian div {
   display: flex;
 }
-
 .content .zaixian img {
   margin-top: 0.266667rem;
   margin-right: 0.24rem;
