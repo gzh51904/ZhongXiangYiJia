@@ -19,7 +19,12 @@
       </div>
       <!-- 品牌三连 -->
       <div class="customItm" :style="{backgroundImage:'url(' + banner1[0].image + ')'}">
-        <div v-for="customImg in banner1" class="customItm-img"></div>
+        <div
+          v-for="customImg in banner1"
+          class="customItm-img"
+          :key="customImg.target"
+          @click="gotoitem(customImg.target)"
+        ></div>
       </div>
       <!-- 甄选新品1 -->
       <div class="zhenxuan" :style="{backgroundImage:'url('+banner2[0].image+')'}">
@@ -37,10 +42,66 @@
       <div class="weinasi-img">
         <img :src="banner4[1].data.image" />
       </div>
-      <!--维纳斯goods  -->
+      <!--维纳斯goods1  -->
       <div class="weinasi-goods" :style="{backgroundImage:'url(' + this.goodslist1[0].image + ')'}">
         <div v-for="weinasi in goodslist1" :key="weinasi.target" class="weinasi-goods-list"></div>
       </div>
+      <!--维纳斯goods2  -->
+      <div
+        class="weinasi-goods2 weinasi-repate"
+        :style="{backgroundImage:'url(' + this.goodslist2[0].image + ')'}"
+      >
+        <div
+          v-for="weinasi in goodslist2"
+          :key="weinasi.target"
+          class="weinasi-goods2-list weinasi-repate-list"
+        ></div>
+      </div>
+      <!--维纳斯goods3  -->
+      <div
+        class="weinasi-goods3 weinasi-repate"
+        :style="{backgroundImage:'url(' + this.goodslist3[0].image + ')'}"
+      >
+        <div
+          v-for="weinasi in goodslist3"
+          :key="weinasi.target"
+          class="weinasi-goods3-list weinasi-repate-list"
+        ></div>
+      </div>
+      <!--维纳斯goods4  -->
+      <div
+        class="weinasi-goods4 weinasi-repate"
+        :style="{backgroundImage:'url(' + this.goodslist4[0].image + ')'}"
+      >
+        <div
+          v-for="weinasi in goodslist4"
+          :key="weinasi.target"
+          class="weinasi-goods4-list weinasi-repate-list"
+        ></div>
+      </div>
+      <!-- 私密系列 -->
+      <div>
+        <img :src="banner5.image" alt />
+      </div>
+      <!-- 洗护 -->
+      <div>
+        <img :src="banner6.image" alt />
+      </div>
+      <!-- 福的村系列 -->
+      <div>
+        <img :src="banner7.image" alt />
+      </div>
+      <!-- 福的村小两图 -->
+      <div
+        class="fudecun weinasi-repate"
+        :style="{backgroundImage:'url(' + goodslist5[1].data[1].image + ')'}"
+      >
+        <div class="fudecunItem" v-for="item in goodslist5[1].data" :key="item.target"></div>
+      </div>
+      <!-- 用户真实反馈 -->
+      <div class="peopo" :style="{backgroundImage:'url(' + peopo.image + ')'}"></div>
+      <!-- 没有更多了哦 -->
+      <div class="meiyou">没有更多了哦</div>
     </div>
   </div>
 </template>
@@ -54,7 +115,15 @@ export default {
       banner2: [],
       banner3: [],
       banner4: [],
-      goodslist1: []
+      goodslist1: [],
+      goodslist2: [],
+      goodslist3: [],
+      goodslist4: [],
+      banner5: [],
+      banner6: [],
+      banner7: [],
+      goodslist5: [],
+      peopo: []
     };
   },
   async created() {
@@ -92,8 +161,44 @@ export default {
         this.goodslist1.push(item);
         this.goodslist1 = this.goodslist1[0].data;
       }
+      if (item.type == "customImg" && item.height == "775") {
+        this.goodslist2.push(item);
+        this.goodslist2 = this.goodslist2[0].data;
+      }
+      if (item.type == "customImg" && item.height == "786") {
+        this.goodslist3.push(item);
+        this.goodslist3 = this.goodslist3[0].data;
+      }
+      if (item.type == "customImg" && item.height == "832") {
+        this.goodslist4.push(item);
+        this.goodslist4 = this.goodslist4[0].data;
+      }
+      if (item.type == "banner" && item.height == "540") {
+        this.banner5.push(item);
+        this.banner5 = this.banner5[0].data;
+      }
+      if (item.type == "banner" && item.height == "472") {
+        this.banner6.push(item);
+        this.banner6 = this.banner6[0].data;
+      }
+      if (item.type == "banner" && item.height == "576") {
+        this.banner7.push(item);
+        this.banner7 = this.banner7[0].data;
+      }
+      if (item.type == "customImg" && item.height == "530") {
+        this.goodslist5.push(item);
+      }
+      if (item.type == "banner" && item.height == "910") {
+        this.peopo.push(item);
+        this.peopo = this.peopo[0].data;
+      }
     });
-    console.log(this.goodslist1[0].image);
+    // console.log(this.peopo);
+  },
+  methods: {
+    gotoitem(target) {
+      console.log(target);
+    }
   }
 };
 </script>
@@ -180,9 +285,47 @@ img {
 .weinasi-goods .weinasi-goods-list:first-child {
   height: 5.333333rem;
 }
-.weinasi-goods .weinasi-goods-list:not(:first-child){
-    width: 33.3%;
-    float: left;
-    height: 5.013333rem;
+.weinasi-goods .weinasi-goods-list:not(:first-child) {
+  width: 33.3%;
+  float: left;
+  height: 5.013333rem;
+}
+.weinasi-goods2 {
+  height: 10.333333rem;
+}
+.weinasi-goods3 {
+  height: 10.48rem;
+}
+.weinasi-goods4 {
+  height: 10.48rem;
+}
+.weinasi-repate {
+  width: 100%;
+  background-size: 100%;
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+.weinasi-repate .weinasi-repate-list {
+  width: 33.3%;
+  height: 50%;
+}
+.fudecun {
+  height: 7.066667rem;
+}
+.fudecunItem {
+  width: 50%;
+  height: 100%;
+}
+.peopo {
+  background-size: 100%;
+  width: 100%;
+  height: 12.133333rem;
+}
+.meiyou {
+  text-align: center;
+  line-height: 0.853333rem;
+  color: #a9acb7;
+  background: #efeff4;
+  font-size: 0.266667rem;
 }
 </style>

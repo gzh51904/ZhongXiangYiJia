@@ -29,7 +29,7 @@
             </div>
       </div>
     <div>
-    <div v-for="dess in desslist" :key="dess.productId" class="demsg">
+    <div v-for="dess in desslist" :key="dess.productId" class="demsg" @click="gotoItem(dess.productId)">
         <div class="dessleft">
              <img :src="dess.thumbUrl" >
              </div>
@@ -61,16 +61,20 @@ export default {
         }
     },
    methods: {
+       gotoItem(target){
+           this.$router.push({name:"Gooditem",params:{target}})
+
+       },
        //价格从低到高排序
      async  changeh(){
             this.bj=false;
             //获取传入id及标题名字
         let {categoryId,categoryName}=this.$route.params;
-        console.log("id",categoryId);
+        // console.log("id",categoryId);
         //把请求来的标题名字赋值给当前标题
         this.detitle=categoryName;
          let {data}=await this.$axios.get("https://api.zxyjsc.com/flyapi/product/sort/product/list?pageOffset=1&pageSize=15&json=%7B%22comprehensive%22:true,%22parentCategoryId%22:%22"+categoryId+"%22,%22memberType%22:0%7D&version=1.0&terminal=3")
-            console.log("da",data);
+            // console.log("da",data);
             this.desslist=data.data.datas;
             function creatCompare(propertyName) {
         return function (obj1,obj2) {
