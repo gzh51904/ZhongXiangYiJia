@@ -1,5 +1,5 @@
 <template>
- <div class="content">
+  <div class="content">
     <!-- 轮播图 -->
     <div class="bannerItem">
       <mt-swipe :auto="4000">
@@ -30,7 +30,11 @@
           <p>喜欢</p>
         </div>
         <div class="pirce">
-          <span class="pirceNew" v-for="inf in info" :key="inf.intro">￥{{(inf.retailPrice/100).toFixed(2)}}</span>
+          <span
+            class="pirceNew"
+            v-for="inf in info"
+            :key="inf.intro"
+          >￥{{(inf.retailPrice/100).toFixed(2)}}</span>
           <span class="pirceOld">
             <del v-for="inf in info" :key="inf.intro">￥{{(inf.marketPrice/100).toFixed(2)}}</del>
           </span>
@@ -55,14 +59,29 @@
     <!-- 斑马条，失误没看好布局，只能这样写了 -->
     <div style="background:#efeff4;width:100%;height:.266667rem"></div>
     <!-- 退款服务 -->
-    <div class="tuikuan">
+    <div class="tuikuan" @click="pledge">
       <!-- 正品 -->
-      <div v-for="zhengpin in goodlist.auths" class="zhengpin" :key="zhengpin.title">
+      <div v-for="(zhengpin,idx) in goodlist.auths" class="zhengpin" :key="idx">
         <div>
-          <img :src="zhengpin.iconUrl" alt />
+          <img :src="zhengpin.iconUrl" />
         </div>
         <span>{{zhengpin.title}}</span>
       </div>
+    </div>
+    <!-- 点击退款弹出 -->
+    <div class="tuikuan-click" v-show="displayPledge">
+      <ul>
+        <li v-for="(zhengpin,idx) in goodlist.auths" class="zhengpin" :key="idx">
+          <div>
+            <img :src="zhengpin.iconUrl" />
+          </div>
+          <div>
+            <p>{{zhengpin.title}}</p>
+            <p>{{zhengpin.content}}</p>
+          </div>
+        </li>
+      </ul>
+      <div class="success" @click="hide">完成</div>
     </div>
     <!-- 斑马条，失误没看好布局，只能这样写了 -->
     <div style="background:#efeff4;width:100%;height:.266667rem"></div>
@@ -71,11 +90,13 @@
       <div>优惠</div>
       <div>该店铺已参与满额包邮活动</div>
     </div>
+    <!-- 点击店铺优惠活动弹出 -->
+    <div class="dpyouhui-click" v-show="displayDiscounts"></div>
     <!-- 斑马条，失误没看好布局，只能这样写了 -->
     <div style="background:#efeff4;width:100%;height:.266667rem"></div>
     <!-- 商品规格 -->
     <div class="properties">
-      <div  v-for="inf in info" :key="inf.intro">{{inf.properties}}</div>
+      <div v-for="inf in info" :key="inf.intro">{{inf.properties}}</div>
     </div>
     <!-- 斑马条，失误没看好布局，只能这样写了 -->
     <div style="background:#efeff4;width:100%;height:.266667rem"></div>
@@ -183,19 +204,28 @@ export default {
       content: "",
       goodlist: [],
       info: [],
-      msg: []
+      msg: [],
+      displayPledge: false,
+      displayDiscounts: true
     };
   },
+  methods: {
+    pledge() {
+      this.displayPledge = true;
+    },
+    hide() {
+      this.displayPledge = false;
+    }
+  },
   async created() {
-    let { productId,skuId } = this.$route.params;
+    let { productId, skuId } = this.$route.params;
     // 请求1主要是标题和买家秀
     let { data } = await this.$axios(
       "https://api.zxyjsc.com/flyapi/product/spuDetail?spuId=" +
         productId +
         "&version=3.0&terminal=3"
     );
-  
-    
+
     // // 请求2商品介绍
     // let product = data.data.skus[1].skuId;
 
@@ -204,7 +234,7 @@ export default {
         skuId +
         "&version=2.0&terminal=3"
     );
-console.log("item",itemlist);
+    console.log("item", itemlist);
 
     // // 请求店铺相关
     let dianpu = await this.$axios(
@@ -216,12 +246,12 @@ console.log("item",itemlist);
     console.log("msg", this.msg);
 
     this.info.push(itemlist.data.data);
-    console.log("info",this.info);
+    console.log("info", this.info);
 
     this.content = data.data.content;
     this.goodlist = data.data;
-  console.log("xiangqing",data);
-    console.log("list",this.goodlist);
+    console.log("xiangqing", data);
+    console.log("list", this.goodlist);
   }
 };
 </script>
@@ -239,10 +269,10 @@ body {
   background: #fff;
 }
 .bannerItem {
-  margin-bottom: .426667rem;
+  margin-bottom: 0.426667rem;
 }
-.bannerItem img{
- width: 100% 
+.bannerItem img {
+  width: 100%;
 }
 .content .auto {
   padding: 0 0.373333rem 0 0.373333rem;
@@ -389,7 +419,7 @@ body {
   margin-top: 0.32rem;
   margin-right: 0.08rem;
 }
-.content .zhengpin:last-child {
+.content .tuikuan .zhengpin:last-child {
   display: none;
 }
 .content .zhengpin div {
@@ -546,14 +576,56 @@ body {
 .content .zaixian div {
   display: flex;
 }
-.content .banmatiao {
-}
 .content .zaixian img {
   margin-top: 0.266667rem;
   margin-right: 0.24rem;
   width: 0.533333rem;
   height: 0.533333rem;
 }
+.content .tuikuan-click {
+  left: 0;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  height: 9.333333rem;
+  background: #fff;
+  z-index: 1;
+  padding-left: 0.346667rem;
+  box-sizing: border-box;
+  padding-top: 0.8rem;
+}
+
+.content .tuikuan-click ul li {
+  margin-bottom: 0.586667rem;
+  display: flex;
+}
+.content .tuikuan-click img {
+  margin-top: 0;
+}
+.content .tuikuan-click ul li div:nth-child(1) {
+  margin-right: 0.346667rem;
+}
+.content .tuikuan-click ul li div:nth-child(2) p:nth-child(2) {
+  font-size: 0.293333rem;
+  color: #999;
+}
+.content .tuikuan-click ul li div:nth-child(2) p:nth-child(1) {
+  font-size: 0.346667rem;
+  margin-bottom: 0.24rem;
+}
+.content .tuikuan-click .success {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  color: #fff;
+  background: #f51861;
+  width: 100%;
+  height: 1.066667rem;
+  line-height: 1.066667rem;
+  font-size: 0.4rem;
+}
+
 .maijiaxiu >>> img {
   width: 100%;
   margin: 0;

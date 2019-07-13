@@ -3,7 +3,8 @@
     <!-- 轮播图 -->
     <div class="header">
       <mt-swipe :auto="4000">
-        <mt-swipe-item v-for="itemImg in banner">
+        <mt-swipe-item v-for="itemImg in banner"
+        :key="itemImg.image">
           <img :src="itemImg.image" class="header-img" />
         </mt-swipe-item>
       </mt-swipe>
@@ -15,6 +16,7 @@
           v-for="itemFont in fourGongGe"
           class="fourGongGe-item-list"
           @click="gotoFour(itemFont.target)"
+          :key="itemFont.label"
         >
           <img :src="itemFont.icon" />
           <p>{{itemFont.label}}</p>
@@ -40,7 +42,8 @@
     <div class="hotbrand">
       <div class="hotbrand-banner" v-bind:style="{backgroundImage:'url(' + hotbrand.image + ')'}"></div>
       <div class="hotbrand-item" v-bind:style="{backgroundImage:'url(' + hotbrandImg.image + ')'}">
-        <div class="hotbrand-item-list hotbrand-item-top-left" v-for="hotbrandsclick in hotbrands"></div>
+        <div class="hotbrand-item-list hotbrand-item-top-left" v-for="hotbrandsclick in hotbrands"
+        :key="hotbrandsclick.title"></div>
       </div>
     </div>
     <!-- 商品秒杀 -->
@@ -48,7 +51,7 @@
       <div class="miaosha-time"></div>
       <div class="miaosha-goods">
         <div class="miaosha-flex">
-          <div class="miaosha-box" v-for="second in secondKill[0].secondKillProducts">
+          <div class="miaosha-box" v-for="second in secondKill[0].secondKillProducts" :key="second.thumbUrl">
             <div class="miaosha-img">
               <img :src="second.thumbUrl" />
             </div>

@@ -97,20 +97,20 @@ router.beforeEach((to,from,next)=>{
         let token = localStorage.getItem('User');
         axios.get('/verify')
         // 用户已登录
-        if(token){
+        if (token) {
             next();
         }
         // 用户未登录
-        else{
+        else {
             next({
-                path:'/login',
-                query:{
-                    redirectTo:to.fullPath
+                path: '/login',
+                query: {
+                    redirectTo: to.fullPath
                 }
             })
         }
-    }else{
+    } else {
         next();
-    } 
+    }
 })
 export default router;
