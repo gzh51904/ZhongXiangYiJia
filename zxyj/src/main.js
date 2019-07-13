@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router';
 import axios from 'axios'
+import store from './vuex';
 Vue.prototype.$axios = axios;
 // 配置基础路径
 axios.defaults.baseURL = 'http://localhost:1904';
@@ -36,4 +37,5 @@ new Vue({
   render: h => h(App),
   // 注入路由
   router,
+  store,
 }).$mount('#app')

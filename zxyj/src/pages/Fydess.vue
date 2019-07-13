@@ -73,7 +73,7 @@
    </div>
    <!-- 第二套css样式 -->
    <div class="fir sec" v-show="!show">
-    <div class="fyitem" v-for="dess in desslist" :key="dess.productId">
+    <div class="fyitem" v-for="dess in desslist" :key="dess.productId" @click="gotogooditem(dess.productId,dess.skuId)">
         <div class="itemmsg">
             <div class="itemmsg-des">
            
