@@ -73,9 +73,14 @@ let router = new VueRouter({
     },
     {
         name:"Gooditem",
-        path:"/gooditem/:target",
+        path:"/gooditem/:productId",
         component:Gooditem
-    }
+    },{
+       
+        path: "/",
+        redirect: "/home",
+    }, 
+    
    ]
 })
 

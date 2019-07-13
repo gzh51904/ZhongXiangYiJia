@@ -3,8 +3,7 @@
     <!-- 轮播图 -->
     <div class="header">
       <mt-swipe :auto="4000">
-        <mt-swipe-item v-for="itemImg in banner"
-        :key="itemImg.image">
+        <mt-swipe-item v-for="itemImg in banner" :key="itemImg.image">
           <img :src="itemImg.image" class="header-img" />
         </mt-swipe-item>
       </mt-swipe>
@@ -35,23 +34,31 @@
     <div class="hotbuy">
       <div class="hotbuy-banner" v-bind:style="{backgroundImage:'url(' + hotbuy.image + ')'}"></div>
       <div class="hotbuy-item" v-bind:style="{backgroundImage:'url(' + hotbuysImg.image + ')'}">
-        <div class="hotbuy-item-left" v-for="hotbuysclick in hotbuys"></div>
+        <div class="hotbuy-item-left" v-for="(hotbuysclick,indx) in hotbuys" :key="indx"></div>
       </div>
     </div>
     <!-- 爆品推荐 -->
     <div class="hotbrand">
       <div class="hotbrand-banner" v-bind:style="{backgroundImage:'url(' + hotbrand.image + ')'}"></div>
       <div class="hotbrand-item" v-bind:style="{backgroundImage:'url(' + hotbrandImg.image + ')'}">
-        <div class="hotbrand-item-list hotbrand-item-top-left" v-for="hotbrandsclick in hotbrands"
-        :key="hotbrandsclick.title"></div>
+        <div
+          class="hotbrand-item-list hotbrand-item-top-left"
+          v-for="hotbrandsclick in hotbrands"
+          :key="hotbrandsclick.title"
+        ></div>
       </div>
     </div>
     <!-- 商品秒杀 -->
     <div class="miaosha">
-      <div class="miaosha-time"></div>
+      <div class="miaosha-time">倒计时 60秒</div>
       <div class="miaosha-goods">
         <div class="miaosha-flex">
-          <div class="miaosha-box" v-for="second in secondKill[0].secondKillProducts" :key="second.thumbUrl">
+          <div
+            class="miaosha-box"
+            v-for="second in secondKill[0].secondKillProducts"
+            :key="second.thumbUrl"
+            @click="hotbuysList(second)"
+          >
             <div class="miaosha-img">
               <img :src="second.thumbUrl" />
             </div>
@@ -67,8 +74,8 @@
       </div>
     </div>
     <!-- 品牌专区 -->
-    <div class="goodlist" v-for="(goodsimgs,idx) in goodsimg" :key="goodsimgs.image">
-      <div class="goodlist-img" v-bind:style="{backgroundImage:'url(' + goodsimgs.image + ')'}"></div>
+    <div class="goodlist" v-for="(goodsimgs,idx) in goodsimg" :key="goodsimgs.image" >
+      <div class="goodlist-img" v-bind:style="{backgroundImage:'url(' + goodsimgs.image + ')'}" @click="gotoBrand(goodsimgs.target)"></div>
       <div class="goodlist-top">
         <p class="tuijian">热卖推荐</p>
         <p class="gengduo">更多</p>
@@ -76,7 +83,7 @@
       <div class="goodlist-item">
         <div class="goodlist-repeat">
           <div class="goodlist-flex">
-            <div class="goodlist-shop" v-for="goodslistItem in goodslist1[idx]">
+            <div class="goodlist-shop" v-for="(goodslistItem,idx) in goodslist1[idx]" :key="idx"   @click="hotbuysList(goodslistItem)">
               <div>
                 <img style="width:1.333333rem " :src="goodslistItem.thumbUrl" />
               </div>
@@ -208,15 +215,19 @@ export default {
           });
       }
     });
+    console.log(this.hotbuys);
   },
   methods: {
     // 四宫格点击
     gotoFour(target) {
       this.$router.push({ name: "Uplibao", params: { target } });
     },
-     // 官方品牌点击
-    gotoBrand(target){
-        this.$router.push({ name: "Brand", params: { target } });
+    // 官方品牌点击
+    gotoBrand(target) {
+      this.$router.push({ name: "Brand", params: { target } });
+    },
+    hotbuysList({ skuId, productId }) {
+      this.$router.push({ name: "Gooditem", params: { skuId, productId } });
     }
   }
 };

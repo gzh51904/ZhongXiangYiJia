@@ -2,7 +2,7 @@
   <div class="brand">
     <header>
       <div class="header">
-        <div>&lt;</div>
+        <div @click="backHome">&lt;</div>
         <h2 class="title">{{title[0].title}}</h2>
         <div>...</div>
       </div>
@@ -28,7 +28,12 @@
       </div>
       <!-- 甄选新品1 -->
       <div class="zhenxuan" :style="{backgroundImage:'url('+banner2[0].image+')'}">
-        <div v-for="zhenxuanImg in banner2" class="zhenxuanImg-img" :key="zhenxuanImg.target"></div>
+        <div
+          v-for="zhenxuanImg in banner2"
+          class="zhenxuanImg-img"
+          :key="zhenxuanImg.target"
+          @click="gotoItem(zhenxuanImg)"
+        ></div>
       </div>
       <!-- 甄选新品2 -->
       <div class="zhenxuan2" :style="{backgroundImage:'url(' + banner3[0].data[0].image + ')'}">
@@ -36,11 +41,12 @@
           v-for="zhenxuanImg2 in banner3[0].data"
           :key="zhenxuanImg2.target"
           class="zhenxuanImg2-img"
+          @click="gotoItem(zhenxuanImg2)"
         ></div>
       </div>
       <!-- 维纳斯系列 -->
       <div class="weinasi-img">
-        <img :src="banner4[1].data.image" />
+        <img :src="banner4[1].data.image" @click="gotoItem(banner4[1])" />
       </div>
       <!--维纳斯goods1  -->
       <div class="weinasi-goods" :style="{backgroundImage:'url(' + this.goodslist1[0].image + ')'}">
@@ -193,10 +199,16 @@ export default {
         this.peopo = this.peopo[0].data;
       }
     });
-    // console.log(this.peopo);
+    // console.log(this.banner2);
   },
   methods: {
     gotoitem(target) {
+      console.log(target);
+    },
+    backHome() {
+      this.$router.back(-1);
+    },
+    gotoItem(target) {
       console.log(target);
     }
   }

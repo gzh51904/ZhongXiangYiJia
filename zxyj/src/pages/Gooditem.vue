@@ -1,7 +1,8 @@
 <template>
   <div class="content">
     <!-- 轮播图 -->
-    <div class="bannerItem">
+    <div class="bannerItem" @click="gotolist">
+      <div class="btn-backlist"></div>
       <mt-swipe :auto="4000">
         <mt-swipe-item v-for="(itemImg,idx) in goodlist.images" :key="idx">
           <img :src="itemImg" class="header-img" />
@@ -215,6 +216,11 @@ export default {
     },
     hide() {
       this.displayPledge = false;
+    },
+    gotolist(){
+      console.log(this.$router);
+      
+      this.$router.back(-1)
     }
   },
   async created() {
@@ -624,6 +630,17 @@ body {
   height: 1.066667rem;
   line-height: 1.066667rem;
   font-size: 0.4rem;
+}
+.btn-backlist {
+  position: absolute;
+  left: 0.346667rem;
+  top: 0.213333rem;
+  z-index: 1;
+  height: 0.693333rem;
+  width: 0.693333rem;
+  background-repeat: no-repeat;
+  background-image: url(https://www.zxyj.com/static/images/icon-back-circle.png);
+  background-size: 100%;
 }
 
 .maijiaxiu >>> img {

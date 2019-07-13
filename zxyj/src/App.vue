@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <header v-show="showed">
+    <header v-show="showed" class="search">
       <mt-search cancel-text="取消" placeholder="搜索" class="header-search"></mt-search>
     </header>
     <main>
       <router-view></router-view>
     </main>
-    <footer>
+    <footer v-show="showed">
       <ul class="item">
         <a v-for="item in pages" :key="item.name" class="item-btn" @click="goto(item)">
           <mt-badge
@@ -76,36 +76,34 @@ export default {
     App
   },
   //进行判断当fullpath为home或者分类的时候。让底部栏和搜索框隐藏，否则显示
-  // watch: {
-  //   $route(val) {
-  //     if (val.fullPath == "/home" || val.fullPath == "/classify") {
-  //       this.dishide = true;
-  //     } else {
-  //       this.dishide = false;
-  //     }
-  //     console.log(val);
-  //   }
-  // },
+  watch: {
+    $route(val) {
+      if (val.fullPath == "/home" || val.fullPath == "/classify") {
+        this.showed = true;
+      } else {
+        this.showed = false;
+      }
+    }
+  },
   methods: {
     goto(item) {
       /* 点击的页面是cart或是mine页面，搜索框都会是隐藏 */
-      this.showed = item.path == "/cart" || item.path == "/mine" ? false : true;
-      console.log(item.path);
+      // this.showed = item.path == "/cart" || item.path == "/mine" ? false : true;
+      // console.log(item.path);
 
       /* 测试，设置假的User用户 */
       localStorage.setItem("User", "LXW");
     }
   },
   created() {
-    
-    /* 刷新后，如果是cart或是mine页面，搜索框都会是隐藏 */
-    this.showed =
-      this.$router.history.current.path == "/cart" ||
-      this.$router.history.current.path == "/mine" ||
-      this.$router.history.current.path == "/login"||
-       this.$router.history.current.path == "/classify"
-        ? true
-        : false;
+    // /* 刷新后，如果是cart或是mine页面，搜索框都会是隐藏 */
+    // this.showed =
+    //   this.$router.history.current.path == "/cart" ||
+    //   this.$router.history.current.path == "/mine" ||
+    //   this.$router.history.current.path == "/login"||
+    //    this.$router.history.current.path == "/classify"
+    //     ? true
+    //     : false;
     /* 判断登录是否，登录显示购物车数量 */
     let token = localStorage.getItem("User");
     this.logined = token ? true : false;
@@ -125,8 +123,6 @@ body {
   padding: 0;
 }
 .badge {
-  /*   width: .266667rem;
-  height:.266667rem; */
   border-radius: 50%;
   font-size: 0.16rem;
   text-align: center;
@@ -157,7 +153,6 @@ ul li {
 
 #app {
   height: 100%;
-  /* width: 100%; */
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -241,5 +236,11 @@ footer {
 .item .item-btn .footer-item-font-size {
   color: #7c7e86;
   font-size: 0.24rem;
+}
+.search {
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  opacity: 0.5;
 }
 </style>
