@@ -635,7 +635,7 @@ body {
   position: absolute;
   left: 0.346667rem;
   top: 0.213333rem;
-  z-index: 1;
+  z-index: 999;
   height: 0.693333rem;
   width: 0.693333rem;
   background-repeat: no-repeat;
