@@ -80,7 +80,7 @@ export default {
   computed: {
     ...mapState({
       cartlist(state) {
-        return state.cart.goodslist;
+        return state.cart.Cart_goodslist;
       }
     }),
     Cartcount() {

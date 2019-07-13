@@ -14,7 +14,7 @@ import Classify from '../Foot/Classify'
 import Cart from '../Foot/Cart' /* 购物车页面 */
 import Mine from "../Foot/Mine"
 import Login from "../pages/login"
-import Product from "../pages/product" /*详情页面 */
+import Product from "../pages/Product" /*详情页面 */
 import Pay from "../pages/pay"/* 支付页面 */
 import NewAddressList from "../pages/newAddressList" /* 添加地址 */
 import Fydess from '../pages/Fydess'
@@ -41,14 +41,12 @@ let router = new VueRouter({
         path: "/classify",
         component: Classify,
      
-    }, {/* 购物车页面 */
-
-    }, {
+    },  {
         name: "Classify",
         path: "/classify/:category",
         component: Classify,
      
-    },{
+    },{/* 购物车页面 */
         name: "Cart",
         path: "/cart",
         component: Cart,
@@ -81,37 +79,39 @@ let router = new VueRouter({
           path: "/newAddressList",
           component: NewAddressList,
           
+        }, {
+            name: "Uplibao",
+            path: "/uplibao/:target",
+            component: Uplibao,
+        }, {
+            name: "Brand",
+            path: "/brand/:target",
+            component: Brand,
+        }
+           
+         
+       , {
+            name: "Fydess",
+            path: "/fydess/:categoryId",
+            component: Fydess,
+         
+        },
+        {
+            name:"Gooditem",
+            path:"/gooditem/:productId",
+            component:Gooditem
+        },// 重定向
+        {
+        path: '/',
+        redirect: '/home'
         }
     ]
 })
 
-router.beforeEach((to,from,next)=>{
+
  /*    console.log('全局：beforeEach to',to); */
 
-    }, {
-        name: "Uplibao",
-        path: "/uplibao/:target",
-        component: Uplibao,
-    }, {
-        name: "Brand",
-        path: "/brand/:target",
-        component: Brand,
-    }
-       
-     
-   , {
-        name: "Fydess",
-        path: "/fydess/:categoryId",
-        component: Fydess,
-     
-    },
-    {
-        name:"Gooditem",
-        path:"/gooditem/:target",
-        component:Gooditem
-    }
-   ]
-})
+
 
 router.beforeEach((to,from,next)=>{
     console.log('全局：beforeEach from',from);
@@ -119,7 +119,7 @@ router.beforeEach((to,from,next)=>{
      // 判断目标路由是否需要登录权限才可访问
      if(to.matched.some(item=>item.meta.requiresAuth)){
         let token = localStorage.getItem('User');
-        /* axios.get('/verify') */
+       /*  axios.get('/verify') */
         // 用户已登录
         if (token) {
             next();

@@ -110,7 +110,7 @@ import { MessageBox } from "mint-ui";
 export default {
   data() {
     return {
-      list: {},
+      list: [],
       haveInfo: true /* 判断购物车是否有数据 */,
       click: true /* 点击编辑 */,
       btnName: "去结算",
@@ -121,11 +121,11 @@ export default {
   computed: {
     ...mapState({
       cartlist(state) {
-        return state.cart.goodslist;
+        return state.cart.Cart_goodslist;
       }
     }),
     totalPrice() {
-      return this.$store.state.cart.goodslist.reduce((pre, item) => {
+      return this.$store.state.cart.Cart_goodslist.reduce((pre, item) => {
         return pre + ((item.marketPrice * 1) / 100) * item.qty;
       }, 0);
     }
@@ -177,10 +177,11 @@ export default {
     console.log("购物车上的商品：", this.cartlist);
 
     this.list = this.cartlist;
-    this.haveInfo = this.cartlist[0] ? false : true;
+    this.haveInfo = this.cartlist ? false : true;
     console.log("list:", this.list);
     console.log("length:", this.list.length);
-    console.log("商品", this.$store.state.cart.goodslist);
+    console.log("商品", this.$store.state.cart.Cart_goodslist);
+
   }
 };
 </script>

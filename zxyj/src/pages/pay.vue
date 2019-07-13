@@ -123,11 +123,11 @@ export default {
   computed: {
     ...mapState({
       cartlist(state) {
-        return state.cart.goodslist;
+        return state.cart.Cart_goodslist;
       }
     }),
     totalPrice() {
-      return this.$store.state.cart.goodslist.reduce((pre, item) => {
+      return this.$store.state.cart.Cart_goodslist.reduce((pre, item) => {
         return pre + ((item.marketPrice * 1) / 100) * item.qty;
       }, 0);
     }

@@ -7,20 +7,13 @@
     </div>
     <div class="classify-right clearfix" >
       <!-- <router-view></router-view> -->
-<<<<<<< HEAD
-      <div class="itemmain" v-for="fy in fylist" :key="fy.categoryId">
-=======
       <div class="itemmain" v-for="fy in fylist" :key="fy.categoryId" @click="godess(fy.categoryId,fy.categoryName,fy.parentId)">
         <!-- <router-link :to="'/classify/'+fy.categoryId"> -->
->>>>>>> 53e006c054e3d86a09c7fe939b56e0ad1c29b27f
         <div class="itemmain-img">
            <img :src="fy.iconUrl" class="icon">
         </div>
         <div class="label">{{fy.categoryName}}</div>
-<<<<<<< HEAD
-=======
         <!-- </router-link> -->
->>>>>>> 53e006c054e3d86a09c7fe939b56e0ad1c29b27f
       </div>
     </div>
     </div>
@@ -29,15 +22,10 @@
 import Vue from "vue";
 import MintUI from "mint-ui";
 import "mint-ui/lib/style.css";
-<<<<<<< HEAD
-Vue.use(MintUI);
-export default {
-=======
 
 Vue.use(MintUI);
 export default {
 
->>>>>>> 53e006c054e3d86a09c7fe939b56e0ad1c29b27f
   data() {
     return {
       fylist: [],
