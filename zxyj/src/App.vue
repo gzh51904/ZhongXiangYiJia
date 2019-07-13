@@ -6,7 +6,7 @@
     <main class="main">
       <router-view></router-view>
     </main>
-    <footer v-show="footshow" >
+    <footer v-show="footshow">
       <ul class="item">
         <a v-for="item in pages" :key="item.name" class="item-btn" @click="goto(item)">
           <mt-badge
@@ -96,18 +96,17 @@ export default {
     }
   },
   created() {
-    
     /* 刷新后，如果是cart或是mine页面，搜索框都会是隐藏 */
     this.showed =
       this.$router.history.current.path == "/cart" ||
       this.$router.history.current.path == "/mine" ||
-      this.$router.history.current.path == "/pay"
-      this.$router.history.current.path == "/login"||
-       this.$router.history.current.path == "/classify"
-        ? true
-        : false;
-    
-    localStorage.setItem("User", "lxw");
+      this.$router.history.current.path == "/pay";
+    this.$router.history.current.path == "/login" ||
+    this.$router.history.current.path == "/classify"
+      ? true
+      : false;
+
+    // localStorage.setItem("User", "lxw");
     /* 判断有商品是否，显示购物车数量 */
     let token = localStorage.getItem("User");
   },
@@ -118,7 +117,7 @@ export default {
 };
 </script>
 
-<style scope>
+<style>
 /* -------------- */
 a {
   text-decoration: none;
