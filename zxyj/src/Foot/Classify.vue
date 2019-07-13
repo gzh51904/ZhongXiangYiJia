@@ -140,6 +140,7 @@ export default {
         this.activeClass = list.name;
       // console.log("name", list.name);
       // // console.log("$route",this.$route)
+      //点击每类跳转地址后面加id
       this.$router.push("/classify/" + list.id);
    
       

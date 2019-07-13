@@ -13,29 +13,47 @@
             </div>
             <div class="desschange">
                 <section>
-                    <ul>
+                    <ul class="sect">
                         <li>
                             <dl>
-                                <dd>综合</dd>
+                                <dd >
+                                     <Dropdown trigger="click" style="margin-left: 20px">
+                                     <a href="javascript:void(0)">
+                                     综合
+                                    <Icon type="ios-arrow-down"></Icon>
+                                            </a>
+                                    <DropdownMenu slot="list">
+                                    <DropdownItem>驴打滚</DropdownItem>
+                                    <DropdownItem>炸酱面</DropdownItem>
+                                    <DropdownItem>豆汁儿</DropdownItem>
+                                    <DropdownItem>冰糖葫芦</DropdownItem>
+                                    <DropdownItem>北京烤鸭</DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
+                                </dd>
                                 <dd @click="hot()">热度</dd>
                                 <dd @click="changeh()">价格</dd>
                                 <dd @click="tank()">筛选
-                                    <mt-popup
-                                        v-model="aler"
-                                            position="right">
-                                                 分享服务
-                                            </mt-popup>
+                                    <Drawer title="Basic Drawer" :closable="false" v-model="aler">
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+    </Drawer>
                                 </dd>
                             </dl>
                         </li>
                         <li @click="changecss()">切换</li>
                     </ul>
                 </section>
-
+          <nav>
+              <ul>
+                  <li @click="zyd()">自营店</li>
+              </ul>
+          </nav>
             </div>
       </div>
        <!-- 第一套css样式 -->
-    <div class="fir" v-show="show" >
+    <div class="fir" v-show="show"  >
     <div v-for="dess in desslist" :key="dess.productId" class="demsg" @click="gotogooditem(dess.productId,dess.skuId)">
         <div class="dessleft">
              <img :src="dess.thumbUrl" >
@@ -77,6 +95,9 @@
 
 
 <script>
+import iView from 'iview';
+import 'iview/dist/styles/iview.css';
+Vue.use(iView);
 import { Popup } from 'mint-ui';
 import Vue from 'vue'
 Vue.component(Popup.name, Popup);
@@ -87,13 +108,35 @@ export default {
             detitle:"",
             parentId:"",
              desslist: [],
+              desslist1: [],
             bj:"",
             num:1,
             show:true,
-            aler:false
+            aler:false,
+            zy:true
         }
     },
    methods: {
+       //筛选自营店方法
+       zyd(){
+           console.log("lll",this.desslist.length);
+           
+            this.zy=!this.zy;
+            console.log(this.zy);
+            
+           console.log("66666");
+    let  gozyd = this.desslist.filter(item=>{
+        console.log("wasdsadsa");
+                  if(item.tags[0].tagName=="自营"){
+                      return item
+                  }
+              })
+              this.desslist= this.zy ?this.desslist1:gozyd;
+              //请看created里面的请求
+              console.log("true",this.desslist1);
+       
+              
+       },
        //2.热度方法
      async  hot(){
             function creatCompare(propertyName) {
@@ -155,7 +198,8 @@ export default {
       },
       //点击返回箭头，返回到商品分类
       goback(parentId){
-        this.$router.push({name:'Classify',path:"/classify/"+parentId})
+       this.$router.push({name:'Classify',path:"/classify/"+parentId})
+        // this.$router.back(-1)
       },
       //跳转详情页方法，直接解开即可
       //在32行代码处加上@click="gotoproduct(dess.productId)"即可，然后到详情页组件进行接收
@@ -177,7 +221,9 @@ export default {
             
         //发起请求，获取商品信息，渲染页面
         let {data}=await this.$axios.get("https://api.zxyjsc.com/flyapi/product/sort/product/list?pageOffset=1&pageSize=15&json=%7B%22comprehensive%22:true,%22parentCategoryId%22:%22"+categoryId+"%22,%22memberType%22:0%7D&version=1.0&terminal=3")
-            this.desslist=data.data.datas;  
+            this.desslist=data.data.datas;   
+            //多配置一套是为了筛选自营店方法
+            this.desslist1=data.data.datas; 
         console.log("dess",this.desslist);
     },
     
@@ -195,7 +241,7 @@ export default {
 /* ------ */
 .fir{
     /* margin-top: 90px; */
-     margin-top: 2.1rem;
+     margin-top:3.066667rem;
 }
 .desscase{
     display: flex;
@@ -249,27 +295,29 @@ export default {
 /* 四个选项 */
 .desschange section{
     width: 100%;
-    height: .933333rem;
+    height:42px;
     background: #fff;
     position: relative;
-    border-bottom: .026667rem solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
 }
-.desschange section ul{
+.desschange section .sect{
     height: 100%;
     display: flex;
     position: relative;
 }
-.desschange section>ul>li{
+.desschange section>.sect>li{
     justify-content: center;
     align-self: center;
     display: flex;
     position: relative;
+    font-size: .373333rem;
 
 }
-.desschange section>ul>li:first-child {
+.desschange section>.sect>li:first-child {
     width: 85%;
 }
-.desschange section>ul>li:first-child>dl{
+.desschange section>.sect>li:first-child>dl{
     width: 100%;
     height: 100%;
     position: relative;
@@ -277,16 +325,50 @@ export default {
     display: flex;
     justify-content: space-around;
 }
-.desschange section>ul>li:first-child>dl>dd {
-    width: 1.333333rem;
+.desschange section>.sect>li:first-child>dl>dd {
     height: .8rem;
     line-height: .8rem;
     -ms-flex-item-align: center;
     align-self: center;
     text-align: center;
 }
-.esschange section>ul>li:last-child {
+.desschange section>.sect>li:last-child {
     width: 15%;
+}
+.desschange nav{
+     width: 100%;
+    display: flex;
+     height: 40px;
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+}
+.desschange nav ul{
+        height: 100%;
+            width: 100%;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+}
+.desschange nav ul li{
+        height: 20px;
+    background: #f1f2f6;
+    color: #48474c;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    font-size:14px;
+    margin-left: 10px;
+    padding: 1px 3px;
+    display: flex;
+    -ms-flex-item-align: center;
+    align-self: center;
+}
+.desschange nav ul li .bred{
+        background: #fff;
+    border: .1rem solid #eb3f3f;
+    color: #eb3f3f;
 }
 .demsg{
     display: flex;
@@ -436,4 +518,11 @@ export default {
     overflow: hidden;
     height: 1.04rem;
 }
+/* 综合组件的css */
+/* .ivu-select-dropdown{
+    left: 0px;
+        width: 200%;
+    text-align: left;
+} */
+
 </style>

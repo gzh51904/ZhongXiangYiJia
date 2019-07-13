@@ -103,7 +103,7 @@ export default {
       this.$router.history.current.path == "/cart" ||
       this.$router.history.current.path == "/mine" ||
       this.$router.history.current.path == "/login"||
-       this.$router.history.current.path == "/classify"
+       this.$router.history.current.path == "/classify" 
         ? true
         : false;
     /* 判断登录是否，登录显示购物车数量 */

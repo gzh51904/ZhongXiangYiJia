@@ -32,17 +32,20 @@ let router = new VueRouter({
         name: "Home",
         path: "/home",
         component: Home,
+        
     }, {
         name: "Classify",
         path: "/classify",
         component: Classify,
 
-    }, {
+    }, 
+    {
         name: "Classify",
         path: "/classify/:category",
         component: Classify,
      
-    },{
+    },
+    {
         name: "Cart",
         path: "/cart",
         component: Cart,
@@ -67,15 +70,22 @@ let router = new VueRouter({
      
    , {
         name: "Fydess",
+        // path: "/fydess",
         path: "/fydess/:categoryId",
         component: Fydess,
      
     },
     {
         name:"Gooditem",
-        path:"/gooditem/:target",
+        path:"/gooditem/:productId",
         component:Gooditem
-    }
+    } ,
+     // 重定向
+    {
+      path: '/',
+      // component:{template:'<div>404</div>'}
+      redirect: '/home'
+  }
    ]
 })
 
