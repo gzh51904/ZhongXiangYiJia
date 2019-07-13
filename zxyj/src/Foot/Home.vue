@@ -3,78 +3,90 @@
     <!-- 轮播图 -->
     <div class="header">
       <mt-swipe :auto="4000">
-        <mt-swipe-item v-for="itemImg in banner">
-          <img :src="itemImg.urlImg" class="header-img" />
+        <mt-swipe-item v-for="itemImg in banner"
+        :key="itemImg.image">
+          <img :src="itemImg.image" class="header-img" />
         </mt-swipe-item>
       </mt-swipe>
     </div>
     <!-- 四宫格 -->
     <div class="fourGongGe">
       <ul class="fourGongGe-item">
-        <li v-for="itemFont in fourGongGe" class="fourGongGe-item-list">
+        <li
+          v-for="itemFont in fourGongGe"
+          class="fourGongGe-item-list"
+          @click="gotoFour(itemFont.target)"
+          :key="itemFont.label"
+        >
           <img :src="itemFont.icon" />
           <p>{{itemFont.label}}</p>
         </li>
       </ul>
     </div>
     <!-- 品牌特区 -->
-    <div class="brand">
-      <img :src="brand.img" alt />
+    <div class="brand" @click="gotoBrand(brand.target)">
+      <img :src="brand.image" />
     </div>
     <!-- 抢购专区 -->
     <div class="buying" v-bind:style="{backgroundImage:'url(' + buying.image + ')'}">
-      <div class="buying-left"></div>
-      <div class="buying-right"></div>
+      <div class="buying-left" v-for="buyingsclick in buyings"></div>
     </div>
     <!-- 冰点价爆款 -->
     <div class="hotbuy">
-      <div class="hotbuy-banner" v-bind:style="{backgroundImage:'url(' + hotbuy.banner + ')'}"></div>
-      <div class="hotbuy-item" v-bind:style="{backgroundImage:'url(' + hotbuy.image + ')'}">
-        <div class="hotbuy-item-left"></div>
-        <div class="hotbuy-item-right"></div>
+      <div class="hotbuy-banner" v-bind:style="{backgroundImage:'url(' + hotbuy.image + ')'}"></div>
+      <div class="hotbuy-item" v-bind:style="{backgroundImage:'url(' + hotbuysImg.image + ')'}">
+        <div class="hotbuy-item-left" v-for="hotbuysclick in hotbuys"></div>
       </div>
     </div>
     <!-- 爆品推荐 -->
     <div class="hotbrand">
-      <div class="hotbrand-banner" v-bind:style="{backgroundImage:'url(' + hotbrand.banner + ')'}"></div>
-      <div class="hotbrand-item" v-bind:style="{backgroundImage:'url(' + hotbrand.image + ')'}">
-        <div class="hotbrand-item-list hotbrand-item-top-left"></div>
-        <div class="hotbrand-item-list hotbrand-item-top-right"></div>
-        <div class="hotbrand-item-list hotbrand-item-bottom-left"></div>
-        <div class="hotbrand-item-list hotbrand-item-bottom-right"></div>
+      <div class="hotbrand-banner" v-bind:style="{backgroundImage:'url(' + hotbrand.image + ')'}"></div>
+      <div class="hotbrand-item" v-bind:style="{backgroundImage:'url(' + hotbrandImg.image + ')'}">
+        <div class="hotbrand-item-list hotbrand-item-top-left" v-for="hotbrandsclick in hotbrands"
+        :key="hotbrandsclick.title"></div>
       </div>
     </div>
     <!-- 商品秒杀 -->
     <div class="miaosha">
       <div class="miaosha-time"></div>
       <div class="miaosha-goods">
-        <ul class="miaosha-goods-item">
-          <li class="miaosha-goods-item-list"></li>
-        </ul>
+        <div class="miaosha-flex">
+          <div class="miaosha-box" v-for="second in secondKill[0].secondKillProducts" :key="second.thumbUrl">
+            <div class="miaosha-img">
+              <img :src="second.thumbUrl" />
+            </div>
+            <div class="miaosha-title">
+              <h3 class="miaosha-name">{{second.skuName}}</h3>
+              <p class="miaosha-pirce">￥{{(second.retailPrice/100).toFixed(2)}}</p>
+              <p class="miaosha-old-pirce">
+                <del>￥{{(second.marketPrice/100).toFixed(2)}}</del>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <!-- 品牌专区 -->
-    <div class="goodlist" v-for="goodsimgs in goodsimg" :key="goodsimgs.image">
+    <div class="goodlist" v-for="(goodsimgs,idx) in goodsimg" :key="goodsimgs.image">
       <div class="goodlist-img" v-bind:style="{backgroundImage:'url(' + goodsimgs.image + ')'}"></div>
+      <div class="goodlist-top">
+        <p class="tuijian">热卖推荐</p>
+        <p class="gengduo">更多</p>
+      </div>
       <div class="goodlist-item">
-        <div class="goodlist-top">
-          <p class="tuijian">热卖推荐</p>
-          <p class="gengduo">更多</p>
-        </div>
-        <div class="goodlist-flex">
-          <div class="goodlist-shop" v-for="goodslist in 20">
-            <div>
-              <img
-                style="width:1.333333rem "
-                src="http://img.zxyjsc.com/G1/M00/0C/84/rBLh9lrq7RSARc1dAASHZKcTK4Q491.jpg"
-              />
-            </div>
-            <div>
-              <p class="title">蚂蚁肉书友敬意等等</p>
-              <p class="price">￥39.00</p>
-              <p class="old-price">
-                <del>￥239.00</del>
-              </p>
+        <div class="goodlist-repeat">
+          <div class="goodlist-flex">
+            <div class="goodlist-shop" v-for="goodslistItem in goodslist1[idx]">
+              <div>
+                <img style="width:1.333333rem " :src="goodslistItem.thumbUrl" />
+              </div>
+              <div>
+                <p class="title">{{goodslistItem.skuName}}</p>
+                <p class="price">￥{{(goodslistItem.retailPrice/100).toFixed(2)}}</p>
+                <p class="old-price">
+                  <del>￥{{(goodslistItem.marketPrice/100).toFixed(2)}}}</del>
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -86,117 +98,127 @@
 import Vue from "vue";
 // 轮播图插件
 import { Swipe, SwipeItem } from "mint-ui";
-import rem from "../rem/rem.js";
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 
 export default {
   data() {
     return {
-      banner: [{ urlImg: "" }, { urlImg: "" }, { urlImg: "" }, { urlImg: "" }],
-      fourGongGe: [
-        {
-          label: "",
-          icon: ""
-        },
-        {
-          label: "",
-          icon: ""
-        },
-        {
-          label: "",
-          icon: ""
-        },
-        {
-          label: "",
-          icon: ""
-        }
-      ],
-      brand: {
-        img: ""
-      },
-      buying: [
-        {
-          img: ""
-        }
-      ],
-      hotbuy: [{ banner: "", image: "" }],
-      hotbrand: [{ banner: "", image: "" }],
+      banner: [],
+      fourGongGe: [],
+      brand: [],
+      buying: [],
+      buyings: [],
+      hotbuy: [],
+      hotbuysImg: [],
+      hotbuys: [],
+      hotbrand: [],
+      hotbrandImg: [],
+      hotbrands: [],
       goodsimg: [],
-      goodslist: []
+      goodslist1: [],
+      secondKill: []
     };
   },
+
   async created() {
     // 发起请求
     let { data } = await this.$axios(
       "https://api.zxyjsc.com/flyapi/pageConfig/getIndexConfig?pageId=home&version=1.0&terminal=3"
     );
+    // 数据
+    let itemlist = data.data;
 
-    // 轮播图遍历
-    for (var i = 0; i < data.data.length; i++) {
-      if (data.data[i].type == "carousel") {
-        var bannerItem = data.data[i].data;
-        // console.log(bannerItem);
-        for (var j = 0; j < bannerItem.length; j++) {
-          this.banner[j].urlImg = bannerItem[j].image;
-        }
+    // 秒杀商品
+
+    let secondKill = await this.$axios(
+      "https://api.zxyjsc.com/flyapi/secondKill/getIndexSecondKill?version=1.0&terminal=3"
+    );
+    this.secondKill.push(secondKill.data.data);
+
+    // console.log(this.secondKill);
+
+    // console.log(itemlist);
+
+    // 请求遍历，里面的数据有
+    /*  event:"native"
+        image:"http://img.zxyjsc.com/G1/M00/03/71/rBLh9l0j7ZWAPWkMAAK3qUckxz4523.jpg" 
+        target:"custom?pageId=9aa4b76272404c3397a32f8dc8c9d287" */
+    itemlist.map((item, idx) => {
+      // 轮播图
+      if (item.type == "carousel") {
+        this.banner.push(item.data);
+        return (this.banner = this.banner[0]);
       }
-    }
-
-    // 四宫格
-    for (var i = 0; i < data.data.length; i++) {
-      if (data.data[i].type == "links") {
-        var bannerItem = data.data[i].data;
-        for (var j = 0; j < bannerItem.length; j++) {
-          this.fourGongGe[j].label = bannerItem[j].label;
-          this.fourGongGe[j].icon = bannerItem[j].icon;
-        }
+      // 四宫格
+      if (item.type == "links") {
+        this.fourGongGe.push(item.data);
+        return (this.fourGongGe = this.fourGongGe[0]);
       }
-    }
-
-    // 品牌img
-    this.brand.img = data.data[2].data.image;
-
-    // 抢购img
-    for (var i = 0; i < data.data[3].data.length; i++) {
-      this.buying.image = data.data[3].data[i].image;
-    }
-
-    // 冰点爆款
-    this.hotbuy.banner = data.data[4].data.image;
-    this.hotbuy.image = data.data[5].data[0].image;
-
-    // 爆款推荐
-    this.hotbrand.banner = data.data[6].data.image;
-    this.hotbrand.image = data.data[7].data[0].image;
-
-    // 商品秒杀
-
-    // 重复商品图
-    let goodimg = data.data.slice(9);
-    // console.log(goodimg);
-
-    for (var i = 0; i < goodimg.length; i++) {
-      if (goodimg[i].type == "banner") {
-        var bannerItem = goodimg[i].data;
-        this.goodsimg.push(bannerItem);
+      // 品牌特区
+      if (item.type == "banner" && item.height == "266") {
+        this.brand.push(item.data);
+        return (this.brand = this.brand[0]);
       }
-    }
-
-    for (var i = 0; i < goodimg.length; i++) {
-      if (goodimg[i].title == "热卖推荐") {
-        // var bannerItem = goodimg[i];
-        // console.log(bannerItem);
-        let goodlistImg = await this.$axios.get(
-          "https://api.zxyjsc.com/flyapi/product/skulist?skuIds=" +
-            goodimg[i].data +
-            "&version=1.0&terminal=3"
-        );
-      
+      // 抢购专区
+      if (item.type == "customImg" && item.height == "239") {
+        this.buying.push(item.data);
+        this.buyings = this.buying[0];
+        return (this.buying = this.buying[0][0]);
       }
-    }
+      // 冰点爆款
+      if ((item.type = "customImg" && item.height == "105")) {
+        this.hotbuy.push(item.data);
+        return (this.hotbuy = this.hotbuy[0]);
+      }
+      // 冰点爆款下的图片
+      if ((item.type = "customImg" && item.height == "271")) {
+        this.hotbuys.push(item.data);
+        this.hotbuysImg.push(item.data[0]);
+        this.hotbuysImg = this.hotbuysImg[0];
+        return (this.hotbuys = this.hotbuys[0]);
+      }
+      // 爆品推荐
+      if ((item.type = "customImg" && item.height == "96")) {
+        this.hotbrand.push(item.data);
+        return (this.hotbrand = this.hotbrand[0]);
+      }
+      // 爆品推荐图片
+      if ((item.type = "customImg" && item.height == "648")) {
+        this.hotbrands.push(item.data);
+        this.hotbrandImg.push(item.data[0]);
+        this.hotbrandImg = this.hotbrandImg[0];
+        return (this.hotbrands = this.hotbrands[0]);
+      }
+      // 品牌特区
+      if ((item.type = "banner" && item.height == "290")) {
+        return this.goodsimg.push(item.data);
+      }
+      // 热卖推荐
+      if (item.title == "热卖推荐") {
+        let goodslistImg = item.data;
+        this.$axios
+          .get(
+            "https://api.zxyjsc.com/flyapi/product/skulist?skuIds=" +
+              goodslistImg +
+              "&version=1.0&terminal=3"
+          )
+          .then(res => {
+            return this.goodslist1.push(res.data.data);
+          });
+      }
+    });
   },
-  methods: {}
+  methods: {
+    // 四宫格点击
+    gotoFour(target) {
+      this.$router.push({ name: "Uplibao", params: { target } });
+    },
+     // 官方品牌点击
+    gotoBrand(target){
+        this.$router.push({ name: "Brand", params: { target } });
+    }
+  }
 };
 </script>
 <style scoped>
@@ -215,9 +237,9 @@ export default {
   width: 100%;
 }
 .fourGongGe {
-  font-size:.32rem;
+  font-size: 0.32rem;
   color: #da053b;
-  line-height: .32rem;
+  line-height: 0.32rem;
 }
 
 .fourGongGe .fourGongGe-item {
@@ -257,10 +279,6 @@ export default {
   display: inline-flex;
 }
 .buying .buying-left {
-  height: 100%;
-  width: 50%;
-}
-.buying .buying-right {
   height: 100%;
   width: 50%;
 }
@@ -307,7 +325,51 @@ export default {
   width: 50%;
 }
 .miaosha {
-  height: 9.266667rem;
+  height: 5.546667rem;
+  margin-bottom: 0.426667rem;
+}
+.miaosha .miaosha-flex {
+  box-sizing: border-box;
+  padding-left: 0.133333rem;
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+}
+.miaosha .miaosha-time {
+  height: 1.28rem;
+  background: pink;
+}
+.miaosha .miaosha-goods {
+  width: 100%;
+  text-align: center;
+  height: 4.613333rem;
+  /* background: red; */
+}
+.miaosha .miaosha-img img {
+  width: 2.373333rem;
+}
+.miaosha .miaosha-box {
+  margin: 0.346667rem;
+}
+.miaosha .miaosha-name {
+  line-height: 0.293333rem;
+  font-size: 0.293333rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 2.373333rem;
+  overflow: hidden;
+  margin-bottom: 0.506667rem;
+}
+.miaosha .miaosha-pirce {
+  font-size: 0.293333rem;
+  color: #f50a5a;
+}
+.miaosha .miaosha-old-pirce {
+  font-size: 0.213333rem;
+  color: #969594;
+}
+.goodlist {
 }
 .goodlist .goodlist-img {
   width: 100%;
@@ -316,27 +378,30 @@ export default {
   background-repeat: no-repeat;
 }
 .goodlist .goodlist-top {
-  margin-top: .293333rem;
+  margin-top: 0.293333rem;
   display: flex;
   justify-content: space-between;
   padding: 0 0.293333rem 0 0.373333rem;
-  margin-bottom: .56rem
+  margin-bottom: 0.56rem;
 }
-.goodlist .goodlist-top .tuijian{
-  font-size: .373333rem;
+.goodlist .goodlist-top .tuijian {
+  font-size: 0.373333rem;
 }
-.goodlist .goodlist-top .gengduo{
+.goodlist .goodlist-top .gengduo {
   color: #928f8d;
-  font-size: .293333rem;
+  font-size: 0.293333rem;
 }
-.goodlist .goodlist-top .gengduo::after{
+.goodlist .goodlist-top .gengduo::after {
   content: ">";
-  font-size: .4rem;
+  font-size: 0.4rem;
   font-weight: 600;
-  line-height: .4rem
+  line-height: 0.4rem;
 }
-
+.goodlist .goodlist-item {
+  margin-bottom: 0.426667rem;
+}
 .goodlist .goodlist-flex {
+  height: 3.333333rem;
   box-sizing: border-box;
   padding-left: 0.133333rem;
   display: flex;

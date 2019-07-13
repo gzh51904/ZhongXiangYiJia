@@ -7,11 +7,20 @@
     </div>
     <div class="classify-right clearfix" >
       <!-- <router-view></router-view> -->
+<<<<<<< HEAD
       <div class="itemmain" v-for="fy in fylist" :key="fy.categoryId">
+=======
+      <div class="itemmain" v-for="fy in fylist" :key="fy.categoryId" @click="godess(fy.categoryId,fy.categoryName,fy.parentId)">
+        <!-- <router-link :to="'/classify/'+fy.categoryId"> -->
+>>>>>>> 53e006c054e3d86a09c7fe939b56e0ad1c29b27f
         <div class="itemmain-img">
            <img :src="fy.iconUrl" class="icon">
         </div>
         <div class="label">{{fy.categoryName}}</div>
+<<<<<<< HEAD
+=======
+        <!-- </router-link> -->
+>>>>>>> 53e006c054e3d86a09c7fe939b56e0ad1c29b27f
       </div>
     </div>
     </div>
@@ -20,8 +29,15 @@
 import Vue from "vue";
 import MintUI from "mint-ui";
 import "mint-ui/lib/style.css";
+<<<<<<< HEAD
 Vue.use(MintUI);
 export default {
+=======
+
+Vue.use(MintUI);
+export default {
+
+>>>>>>> 53e006c054e3d86a09c7fe939b56e0ad1c29b27f
   data() {
     return {
       fylist: [],
@@ -108,6 +124,7 @@ export default {
   },
 
   async created() {
+    
     //刷新保持高亮、并且发起第一个数据请求
      this.activeClass='nvzhuang'
     let { data } = await this.$axios.get(
@@ -116,14 +133,29 @@ export default {
     // let {data}=await this.$axios.get("https://api.zxyjsc.com/flyapi/category/child?parentCategoryId="+data.data.datas.parentId+"&version=1.0&terminal=3")
     // console.log("data", data);
     this.fylist = data.data.datas;
-
+  
+      
   },
   methods: {
-
+    //跳转到列表页，传入id和名字
+ godess(categoryId,categoryName,parentId){
+      // console.log("123123");
+      
+      // console.log(fy);
+      
+        this.$router.push({name:'Fydess',params:{categoryId,categoryName,parentId},path:"/Classify/"+categoryId})
+        console.log("mm",this.$router);
+        console.log("666",this.$route);
+    },
    async goto(list) {
       // 把当前点击元素的index，赋值给activeClass,改变css样式
         this.activeClass = list.name;
-     
+      // console.log("name", list.name);
+      // // console.log("$route",this.$route)
+      this.$router.push("/classify/" + list.id);
+   
+      
+      // console.log("$route", this.$route);
 //当点击事件发生，就发起请求，，请求路径根据list的id来获取
  let {data}=await this.$axios.get("https://api.zxyjsc.com/flyapi/category/child?parentCategoryId="+list.id+"&version=1.0&terminal=3")
     // console.log("data", data);
@@ -131,16 +163,18 @@ export default {
     //将请求来的数据放进空数组
           console.log("z",this.fylist);
     }
-  }
+   
+  },
 };
 </script>
 <style scope>
 .classify-main {
   height: 100%;
    background: #fff;
+   
 }
 .classify-left {
-  width: 90px;
+  width: 2.4rem;
   left: 0;
   top: 1.066667rem;
   bottom: 1.146667rem;
@@ -152,15 +186,17 @@ export default {
   text-align: center;
 }
 .mint-cell-wrapper {
-  padding: 0px 16px;
+  padding: 0px .426667rem;
+  
 }
 .mint-cell-value {
-  font-size: 14px;
+  font-size: .373333rem;
 }
 .classify-right {
   height: 100%;
   /* background-color: yellow; */
-  padding: 5px 5px 5px 95px;
+ 
+   padding: .133333rem .133333rem .133333rem 2.533333rem;
  overflow: auto;
   
  
@@ -169,7 +205,7 @@ export default {
   background-color: red;
 }
 .itemmain {
-  padding: 5px;
+  padding: .133333rem;
   float: left;
   width: 33.333333%;
   box-sizing: border-box;
@@ -190,14 +226,15 @@ export default {
   height: 100%;
 }
 .itemmain .label {
-  line-height: 36px;
-  font-size: 12px;
+  line-height: .96rem;
+  font-size: .32rem;
   text-align: center;
-  height: 36px;
+  height: .96rem;
   background: #fff;
+  color: #333;
 }
 .changes {
-  border-left: 2px solid #F4578B;
+  border-left: .026667rem solid #F4578B;
   background-color:#EFEFF4;
  
 }
@@ -214,5 +251,6 @@ export default {
   overflow: hidden;
   visibility: hidden;
   height: 0;
+ 
 }
 </style>

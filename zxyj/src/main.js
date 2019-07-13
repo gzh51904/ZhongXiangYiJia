@@ -27,7 +27,10 @@ axios.interceptors.response.use(res=>{
 });
 
 
+
 Vue.config.productionTip = false;
+
+import "./rem/rem.js";
 
 
 new Vue({
