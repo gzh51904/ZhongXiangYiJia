@@ -28,6 +28,7 @@
             </div>
             <div>忘记密码？</div>
           </li>
+          <!-- <span class="fail-notice">用户名或密码错误</span> -->
           <button @click="submitFormLogin">登录</button>
         </ul>
         <div class="user-login-btn">
@@ -190,7 +191,7 @@ export default {
       if (phoneReg.test(this.userform.username)) {
         // 发起请求，检查该用户是否已存在
         this.$axios
-          .get("http://localhost:1904/login", {
+          .get("http://localhost:1904/reg/check", {
             params: {
               username: this.userform.username
             }
@@ -198,7 +199,6 @@ export default {
           .then(({ data }) => {
             if (data.code == 250) {
               this.phonecheck = true;
-              // console.log("验证码：" + this.yanZhenm);
               this.yanText = `区分大小写：${this.yanZhenm}`;
               this.notice =
                 "密码请输入以字母开头，长度6-16之间，只能包含字母、数字和下划线";
@@ -251,34 +251,6 @@ export default {
           "密码格式错误!!!请输入以字母开头，长度6-16之间，只能包含字母、数字和下划线";
       }
     },
-
-    // // 注册
-    // submitFormReg() {
-    //   // 正则
-    //   let regexpassword = new RegExp("^[a-zA-Z]\\w{4,14}$");
-    //   let { username, password, checkPass, authCode } = this.userform;
-    //   if (authCode == this.yanZhenm) {
-    //     console.log("验证码正确");
-    //   }
-    //   if (regexpassword.test(password)) {
-    //     if (checkPass != password) {
-    //       this.notice = "两次输入密码不一致";
-    //       return;
-    //     } else {
-    //       this.$axios
-    //         .post("http://localhost:1904/reg", { username, password })
-    //         .then(({ data }) => {
-    //           if (data.code == 1000) {
-    //             // this.$router.replace({ name: "Login" });
-    //             console.log("注册成功");
-    //           }
-    //         });
-    //     }
-    //   } else {
-    //     this.notice = "密码格式不正确";
-    //     return;
-    //   }
-    // },
 
     // 切换注册登录界面
     changeFrom() {
@@ -419,6 +391,15 @@ ul i {
 }
 .user-login-box ul input::-webkit-input-placeholder {
   font-size: 0.4rem;
+}
+.user-login-box ul > .fail-notice {
+  position: absolute;
+  bottom: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0.133333rem;
+  font-size: 0.32rem;
+  color: #ef3077;
 }
 .user-login-box ul > button {
   position: absolute;

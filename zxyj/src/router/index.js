@@ -61,7 +61,7 @@ let router = new VueRouter({
             component: Mine,
             // 本组件需要登录权限才可访问
             meta: {
-                requiresAuth: false
+                requiresAuth: true
             }
 
         },
