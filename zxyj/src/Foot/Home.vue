@@ -28,7 +28,7 @@
     </div>
     <!-- 抢购专区 -->
     <div class="buying" v-bind:style="{backgroundImage:'url(' + buying.image + ')'}">
-      <div class="buying-left" v-for="(buyingsclick,idx) in buyings" :key="idx"></div>
+      <div class="buying-left" v-for="buyingsclick in buyings"></div>
     </div>
     <!-- 冰点价爆款 -->
     <div class="hotbuy">
@@ -74,7 +74,7 @@
       </div>
     </div>
     <!-- 品牌专区 -->
-    <div class="goodlist" v-for="(goodsimgs,idx) in goodsimg" :key="idx" >
+    <div class="goodlist" v-for="(goodsimgs,idx) in goodsimg" :key="goodsimgs.image" >
       <div class="goodlist-img" v-bind:style="{backgroundImage:'url(' + goodsimgs.image + ')'}" @click="gotoBrand(goodsimgs.target)"></div>
       <div class="goodlist-top">
         <p class="tuijian">热卖推荐</p>

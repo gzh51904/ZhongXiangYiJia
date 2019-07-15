@@ -68,9 +68,13 @@
                 <div class="item-amount">
                   <div>
                     <div class="number-field">
-                      <div class="btn minus" @click="minus(item)"></div>
+                      <div
+                        class="btn minus"
+                        @click="item.qty > 1 ? item.qty--:''"
+                        v-bind="totalPrice()"
+                      ></div>
                       <div class="value">{{item.qty}}</div>
-                      <div class="btn plus" @click="adds(item)"></div>
+                      <div class="btn plus" @click="item.qty++" v-bind="totalPrice()"></div>
                       <!---->
                     </div>
                   </div>
@@ -99,13 +103,13 @@
             </div>
             <!--   @click="gotoPay" -->
             <div
-              v-if="click"
+            v-if="click"
               @click="gotoPay"
               class="btn next-btn disabled"
               :style="item.checked==true  ? 'background: #f51861 !important;color:#ffffff !important;' : '  opacity: 0.6;' "
             >去结算</div>
             <div
-              v-else
+            v-else
               @click="click==false ? remove(item) : gotoPay "
               class="btn next-btn btn-right"
               :style="item.checked==true ? 'background: #f51861 !important;color:#ffffff !important;' : '  opacity: 0.6;' "
@@ -202,7 +206,9 @@ export default {
           itemisChecked.push(item);
         }
       });
-      if (itemisChecked.length === this.cartlist.length) {
+      if (
+        itemisChecked.length === this.cartlist.length
+      ) {
         this.A_select = true;
       } else {
         this.A_select = false;
@@ -212,15 +218,14 @@ export default {
     // 删除商品
     remove(item) {
       if (this.click === false) {
-        this.cartlist.forEach((item, index) => {
-          if (this.A_select == true) {
-            /* 删除所有商品 */
+        this.cartlist.forEach((item,index)=> {
+          if (this.A_select == true) {/* 删除所有商品 */
             this.cartlist.splice(0);
           }
-          if (item.checked == true) {
-            /* 删除某个商品 */
+          if (item.checked == true) {/* 删除某个商品 */
             this.cartlist.splice(index, 1);
-            console.log("Delindex:", index);
+            console.log("Delindex:",index);
+            
           }
         });
       }
@@ -233,14 +238,6 @@ export default {
           this.totalMoney += ((item.marketPrice * 1) / 100) * item.qty; //累加的
         }
       });
-    },
-    adds(item) {
-      item.qty++;
-      this. totalPrice();
-    },
-     minus(item) {
-      item.qty > 1 ? item.qty--: '';
-      this. totalPrice();
     }
   },
   created() {
@@ -270,7 +267,7 @@ export default {
 
 #cart .Cart_main {
   flex: 1;
-  /*   margin-top: 1.2rem; */
+  /*  margin-top: 1.2rem; */
   height: 95%;
   overflow: auto;
   overflow-x: hidden;
