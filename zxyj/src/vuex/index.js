@@ -9,8 +9,7 @@ import cart from './modules/cart'
 const store = new Vuex.Store({
     // state 模块化
     modules:{
-        cart,
-       
+        cart 
     },
 
 });

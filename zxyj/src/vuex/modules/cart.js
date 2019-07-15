@@ -10,6 +10,18 @@ export default {
             // state:就是state
             // payload:触发add方法时传入的参数
             state.Cart_goodslist.push(goods);
-        }
+        },
+
+        // 修改数量
+        changeQty(state, { stuId, qty }) {
+            state.Cart_goodslist.forEach(item => {
+                if (item.stuId == stuId) {
+                    item.qty = qty
+                }
+            })
+        },
+    
+
+        
     }
 }
