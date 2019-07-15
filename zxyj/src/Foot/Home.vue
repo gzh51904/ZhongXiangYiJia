@@ -380,8 +380,7 @@ this.secondKill=this.secondKill[0]
   font-size: 0.213333rem;
   color: #969594;
 }
-.goodlist {
-}
+
 .goodlist .goodlist-img {
   width: 100%;
   height: 3.866667rem;
