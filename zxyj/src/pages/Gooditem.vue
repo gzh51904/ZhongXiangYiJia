@@ -1,8 +1,8 @@
 <template>
   <div class="content">
     <!-- 轮播图 -->
-    <div class="bannerItem" @click="gotolist">
-      <div class="btn-backlist"></div>
+    <div class="bannerItem"  >
+       <div class="btn-backlist" @click="gotolist"></div>
       <mt-swipe :auto="4000">
         <mt-swipe-item v-for="(itemImg,idx) in goodlist.images" :key="idx">
           <img :src="itemImg" class="header-img" />
@@ -196,9 +196,21 @@
     <div class="maijiaxiu">
       <div v-html="content"></div>
     </div>
+    <!-- 加入购物车 -->
+    <div class="all-btn product-bottom">
+      <div class="btn-item btn-shop cs-btn">店铺</div>
+      <div class="btn-item btn-service cs-btn">客服</div>
+      <div class="btn-item btn-mat cs-btn">
+        <span>99+</span>反馈
+      </div>
+      <div class="btn btn-add-to-cart" @click="addToCart">加入购物车</div>
+      <div class="btn btn-buy" @click="ToBuy">立即购买</div>
+    </div>
   </div>
 </template>
 <script>
+import Vue from "vue";
+import {mapState} from "vuex";
 export default {
   data() {
     return {
@@ -207,8 +219,16 @@ export default {
       info: [],
       msg: [],
       displayPledge: false,
-      displayDiscounts: true
+      displayDiscounts: true,
+      Cartinfo: {}/* 购物车数据 */
     };
+  },
+  computed: {
+    ...mapState({
+      cartlist(state) {
+        return state.cart.Cart_goodslist;
+      }
+    })
   },
   methods: {
     pledge() {
@@ -217,11 +237,37 @@ export default {
     hide() {
       this.displayPledge = false;
     },
+    
     gotolist(){
       console.log(this.$router);
       
       this.$router.back(-1)
-    }
+    },
+    /* 加入购物车 */
+    addToCart() {
+      let { commit, state } = this.$store;
+      let { Cart_goodslist } = state.cart;
+      let { skuId } = this.Cartinfo;
+      // 判断当前商品是否已经存在购物车中
+      // 存在：数量+1
+      // 不存在：添加（数量为1）
+      let current = Cart_goodslist.filter(item => item.skuId == skuId)[0];
+
+      console.log("current", current);
+      console.log("Cartinfo", skuId);
+      console.log("goodlist", Cart_goodslist);
+      console.log("state.cart:", state.cart);
+      console.log(" skuId: ", skuId );
+      
+
+      if (current) {
+        commit("changeQty", { skuId: this.Cartinfo.skuId, qty: current.qty + 1 });
+      } else {
+        commit("add", { qty: 1, ...this.Cartinfo,checked :false});
+      }
+    },
+    /* 立即购买*/
+    ToBuy() {}
   },
   async created() {
     let { productId, skuId } = this.$route.params;
@@ -235,13 +281,18 @@ export default {
     // // 请求2商品介绍
     // let product = data.data.skus[1].skuId;
 
-    let itemlist = await this.$axios(
+    let itemlist= await this.$axios(
       "https://api.zxyjsc.com/flyapi/product/skuDetail?skuId=" +
         skuId +
         "&version=2.0&terminal=3"
     );
     console.log("item", itemlist);
 
+
+    /*-------- 购物车数据 ------------*/
+    this.Cartinfo =itemlist ? itemlist.data.data : this.cartlist;
+    console.log("Cartinfo:",itemlist.data.data);
+/* ----------------------------------- */
     // // 请求店铺相关
     let dianpu = await this.$axios(
       "https://api.zxyjsc.com/flyapi/product/storeDetail?spuId=" +
@@ -635,7 +686,7 @@ body {
   position: absolute;
   left: 0.346667rem;
   top: 0.213333rem;
-  z-index: 1;
+  z-index: 999;
   height: 0.693333rem;
   width: 0.693333rem;
   background-repeat: no-repeat;
@@ -646,5 +697,109 @@ body {
 .maijiaxiu >>> img {
   width: 100%;
   margin: 0;
+}
+/* 加入购物车 */
+.btn {
+  float: left;
+  width: 2.666667rem;
+  text-align: center;
+  color: #fff;
+  font-size: 0.426667rem;
+  line-height: 1.333333rem;
+}
+.all-btn {
+  float: right;
+  width: 100%;
+}
+
+.btn-add-to-cart {
+  background: linear-gradient(#ff9300, #ff7800);
+}
+.btn-buy {
+  background: #f51861;
+}
+.product-bottom,
+.product-bottom .btn-item {
+  display: -ms-flexbox;
+  display: flex;
+}
+.product-bottom {
+  position: fixed;
+  height: 1.333333rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  z-index: 1;
+  background-image: linear-gradient(
+    180deg,
+    #e5e5e5,
+    #e5e5e5 50%,
+    transparent 0
+  );
+  background-size: 100% 0.026667rem;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-origin: border-box;
+}
+.product-bottom .btn-item {
+  -ms-flex: 1;
+  flex: 1;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #999;
+  text-decoration: none;
+  font-size: 0.133333rem;
+  position: relative;
+}
+.product-bottom .btn-item {
+  display: -ms-flexbox;
+  display: flex;
+}
+.product-bottom .btn-shop:before {
+  background: url(https://www.zxyj.com/static/images/btn-detail-shop.png)
+    no-repeat;
+  background-size: 100%;
+}
+.product-bottom .btn-service:before {
+  background: url(https://www.zxyj.com/static/images/Customer-service2.png)
+    no-repeat;
+  background-size: 100%;
+}
+.product-bottom .btn-mat:before {
+  background: url(https://www.zxyj.com/static/images/detail-mat.png) no-repeat;
+  background-size: 100%;
+}
+.product-bottom .btn-item:before {
+  content: "";
+  width: 0.48rem;
+  height: 0.48rem;
+  display: block;
+  background-size: contain;
+  margin-bottom: 0.133333rem;
+}
+.product-bottom .btn-mat span {
+  position: absolute;
+  left: auto;
+  right: 50%;
+  border-radius: 0.4rem;
+  min-height: 0.4rem;
+  min-width: 0.4rem;
+  font-size: 0.266667rem;
+  color: #fff;
+  line-height: 0.4rem;
+  text-align: center;
+  margin-left: 0;
+  margin-right: -0.533333rem;
+  padding: 0 0.026667rem;
+  background: #f51861;
+  top: 0.053333rem;
+  box-sizing: border-box;
 }
 </style>

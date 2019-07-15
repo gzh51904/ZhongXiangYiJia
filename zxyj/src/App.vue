@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <header v-show="showed" class="search">
+    <header v-show="showed">
       <mt-search cancel-text="取消" placeholder="搜索" class="header-search"></mt-search>
     </header>
-    <main>
+    <main class="main">
       <router-view></router-view>
     </main>
-    <footer v-show="showed">
+    <footer v-show="footshow">
       <ul class="item">
         <a v-for="item in pages" :key="item.name" class="item-btn" @click="goto(item)">
           <mt-badge
@@ -14,9 +14,11 @@
             size="small"
             v-if="item.name=='Cart'"
             class="badge"
-            v-show="logined"
-          >3</mt-badge>
-          <router-link :to="item.path" class="active-title">
+            v-show="len>0"
+            v-bind="Cartcount"
+            v-model="len"
+          >{{len}}</mt-badge>
+          <router-link :to="item.path">
             <li>
               <i class="iconfont" :class=" item.font"></i>
               <p class="footer-item-font-size">{{item.title}}</p>
@@ -27,7 +29,6 @@
     </footer>
   </div>
 </template>
-
 <script>
 import Vue from "vue";
 import MintUI from "mint-ui";
@@ -36,6 +37,7 @@ import App from "./App.vue";
 import css from "./font/iconfont.css";
 import rem from "./rem/rem.js";
 import { Badge } from "mint-ui";
+import { mapState } from "vuex";
 
 Vue.use(MintUI);
 Vue.component(Badge.name, Badge);
@@ -69,90 +71,73 @@ export default {
           font: "icon-wode"
         }
       ],
-      showed: true
+      showed: false,
+      footshow: true,
+      len: ""
     };
   },
-  components: {
-    App
-  },
-  //进行判断当fullpath为home或者分类的时候。让底部栏和搜索框隐藏，否则显示
-  watch: {
-    $route(val) {
-      if (val.fullPath == "/home" || val.fullPath == "/classify") {
-        this.showed = true;
-      } else {
-        this.showed = false;
+  computed: {
+    ...mapState({
+      cartlist(state) {
+        return state.cart.Cart_goodslist;
       }
+    }),
+    Cartcount() {
+      /* this.len = this.cartlist.length; */
+      this.len = 0;
+      this.cartlist.forEach(item => {
+        this.len += item.qty;
+      });
     }
   },
   methods: {
     goto(item) {
-      /* 点击的页面是cart或是mine页面，搜索框都会是隐藏 */
-      // this.showed = item.path == "/cart" || item.path == "/mine" ? false : true;
-      // console.log(item.path);
-
-      /* 测试，设置假的User用户 */
-      localStorage.setItem("User", "LXW");
+      console.log("path", item.path);
     }
   },
   created() {
-    // /* 刷新后，如果是cart或是mine页面，搜索框都会是隐藏 */
-    // this.showed =
-    //   this.$router.history.current.path == "/cart" ||
-    //   this.$router.history.current.path == "/mine" ||
-    //   this.$router.history.current.path == "/login"||
-    //    this.$router.history.current.path == "/classify"
-    //     ? true
-    //     : false;
-    /* 判断登录是否，登录显示购物车数量 */
+    /* 刷新后，如果是cart或是mine页面，搜索框都会是隐藏 */
+    this.showed =
+      this.$router.history.current.path == "/cart" ||
+      this.$router.history.current.path == "/mine" ||
+      this.$router.history.current.path == "/pay";
+    this.$router.history.current.path == "/login" ||
+    this.$router.history.current.path == "/classify"
+      ? true
+      : false;
+
+    localStorage.setItem("User", "lxw");
+    /* 判断有商品是否，显示购物车数量 */
     let token = localStorage.getItem("User");
-    this.logined = token ? true : false;
+  },
+
+  components: {
+    App
   }
 };
 </script>
 
 <style scope>
+/* -------------- */
 a {
   text-decoration: none;
 }
 
 html,
 body {
+  width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
 }
-.badge {
-  border-radius: 50%;
-  font-size: 0.16rem;
-  text-align: center;
-  line-height: 0.266667rem;
-  position: absolute;
-  right: 0.4rem;
-  top: 0rem;
-}
-.mint-searchbar {
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: rgb(167, 82, 82);
-  border-radius: 2px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  height: 28px;
-  padding: 3px 6px;
-  height: 100%;
-}
+
 ul li {
   list-style: none;
 }
 
 #app {
   height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -165,31 +150,15 @@ header {
 header .header-search {
   height: 100%;
 }
-.mint-searchbar {
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: white;
-  border-radius: 2px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  height: 28px;
-  padding: 3px 6px;
-  height: 100%;
-}
-
 /* 内容区 */
-main {
-  width: 100%;
+.main {
+  flex: 1;
   height: 100%;
   overflow: auto;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  width: 100%;
   flex: 1;
   background: #efeff4;
 }
@@ -221,6 +190,15 @@ footer {
   padding-top: 0.133333rem;
   box-sizing: border-box;
 }
+.badge {
+  border-radius: 50%;
+  font-size: 0.16rem;
+  text-align: center;
+  line-height: 0.266667rem;
+  position: absolute;
+  right: 30%;
+  top: 0rem;
+}
 
 .item .item-btn .iconfont {
   font-size: 0.506667rem;
@@ -236,11 +214,5 @@ footer {
 .item .item-btn .footer-item-font-size {
   color: #7c7e86;
   font-size: 0.24rem;
-}
-.search {
-  position: fixed;
-  z-index: 999;
-  width: 100%;
-  opacity: 0.5;
 }
 </style>
