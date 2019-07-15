@@ -14,8 +14,9 @@
             size="small"
             v-if="item.name=='Cart'"
             class="badge"
-            v-show="logined"
-            v-model="Cartcount"
+            v-show="len>0"
+            v-bind="Cartcount"
+            v-model="len"
           >{{len}}</mt-badge>
           <router-link :to="item.path">
             <li>
@@ -28,7 +29,6 @@
     </footer>
   </div>
 </template>
-
 <script>
 import Vue from "vue";
 import MintUI from "mint-ui";
@@ -72,7 +72,6 @@ export default {
         }
       ],
       showed: false,
-      logined: false,
       footshow: true,
       len: ""
     };
@@ -84,15 +83,16 @@ export default {
       }
     }),
     Cartcount() {
-      this.len = this.cartlist.length;
+      /* this.len = this.cartlist.length; */
+      this.len = 0;
+      this.cartlist.forEach(item => {
+        this.len += item.qty;
+      });
     }
   },
   methods: {
     goto(item) {
-      /* 点击的页面是cart或是mine页面，搜索框都会是隐藏 */
-      this.showed = item.path == "/cart" || item.path == "/mine" ? true : false;
       console.log("path", item.path);
-      this.logined = this.cartlist[0] ? true : false;
     }
   },
   created() {
@@ -106,7 +106,7 @@ export default {
       ? true
       : false;
 
-    // localStorage.setItem("User", "lxw");
+    localStorage.setItem("User", "lxw");
     /* 判断有商品是否，显示购物车数量 */
     let token = localStorage.getItem("User");
   },
@@ -117,7 +117,7 @@ export default {
 };
 </script>
 
-<style>
+<style scope>
 /* -------------- */
 a {
   text-decoration: none;

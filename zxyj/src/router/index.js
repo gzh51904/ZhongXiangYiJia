@@ -19,12 +19,10 @@ import NewAddressList from "../pages/newAddressList" /* 添加地址 */
 import Fydess from '../pages/Fydess'
 //引入详情页组件
 import Gooditem from "../pages/Gooditem" /*详情页面 */
-import Personal from "../pages/personal" /*个人信息 */
-
 // 首页跳转路由
 import Uplibao from "../Home/Uplibao"
 import Brand from "../Home/Brand"
-
+import AddEdit from "../pages/AddEdit" /* 新增地址页面 */
 
 
 //实例化router配置参数
@@ -97,10 +95,10 @@ let router = new VueRouter({
             component: Fydess,
 
         }, {
-            // 个人信息
-            name: "Personal",
-            path: "/personal",
-            component: Personal,
+            /* 新增地址页面 */
+            name: "AddEdit",
+            path: "/addEdit",
+            component: AddEdit
         },
         {
             /* 详情页面 */
@@ -118,14 +116,15 @@ let router = new VueRouter({
 
 /*    console.log('全局：beforeEach to',to); */
 
+
+
 router.beforeEach((to, from, next) => {
     console.log('全局：beforeEach from', from);
     console.log('全局：beforeEach to', to);
     // 判断目标路由是否需要登录权限才可访问
     if (to.matched.some(item => item.meta.requiresAuth)) {
-        let token = localStorage.getItem('Authorization');
-        // let token = localStorage.getItem('User');
-        axios.get('/verify')
+        let token = localStorage.getItem('User');
+        /*  axios.get('/verify') */
         // 用户已登录
         if (token) {
             next();
