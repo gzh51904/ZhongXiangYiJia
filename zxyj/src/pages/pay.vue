@@ -133,8 +133,8 @@ export default {
     }
   },
   methods: {
-    gotoCart() {
-      this.$router.push({ name: "Cart" });
+    gotoCart() {/* 返回上一级 */
+      this.$router.back(-1);
     },
     select_to_alipay(){
       this.select=true;
@@ -185,7 +185,7 @@ export default {
   text-align: center;
 }
 .paylist {
-  margin-top: 2.4rem;
+  margin-top: 1.6rem;
   overflow: hidden;
   
 }

@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div>我的</div>
+    <!-- <div>我的</div>
     <div v-for="item in list" :key="item.skuId" @click="goto(item.skuId)">
       <div>{{item.skuName}}</div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
-import { log } from "util";
+/* import { log } from "util"; */
 export default {
-  data() {
+  /* data() {
     return {
       list: []
     };
@@ -30,5 +30,7 @@ export default {
     this.list = data.data.datas;
     console.log(this.list);
   }
-};
+}; */
+}
+
 </script>

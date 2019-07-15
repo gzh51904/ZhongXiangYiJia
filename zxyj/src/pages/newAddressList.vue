@@ -1,7 +1,8 @@
 <template>
   <div id="address">
     <header id="newaddress_header">
-      <img @click="to_pay"
+      <img
+        @click="to_pay"
         src="https://www.zxyj.com/static/images/icon-back-black.png"
         alt
         class="newaddress-to-pay"
@@ -25,38 +26,49 @@
       <div class="labelBox" style="height: 50px;" v-show="!click">
         <i class="line" style="height: 1px; width: 100%;"></i>
         <ul style="width: 265px;">
-          <li v-for="(item,idx) in list" :key="idx" @click="select(idx)" >{{item.name}}</li>
+          <li
+            v-for="(item,idx) in list"
+            :key="idx"
+            @click="check(idx)"
+            :class="check_idx==idx ? 'check_active ':''"
+          >{{item.name}}</li>
         </ul>
       </div>
     </header>
-    <footer>添加地址</footer>
+    <footer @click="to_addEdit">添加地址</footer>
   </div>
 </template>
 <script>
 import Vue from "vue";
 export default {
-    
   data() {
     return {
-        Newlist:{},
-      list: [{ id:0,name: "家" }, { id:1,name: "代理" }, { id:2,name: "公司" }],
+      Newlist: {},
+      list: [
+        { id: 0, name: "家" },
+        { id: 1, name: "代理" },
+        { id: 2, name: "公司" }
+      ],
       click: true,
-  
+      check_idx: -1
     };
   },
   methods: {
     clickTosearch() {
       this.click = false;
     },
-    select(idx) {
-      console.log(idx);
-      
-    },to_pay(){
-      this.$router.push({name:"Pay"});
+    check(idx) {
+      this.check_idx = idx;
+    },
+    to_pay() {
+      /* 返回上一级 */
+      this.$router.back(-1);
+    },
+    to_addEdit() {
+      this.$router.push({ name: "AddEdit" });
     }
-  },created(){
-     
-  }
+  },
+  created() {}
 };
 </script>
 <style scope>
@@ -180,5 +192,10 @@ h2 {
   height: 0.8rem;
   margin-left: 0.266667rem;
   font-size: 0.32rem;
+}
+.check_active {
+  border-radius: 0.533333rem;
+  background: #f22b69 !important;
+  color: #ffffff !important;
 }
 </style>

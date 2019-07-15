@@ -55,7 +55,7 @@
         <div class="miaosha-flex">
           <div
             class="miaosha-box"
-            v-for="second in secondKill[0].secondKillProducts"
+            v-for="second in secondKill.secondKillProducts"
             :key="second.thumbUrl"
             @click="hotbuysList(second)"
           >
@@ -130,7 +130,7 @@ export default {
 
   async created() {
     // 发起请求
-    let { data } = await this.$axios(
+    let { data } = await this.$axios.get(
       "https://api.zxyjsc.com/flyapi/pageConfig/getIndexConfig?pageId=home&version=1.0&terminal=3"
     );
     // 数据
@@ -138,11 +138,11 @@ export default {
 
     // 秒杀商品
 
-    let secondKill = await this.$axios(
+    let secondKill = await this.$axios.get(
       "https://api.zxyjsc.com/flyapi/secondKill/getIndexSecondKill?version=1.0&terminal=3"
     );
     this.secondKill.push(secondKill.data.data);
-
+this.secondKill=this.secondKill[0]
     // console.log(this.secondKill);
 
     // console.log(itemlist);

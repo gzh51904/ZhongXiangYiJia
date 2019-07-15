@@ -14,18 +14,15 @@ import Classify from '../Foot/Classify'
 import Cart from '../Foot/Cart' /* 购物车页面 */
 import Mine from "../Foot/Mine"
 import Login from "../pages/login"
-import Product from "../pages/Product" /*详情页面 */
 import Pay from "../pages/pay"/* 支付页面 */
 import NewAddressList from "../pages/newAddressList" /* 添加地址 */
 import Fydess from '../pages/Fydess'
 //引入详情页组件
-import Gooditem from "../pages/Gooditem"
-
-
+import Gooditem from "../pages/Gooditem"/*详情页面 */
 // 首页跳转路由
 import Uplibao from "../Home/Uplibao"
 import Brand from "../Home/Brand"
-
+import AddEdit from "../pages/AddEdit"/* 新增地址页面 */
 
 
 //实例化router配置参数
@@ -64,12 +61,7 @@ let router = new VueRouter({
     {   name: 'Login',
         path: '/login',
         component: Login,
-    },/* 详情页面 */
-     { name: "Product",
-        path: "/product",
-        component: Product,
-        
-      },/* 支付订单 */
+    },/* 支付订单 */
       { name: "Pay",
          path: "/pay",
          component: Pay,
@@ -89,14 +81,17 @@ let router = new VueRouter({
             component: Brand,
         }
            
-         
        , {
             name: "Fydess",
             path: "/fydess/:categoryId",
             component: Fydess,
          
+        },{/* 新增地址页面 */
+          name:"AddEdit",
+          path:"/addEdit",
+          component:AddEdit
         },
-        {
+        {/* 详情页面 */
             name:"Gooditem",
             path:"/gooditem/:productId",
             component:Gooditem

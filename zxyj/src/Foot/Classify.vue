@@ -155,7 +155,7 @@ export default {
   },
 };
 </script>
-<style scope>
+<style>
 .classify-main {
   height: 100%;
    background: #fff;

@@ -263,7 +263,7 @@ export default {
       if (current) {
         commit("changeQty", { skuId: this.Cartinfo.skuId, qty: current.qty + 1 });
       } else {
-        commit("add", { qty: 1, ...this.Cartinfo});
+        commit("add", { qty: 1, ...this.Cartinfo,checked :false});
       }
     },
     /* 立即购买*/
