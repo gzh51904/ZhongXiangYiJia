@@ -111,11 +111,10 @@ export default {
     this.showed =
       this.$router.history.current.path == "/cart" ||
       this.$router.history.current.path == "/mine" ||
-      this.$router.history.current.path == "/pay";
-    this.$router.history.current.path == "/login" ||
-    this.$router.history.current.path == "/classify"
-      ? true
-      : false;
+      this.$router.history.current.path == "/pay" ||
+      this.$router.history.current.path == "/login"
+        ? true
+        : false;
 
     localStorage.setItem("User", "lxw");
     /* 判断有商品是否，显示购物车数量 */
@@ -124,7 +123,7 @@ export default {
     // 刷新后保持高亮
     let hash = window.location.hash.slice(1);
     this.toggle = hash;
-     },
+  },
 
   components: {
     App

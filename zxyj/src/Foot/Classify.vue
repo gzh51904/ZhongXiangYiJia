@@ -119,7 +119,7 @@ export default {
      console.log(window.location.hash);
      
     //刷新保持高亮、并且发起第一个数据请求
-     this.activeClass=parentId?parentId:window.location.hash.slice(11)
+     this.activeClass="cd22b005da5f4f3785af45f8729e01fc"
     let { data } = await this.$axios.get(
       "https://api.zxyjsc.com/flyapi/category/child?parentCategoryId="+this.activeClass+"&version=1.0&terminal=3"
     );
