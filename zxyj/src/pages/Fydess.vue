@@ -197,8 +197,11 @@ export default {
             this.show=!this.show;
       },
       //点击返回箭头，返回到商品分类
-      goback(parentId){
-       this.$router.push({name:'Classify',path:"/classify/"+parentId})
+      goback(){
+            let {parentId}=this.$route.params;
+              console.log("sss",parentId);
+       this.$router.push({name:'Classify',path:"/classify/"+parentId,params:{parentId}})
+       console.log("cc",this.$route);
         // this.$router.back(-1)
       },
       //跳转详情页方法，直接解开即可
@@ -214,17 +217,31 @@ export default {
                 console.log("rrrrrr",this.$route);
                 
         //获取传入id及标题名字
-        let {categoryId,categoryName}=this.$route.params;
-        console.log("id",categoryId);
-        //把请求来的标题名字赋值给当前标题
-        this.detitle=categoryName;
+        // let {categoryId,categoryName}=this.$route.params;
+        // console.log("id",categoryId);
+        // //把请求来的标题名字赋值给当前标题
+        // this.detitle=categoryName;
             
-        //发起请求，获取商品信息，渲染页面
-        let {data}=await this.$axios.get("https://api.zxyjsc.com/flyapi/product/sort/product/list?pageOffset=1&pageSize=15&json=%7B%22comprehensive%22:true,%22parentCategoryId%22:%22"+categoryId+"%22,%22memberType%22:0%7D&version=1.0&terminal=3")
-            this.desslist=data.data.datas;   
-            //多配置一套是为了筛选自营店方法
-            this.desslist1=data.data.datas; 
-        console.log("dess",this.desslist);
+        // //发起请求，获取商品信息，渲染页面
+        // let {data}=await this.$axios.get("https://api.zxyjsc.com/flyapi/product/sort/product/list?pageOffset=1&pageSize=15&json=%7B%22comprehensive%22:true,%22parentCategoryId%22:%22"+categoryId+"%22,%22memberType%22:0%7D&version=1.0&terminal=3")
+        //     this.desslist=data.data.datas;   
+        //     //多配置一套是为了筛选自营店方法
+        //     this.desslist1=data.data.datas; 
+        // console.log("dess",this.desslist);
+
+           // 获取所有商品
+    this.$axios.get("http://3.112.200.192:1904/goodslist").then(({ data }) => {
+      if (data.code == 1000) {
+        // console.log(data.data);
+        let data1 = data.data;
+        for (var i = 0; i < data1.length; i++) {
+          this.desslist.push(data1[i]);
+        }
+      }
+    });
+
+
+
     },
     
 }
