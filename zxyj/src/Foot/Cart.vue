@@ -1,7 +1,12 @@
 <template>
   <div id="cart">
     <header id="Cart_header">
-      <img src="https://www.zxyj.com/static/images/icon-back-black.png" alt class="Cart-to-back" @click="goBack"/>
+      <img
+        src="https://www.zxyj.com/static/images/icon-back-black.png"
+        alt
+        class="Cart-to-back"
+        @click="goBack"
+      />
       <h2 class="title">购物车</h2>
       <div v-show="!haveInfo" class="header-right">
         <div @click="FinshAndEdit">
@@ -23,11 +28,11 @@
         <div class="cart-section" v-for="(item,idx) in list" :key="idx">
           <div class="section-header">
             <!-- 选框 -->
+
             <span
               class="selector"
-              :class=" A_select || S_select ? 'selected' : ''"
-              :S_select="false"
-              @click="selectSinge(item,item.skuId) "
+              :class="{'selected':item.checked || A_select}"
+              @click="selectSinge(item,idx) "
             ></span>
             <div class="title">
               <i></i>
@@ -40,7 +45,11 @@
             <div class="cart-item-box">
               <div class="cart-item">
                 <!-- 选框 -->
-                <span class="selector" :class=" A_select ? 'selected' : ''"></span>
+                <span
+                  class="selector"
+                  :class="{'selected':item.checked || A_select}"
+                  @click="selectSinge(item,idx) "
+                ></span>
                 <div class="shelf">
                   <img :src="item.images[0]" class="thumb" />
                   <!---->
@@ -59,9 +68,13 @@
                 <div class="item-amount">
                   <div>
                     <div class="number-field">
-                      <div class="btn minus" @click="item.qty > 1 ? item.qty--:''"></div>
+                      <div
+                        class="btn minus"
+                        @click="item.qty > 1 ? item.qty--:''"
+                        v-bind="totalPrice()"
+                      ></div>
                       <div class="value">{{item.qty}}</div>
-                      <div class="btn plus" @click="item.qty++"></div>
+                      <div class="btn plus" @click="item.qty++" v-bind="totalPrice()"></div>
                       <!---->
                     </div>
                   </div>
@@ -74,30 +87,37 @@
             <!---->
             <!---->
           </div>
-        </div>
-      </div>
-      </main>
-      <!-- 购物车底部 -->
-      <div class="cart-bottom" v-show="!haveInfo">
-        <div class="select-all" @click="selectAll">
-          <span class="selector" :class=" A_select ? 'selected' : ''"></span>
-          <span class="label">全选</span>
-        </div>
-        <div class="content" v-show="click">
-          <div class="total fs16">
-            合计：
-            <span class="color-main">¥{{A_select ? totalPrice.toFixed(2) : "0.00"}}</span>
+
+          <!-- 购物车底部 -->
+          <div class="cart-bottom" v-show="!haveInfo">
+            <div class="select-all" @click="selectAll">
+              <span class="selector" :class="{'selected':A_select }"></span>
+              <span class="label">全选</span>
+            </div>
+            <div class="content" v-show="click">
+              <div class="total fs16">
+                合计：
+                <span class="color-main">¥{{totalMoney.toFixed(2)}}</span>
+              </div>
+              <div class="fs12 color-gray mt5">不含运费</div>
+            </div>
+            <!--   @click="gotoPay" -->
+            <div
+            v-if="click"
+              @click="gotoPay"
+              class="btn next-btn disabled"
+              :style="item.checked==true  ? 'background: #f51861 !important;color:#ffffff !important;' : '  opacity: 0.6;' "
+            >去结算</div>
+            <div
+            v-else
+              @click="click==false ? remove(item) : gotoPay "
+              class="btn next-btn btn-right"
+              :style="item.checked==true ? 'background: #f51861 !important;color:#ffffff !important;' : '  opacity: 0.6;' "
+            >删除</div>
           </div>
-          <div class="fs12 color-gray mt5">不含运费</div>
         </div>
-        <div
-          @click="gotoPay"
-          class="btn next-btn"
-          :class="click ? 'disabled' : 'btn-right' "
-          :style="S_select || A_select ? 'background: #f51861 !important;color:#ffffff !important;' : '  opacity: 0.6;' "
-        >{{btnName}}</div>
       </div>
-    
+    </main>
   </div>
 </template>
 <script>
@@ -115,7 +135,8 @@ export default {
       click: true /* 点击编辑 */,
       btnName: "去结算",
       A_select: false /* 购物车全选中状态，默认为没有全选中 */,
-      S_select: false /* 购物车单个选择，默认为没有选中 */
+      S_select: false /* 购物车单个选择，默认为没有选中 */,
+      totalMoney: 0 /* 合计 */
     };
   },
   computed: {
@@ -123,17 +144,13 @@ export default {
       cartlist(state) {
         return state.cart.Cart_goodslist;
       }
-    }),
-    totalPrice() {
-      return this.$store.state.cart.Cart_goodslist.reduce((pre, item) => {
-        return pre + ((item.marketPrice * 1) / 100) * item.qty;
-      }, 0);
-    }
+    })
   },
 
   methods: {
-   goBack(){/* 返回上一级 */
-      this.$router.back(-1)
+    goBack() {
+      /* 返回上一级 */
+      this.$router.back(-1);
     },
     gotoHome() {
       console.log("path", this.$router.history.current.path);
@@ -142,76 +159,119 @@ export default {
     },
     /* 去支付 */
     gotoPay() {
-      let Paylist = this.list;
-      if (this.A_select == false) {
-        MessageBox("提示", "亲，您还没有选择商品呢!");
-        return;
-      }
-      this.$router.push({ name: "Pay", params: { Paylist } });
+      let Paylist = [];
+      this.cartlist.forEach((item, idx) => {
+        //遍历商品，如果选中就进行加个计算，然后累加
+
+        if (item.checked) {
+          Paylist.push(item);
+          this.$router.push({ name: "Pay", params: { Paylist } });
+        }
+      });
+
+      /*   MessageBox("提示", "亲，您还没有选择商品呢!"); */
     },
     FinshAndEdit() {
       this.click = !this.click;
-      this.btnName = this.click ? "去结算" : "删除";
     },
     /* 选择全选 */
     selectAll() {
       this.A_select = !this.A_select;
-    },
-    /* 单个选择 */
-    selectSinge(item, skuId) {
-      /* this.S_select = !this.S_select; */
-      console.log("idx:", skuId);
-      this.list.filter(el => {
-        if (el.skuId == skuId) {
-          console.log(this.S_select);
-          this.S_select = !this.S_select;
+
+      this.cartlist.forEach((item, index) => {
+        if (typeof item.checked == "undefined") {
+          //检测属性是否存在
+          this.$set(item, "checked", this.this.A_select); //局部注册
+        } else {
+          item.checked = this.A_select; //状态取反
         }
       });
-    }/* ,
-    ...mapMutations({
-      // 函数形式：
-      changeQty: (commit, row, qty) => {
-        commit("changeQty", { id: row.id, qty });
+      this.totalPrice(); //全选时调用计算总金额函数
+    },
+
+    /* 单个选择 */
+    selectSinge(item) {
+      this.S_select = !this.S_select;
+      if (typeof item.checked == "undefined") {
+        //检测属性是否存在
+        //Vue.set(item, "checked", true);
+        this.$set(item, "checked", true); //局部注册
+      } else {
+        item.checked = !item.checked; //状态取反
       }
-    }) */
+      //如果取消一个商品的选中，全选也取消
+      var itemisChecked = [];
+      this.cartlist.forEach(function(item, index) {
+        if (item.checked === true) {
+          itemisChecked.push(item);
+        }
+      });
+      if (
+        itemisChecked.length === this.cartlist.length
+      ) {
+        this.A_select = true;
+      } else {
+        this.A_select = false;
+      }
+      this.totalPrice(); //选中商品后调用计算总金额函数
+    },
+    // 删除商品
+    remove(item) {
+      if (this.click === false) {
+        this.cartlist.forEach((item,index)=> {
+          if (this.A_select == true) {/* 删除所有商品 */
+            this.cartlist.splice(0);
+          }
+          if (item.checked == true) {/* 删除某个商品 */
+            this.cartlist.splice(index, 1);
+            console.log("Delindex:",index);
+            
+          }
+        });
+      }
+    },
+    totalPrice() {
+      this.totalMoney = 0; //每次遍历商品之前对总金额进行清零
+      this.cartlist.forEach((item, idx) => {
+        //遍历商品，如果选中就进行加个计算，然后累加
+        if (item.checked) {
+          this.totalMoney += ((item.marketPrice * 1) / 100) * item.qty; //累加的
+        }
+      });
+    }
   },
   created() {
-    console.log("path", this.$router.history.current.path);
     console.log("购物车上的商品：", this.cartlist);
 
     this.list = this.cartlist;
-    this.haveInfo = this.cartlist ? false : true;
-    console.log("list:", this.list);
+    this.haveInfo = this.list.length > 0 ? false : true;
+
     console.log("length:", this.list.length);
     console.log("商品", this.$store.state.cart.Cart_goodslist);
-
   }
 };
 </script>
-<style scope>
+<style>
 #cart {
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  overflow-x: hidden;
-  overflow-y: auto;
 }
 #Cart_header {
   width: 100%;
- line-height: 0.6rem;
+  line-height: 0.6rem;
   background: #ffffff;
   position: fixed;
   z-index: 1000;
   top: 0;
 }
 
-.Cart_main{
+#cart .Cart_main {
   flex: 1;
-  margin-top: 1.2rem;
-   height: 100%;
+   /* margin-top: 12%; */
+  height: 95%;
+  overflow: auto;
   overflow-x: hidden;
   overflow-y: auto;
-
 }
 #Cart_header .title {
   text-align: center;
@@ -224,7 +284,7 @@ export default {
   left: 0.133333rem;
   top: 30%;
 }
-.header-right {
+#cart .header-right {
   position: absolute;
   top: 0.266667rem;
   right: 0.266667rem;
@@ -454,7 +514,8 @@ h2 {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 1.28rem;
+  bottom: 1.13rem;
+  border-bottom: 0.013333rem solid rgb(184, 180, 180);
   background-color: #fff;
   background-image: linear-gradient(
     180deg,
@@ -507,7 +568,7 @@ h2 {
   color: #999 !important;
 }
 .btn-right {
-  position: absolute;
-  right: 0;
+  position: absolute !important;
+  right: 0 !important;
 }
 </style>

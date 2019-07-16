@@ -185,7 +185,7 @@ export default {
   text-align: center;
 }
 .paylist {
-  margin-top: 2.4rem;
+  margin-top: 1.6rem;
   overflow: hidden;
   
 }

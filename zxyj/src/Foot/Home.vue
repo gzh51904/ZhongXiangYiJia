@@ -28,7 +28,7 @@
     </div>
     <!-- 抢购专区 -->
     <div class="buying" v-bind:style="{backgroundImage:'url(' + buying.image + ')'}">
-      <div class="buying-left" v-for="buyingsclick in buyings"></div>
+      <div class="buying-left" v-for="(buyingsclick,idx) in buyings" :key="idx"></div>
     </div>
     <!-- 冰点价爆款 -->
     <div class="hotbuy">
@@ -55,7 +55,7 @@
         <div class="miaosha-flex">
           <div
             class="miaosha-box"
-            v-for="second in secondKill[0].secondKillProducts"
+            v-for="second in secondKill.secondKillProducts"
             :key="second.thumbUrl"
             @click="hotbuysList(second)"
           >
@@ -74,7 +74,7 @@
       </div>
     </div>
     <!-- 品牌专区 -->
-    <div class="goodlist" v-for="(goodsimgs,idx) in goodsimg" :key="goodsimgs.image" >
+    <div class="goodlist" v-for="(goodsimgs,idx) in goodsimg" :key="idx" >
       <div class="goodlist-img" v-bind:style="{backgroundImage:'url(' + goodsimgs.image + ')'}" @click="gotoBrand(goodsimgs.target)"></div>
       <div class="goodlist-top">
         <p class="tuijian">热卖推荐</p>
@@ -130,7 +130,7 @@ export default {
 
   async created() {
     // 发起请求
-    let { data } = await this.$axios(
+    let { data } = await this.$axios.get(
       "https://api.zxyjsc.com/flyapi/pageConfig/getIndexConfig?pageId=home&version=1.0&terminal=3"
     );
     // 数据
@@ -138,11 +138,11 @@ export default {
 
     // 秒杀商品
 
-    let secondKill = await this.$axios(
+    let secondKill = await this.$axios.get(
       "https://api.zxyjsc.com/flyapi/secondKill/getIndexSecondKill?version=1.0&terminal=3"
     );
     this.secondKill.push(secondKill.data.data);
-
+this.secondKill=this.secondKill[0]
     // console.log(this.secondKill);
 
     // console.log(itemlist);
@@ -380,8 +380,7 @@ export default {
   font-size: 0.213333rem;
   color: #969594;
 }
-.goodlist {
-}
+
 .goodlist .goodlist-img {
   width: 100%;
   height: 3.866667rem;
