@@ -94,7 +94,7 @@ export default {
     submitFormLogin() {
       let { username, password } = this.userform;
       this.$axios
-        .post("http://localhost:1904/login", {
+        .post("http://3.112.200.192:1904/login", {
           username,
           password
         })
@@ -191,7 +191,7 @@ export default {
       if (phoneReg.test(this.userform.username)) {
         // 发起请求，检查该用户是否已存在
         this.$axios
-          .get("http://localhost:1904/reg/check", {
+          .get("http://3.112.200.192:1904/reg/check", {
             params: {
               username: this.userform.username
             }
@@ -233,7 +233,7 @@ export default {
       // 三者都为ture才能发起请求
       if (yanZhenmcheck && this.phonecheck && passwordcheck) {
         this.$axios
-          .post("http://localhost:1904/reg", { username, password })
+          .post("http://3.112.200.192:1904/reg", { username, password })
           .then(({ data }) => {
             if (data.code == 1000) {
               // this.$router.replace({ name: "Login" });
