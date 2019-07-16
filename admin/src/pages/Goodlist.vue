@@ -1,6 +1,6 @@
 <template>
   <div>
-        <Input search enter-button placeholder="请输入要搜索的商品" v-model="value" />
+    <Input search enter-button placeholder="请输入要搜索的商品" v-model="value" />
     <div style="margin: 10px">
       显示边框
       <i-switch v-model="showBorder" style="margin-right: 5px"></i-switch>显示斑马纹
@@ -97,31 +97,39 @@ export default {
       showCheckbox: false,
       fixedHeader: false,
       tableSize: "default",
-      value:""
+      value: ""
     };
   },
   methods: {
     show(index) {
       this.$Modal.info({
         title: "详细信息",
-        content: `商品名：${this.tableData3[index].skuName}<br>价格：${((this.tableData3[index].retailPrice)/100).toFixed(2)}元<br>创建日期${this.tableData3[index].createDate}<br>商品图:  <img style="width:100px" src="${this.tableData3[index].thumbUrl}" alt=""> `
-             });
+        content: `商品名：${this.tableData3[index].skuName}<br>价格：${(
+          this.tableData3[index].retailPrice / 100
+        ).toFixed(2)}元<br>创建日期${
+          this.tableData3[index].createDate
+        }<br>商品图:  <img style="width:100px" src="${
+          this.tableData3[index].thumbUrl
+        }" alt=""> `
+      });
     },
 
     // 删除商品
     remove(index, row) {
-      this.tableData3.splice(index, 1);
+      if (window.confirm("确定删除该商品吗？")) {
+        this.tableData3.splice(index, 1);
 
-      this.$axios
-        .delete("http://3.112.200.192:1904/update/delete", {
-          params: { productId: row.productId }
-        })
-        .then(({ data }) => {
-          if (data.code == 1000) {
-            console.log("删除成功");
-          }
-          console.log("----", this.tableData3);
-        });
+        this.$axios
+          .delete("http://3.112.200.192:1904/update/delete", {
+            params: { productId: row.productId }
+          })
+          .then(({ data }) => {
+            if (data.code == 1000) {
+              console.log("删除成功");
+            }
+            console.log("----", this.tableData3);
+          });
+      }
     },
     change(index) {
       console.log("xxx", index);
@@ -133,11 +141,11 @@ export default {
     }, // input搜索框显示相应的内容
     search(index) {
       // index是传入的数据，然后用ES6的includes筛选出来
-     return index.filter(item=>{
-       if(item.skuName.includes(this.value)){
-         return item
-       }
-     })
+      return index.filter(item => {
+        if (item.skuName.includes(this.value)) {
+          return item;
+        }
+      });
     }
   },
   computed: {

@@ -116,7 +116,7 @@ export default {
         ? true
         : false;
 
-    localStorage.setItem("User", "lxw");
+    // localStorage.setItem("User", "lxw");
     /* 判断有商品是否，显示购物车数量 */
     let token = localStorage.getItem("User");
 
