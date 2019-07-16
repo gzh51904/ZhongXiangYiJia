@@ -8,7 +8,13 @@
     </main>
     <footer v-show="footshow">
       <ul class="item">
-        <a v-for="item in pages" :key="item.name" class="item-btn" @click="goto(item)">
+        <a
+          v-for="item in pages"
+          :key="item.name"
+          class="item-btn"
+          @click="goto(item,item.path)"
+          :class="{toggle:toggle==item.path}"
+        >
           <mt-badge
             type="error"
             size="small"
@@ -73,7 +79,8 @@ export default {
       ],
       showed: false,
       footshow: true,
-      len: ""
+      len: "",
+      toggle: ""
     };
   },
   computed: {
@@ -91,8 +98,12 @@ export default {
     }
   },
   methods: {
-    goto(item) {
-      console.log("path", item.path);
+    goto(item, itemName) {
+      this.toggle = itemName;
+      console.log(this.toggle);
+
+      // console.log("path", item.path);
+      console.log(itemName);
     }
   },
   created() {
@@ -109,10 +120,24 @@ export default {
     localStorage.setItem("User", "lxw");
     /* 判断有商品是否，显示购物车数量 */
     let token = localStorage.getItem("User");
-  },
+
+    // 刷新后保持高亮
+    let hash = window.location.hash.slice(1);
+    this.toggle = hash;
+     },
 
   components: {
     App
+  },
+  watch: {
+    // $route: function(newVal) {
+    //   //里面有路由的信息，根据路由信息做相关处理
+    //   let hash = window.location.hash.slice(1);
+    //   // 监听当前的路由信息
+    //   if (newVal.fullPath == "/cart" || "/mine") {
+    //     this.showed = false;
+    //   }
+    // }
   }
 };
 </script>
@@ -214,5 +239,8 @@ footer {
 .item .item-btn .footer-item-font-size {
   color: #7c7e86;
   font-size: 0.24rem;
+}
+.item .toggle .iconfont {
+  color: red;
 }
 </style>
