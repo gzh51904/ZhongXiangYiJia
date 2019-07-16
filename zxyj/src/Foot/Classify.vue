@@ -1,7 +1,7 @@
 <template>
     <div class="classify-main">
     <div class="classify-left">
-    <mt-cell v-for="list in lists" :key="list.name" :class="activeClass == list.name ? 'changes':''"  @click.native.stop="goto(list)" >
+    <mt-cell v-for="list in lists" :key="list.name" :class="activeClass == list.id ? 'changes':''"  @click.native.stop="goto(list)" >
       {{list.title}}
     </mt-cell>
     </div>
@@ -107,16 +107,21 @@ export default {
         }
       ],
        // 0为默认选择第一个，-1为不选择
-       activeClass: -1
+       activeClass: "cd22b005da5f4f3785af45f8729e01fc"
     };
   },
 
   async created() {
     
+     let {parentId}=this.$route.params;
+     console.log("6666",parentId);
+     console.log("9999",window.location.hash);
+     console.log(window.location.hash);
+     
     //刷新保持高亮、并且发起第一个数据请求
-     this.activeClass='nvzhuang'
+     this.activeClass="cd22b005da5f4f3785af45f8729e01fc"
     let { data } = await this.$axios.get(
-      "https://api.zxyjsc.com/flyapi/category/child?parentCategoryId=cd22b005da5f4f3785af45f8729e01fc&version=1.0&terminal=3"
+      "https://api.zxyjsc.com/flyapi/category/child?parentCategoryId="+this.activeClass+"&version=1.0&terminal=3"
     );
     // let {data}=await this.$axios.get("https://api.zxyjsc.com/flyapi/category/child?parentCategoryId="+data.data.datas.parentId+"&version=1.0&terminal=3")
     // console.log("data", data);
@@ -137,7 +142,7 @@ export default {
     },
    async goto(list) {
       // 把当前点击元素的index，赋值给activeClass,改变css样式
-        this.activeClass = list.name;
+        this.activeClass = list.id;
       // console.log("name", list.name);
       // // console.log("$route",this.$route)
       //点击每类跳转地址后面加id
@@ -151,6 +156,8 @@ export default {
     this.fylist = data.data.datas
     //将请求来的数据放进空数组
           console.log("z",this.fylist);
+
+          
     }
    
   },

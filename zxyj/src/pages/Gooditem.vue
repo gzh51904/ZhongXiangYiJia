@@ -1,8 +1,8 @@
 <template>
   <div class="content">
     <!-- 轮播图 -->
-    <div class="bannerItem"  >
-       <div class="btn-backlist" @click="gotolist"></div>
+    <div class="bannerItem">
+      <div class="btn-backlist" @click="gotolist"></div>
       <mt-swipe :auto="4000">
         <mt-swipe-item v-for="(itemImg,idx) in goodlist.images" :key="idx">
           <img :src="itemImg" class="header-img" />
@@ -203,14 +203,89 @@
       <div class="btn-item btn-mat cs-btn">
         <span>99+</span>反馈
       </div>
-      <div class="btn btn-add-to-cart" @click="addToCart">加入购物车</div>
+      <div class="btn btn-add-to-cart" @click="clone">加入购物车</div>
       <div class="btn btn-buy" @click="ToBuy">立即购买</div>
     </div>
+    <!-- 选择类型 -->
+    <div
+      id="product-sku"
+      class="mask product-sku-mask"
+      v-show="add"
+      v-for="(item,idx) in propertyValues2[0]"
+      :key="idx"
+    >
+      <div class="product-sku-container">
+        <div class="product-sku-preview">
+          <div class="product-sku-thumb-container">
+           <!--  <img src="http://img.zxyjsc.com/G1/M00/01/D6/rBLh9lyQaQuAUJHuAAF3a14Vgm0056.jpg" class /> -->
+           <img :src="turl" class />
+          </div>
+          <div class="product-sku-desc">
+            <div class="product-sku-price">¥ 29.9</div>
+            <div class="product-sku-line">库存 452 件</div>
+            <div class="product-sku-line">
+              已选：
+              <span>“均码”</span>
+              <span>“2件白色”</span>
+            </div>
+          </div>
+          <div class="close-btn" @click="clone"></div>
+        </div>
+        <div class="product-skus">
+          <div class="product-sku">
+            <div class="product-sku-title">选择尺码</div>
+            <div class="product-sku-selector">
+              <div
+                class="item"
+                v-for="(item,idx) in propertyValues1[0]"
+                :key="idx"
+              >{{item.propertyValue}}</div>
+            </div>
+          </div>
+          <div class="product-sku" v-show="propertyValues2[0] =='undefined'? false : true">
+            <div class="product-sku-title">选择颜色</div>
+            <div class="product-sku-selector">
+              <div
+                class="item"
+                v-for="(item,idx) in propertyValues2[0]"
+                :key="idx"
+              >{{ item.propertyValue}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="product-sku-amount">
+          <div class="product-sku-label">购买数量</div>
+          <div style="font-size: 14px; color: rgb(239, 48, 119);">
+            <!---->
+          </div>
+          <div class="product-sku-value">
+            <div>
+              <div class="number-field">
+                <div class="btn minus" @click="minus"></div>
+                <div class="value">1</div>
+                <div class="btn plus" @click="adds"></div>
+                <!---->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="product-sku-weight">
+          <span>
+            <span>(约重10g)</span>
+          </span>
+        </div>
+      </div>
+      <div class="product-sku-bottom">
+        <Button class="btn red" @click="addToCart">确定</Button>
+      </div>
+    </div>
+
+    <!-- ------------ -->
   </div>
 </template>
 <script>
 import Vue from "vue";
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -220,7 +295,13 @@ export default {
       msg: [],
       displayPledge: false,
       displayDiscounts: true,
-      Cartinfo: {}/* 购物车数据 */
+      Cartinfo: {} /* 购物车数据 */,
+      add: false,
+      productId: 0,
+      skus: [],
+      propertyValues1: [],
+      propertyValues2: [],
+      turl:''
     };
   },
   computed: {
@@ -231,20 +312,25 @@ export default {
     })
   },
   methods: {
+    success() {
+      this.$Message.success("添加购物车成功");
+    },
     pledge() {
       this.displayPledge = true;
     },
     hide() {
       this.displayPledge = false;
     },
-    
-    gotolist(){
+
+    gotolist() {
       console.log(this.$router);
-      
-      this.$router.back(-1)
+
+      this.$router.back(-1);
     },
     /* 加入购物车 */
-    addToCart() {
+    async addToCart() {
+      this.$Message.success("添加购物车成功");
+      this.add = false;
       let { commit, state } = this.$store;
       let { Cart_goodslist } = state.cart;
       let { skuId } = this.Cartinfo;
@@ -257,17 +343,43 @@ export default {
       console.log("Cartinfo", skuId);
       console.log("goodlist", Cart_goodslist);
       console.log("state.cart:", state.cart);
-      console.log(" skuId: ", skuId );
-      
+      console.log(" skuId: ", skuId);
 
       if (current) {
-        commit("changeQty", { skuId: this.Cartinfo.skuId, qty: current.qty + 1 });
+        commit("changeQty", {
+          skuId: this.Cartinfo.skuId,
+          qty: current.qty + 1
+        });
       } else {
-        commit("add", { qty: 1, ...this.Cartinfo,checked :false});
+        commit("add", { qty: 1, ...this.Cartinfo, checked: false });
       }
+      /* 选择商品类型 */
+      new Promise((resolve, reject) => {
+        let Cartdata = this.$axios(
+          "https://api.zxyjsc.com/flyapi/product/skuDetailByProperty?productId=" +
+            this.productId +
+            "&propertyValueIds=" +
+            this.skus[2].propertyValueIds +
+            "&version=2.0&terminal=3"
+        );
+        resolve(Cartdata);
+      }).then(res => {
+        console.log("cartdata", res.data.data);
+      });
     },
     /* 立即购买*/
-    ToBuy() {}
+    ToBuy() {},
+    clone() {
+      this.add = !this.add;
+    } /* 商品数量++ */,
+    adds(item) {
+      item.qty++;
+      this.totalPrice();
+    } /* 商品数量-- */,
+    minus(item) {
+      item.qty > 1 ? item.qty-- : "";
+      this.totalPrice();
+    }
   },
   async created() {
     let { productId, skuId } = this.$route.params;
@@ -281,24 +393,24 @@ export default {
     // // 请求2商品介绍
     // let product = data.data.skus[1].skuId;
 
-    let itemlist= await this.$axios(
+    let itemlist = await this.$axios(
       "https://api.zxyjsc.com/flyapi/product/skuDetail?skuId=" +
         skuId +
         "&version=2.0&terminal=3"
     );
     console.log("item", itemlist);
 
-
     /*-------- 购物车数据 ------------*/
-    this.Cartinfo =itemlist ? itemlist.data.data : this.cartlist;
-    console.log("Cartinfo:",itemlist.data.data);
-/* ----------------------------------- */
+    this.Cartinfo = itemlist ? itemlist.data.data : this.cartlist;
+    console.log("Cartinfo:", itemlist.data.data);
+    /* ----------------------------------- */
     // // 请求店铺相关
     let dianpu = await this.$axios(
       "https://api.zxyjsc.com/flyapi/product/storeDetail?spuId=" +
         productId +
         "&version=1.0&terminal=3"
     );
+
     this.msg = dianpu.data.data;
     console.log("msg", this.msg);
 
@@ -308,11 +420,274 @@ export default {
     this.content = data.data.content;
     this.goodlist = data.data;
     console.log("xiangqing", data);
+
+    console.log("pId", data.data.productId);
+
+    console.log("pro", data.data.skus[0].propertyValueIds);
+
     console.log("list", this.goodlist);
+    new Promise((resolve, reject) => {
+      let data = this.$axios(
+        "https://api.zxyjsc.com/flyapi/product/spuDetail?spuId=" +
+          productId +
+          "&version=3.0&terminal=3"
+      );
+      resolve(data);
+    }).then(res => {
+      this.productId = res.data.data.productId;
+      this.skus = res.data.data.skus;
+      this.turl=res.data.data.thumbUrl;
+      if (res.data.data.properties.length==1) {
+        this.propertyValues1.push(res.data.data.properties[0].propertyValues); /* 尺码 */
+    
+      }
+      if (res.data.data.properties.length > 1) {
+        this.propertyValues1.push(res.data.data.properties[0].propertyValues);
+        this.propertyValues2.push(res.data.data.properties[1].propertyValues); /* 颜色 */
+      }
+
+      console.log("res", res.data.data);
+      console.log(this.propertyValues1[0]);
+      console.log(this.propertyValues2[0]);
+      console.log(res.data.data.properties.length);
+    
+      
+    });
   }
 };
 </script>
-<style scoped>
+<style>
+/* 选择类型 */
+.mask {
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.25);
+}
+.product-sku-container {
+  background: #fff;
+  min-height: 80%;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.266667rem 0.4rem 1.6rem;
+  box-sizing: border-box;
+}
+.product-sku-preview {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0.4rem 0;
+  background-image: linear-gradient(0deg, #e5e5e5, #e5e5e5 50%, transparent 0);
+  background-size: 100% 0.026667rem;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-origin: border-box;
+  position: relative;
+}
+.product-sku-preview .close-btn {
+  position: absolute;
+  right: -0.4rem;
+  top: -0.4rem;
+  width: 1.333333rem;
+  height: 1.333333rem;
+  z-index: 1003;
+  background-image: url(https://www.zxyj.com/static/images/icon-close-cicle.png);
+  background-size: 0.666667rem 0.666667rem;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+.product-sku-preview .product-sku-thumb-container {
+  width: 3.093333rem;
+  height: 3.093333rem;
+  box-sizing: border-box;
+  margin-right: 0.266667rem;
+  margin-top: -1.333333rem;
+  background: #fff;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border: 0.026667rem solid #e5e5e5;
+  border-radius: 0.106667rem;
+}
+.product-sku-preview .product-sku-thumb-container img {
+  width: 2.933333rem;
+  height: 2.933333rem;
+  display: block;
+}
+.product-skus {
+  margin: 0 -0.4rem;
+  padding: 0 0.4rem;
+  max-height: 8rem;
+  overflow-y: auto;
+}
+.product-skus .product-sku {
+  padding: 0.4rem 0 0;
+  background-image: linear-gradient(0deg, #e5e5e5, #e5e5e5 50%, transparent 0);
+  background-size: 100% 0.026667rem;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-origin: border-box;
+}
+.product-skus .product-sku .product-sku-title {
+  font-size: 0.373333rem;
+  margin-bottom: 0.4rem;
+}
+.product-skus .product-sku .product-sku-selector {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+.product-skus .product-sku .product-sku-selector .item.selected {
+  background: #f51861;
+  color: #fff;
+}
+.product-skus .product-sku .product-sku-selector .item {
+  -ms-flex: none;
+  flex: none;
+  background: #e6e6e6;
+  font-size: 0.32rem;
+  line-height: 0.613333rem;
+  height: 0.613333rem;
+  padding: 0 0.266667rem;
+  margin-bottom: 0.4rem;
+  border-radius: 0.106667rem;
+  margin-right: 0.4rem;
+}
+.product-sku-amount {
+  margin-top: 0.48rem;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  margin-bottom: 0.8rem;
+}
+.product-sku-amount .product-sku-label {
+  line-height: 0.666667rem;
+  font-size: 0.373333rem;
+}
+.product-sku-amount .product-sku-value {
+  position: absolute;
+  right: 5%;
+}
+.number-field {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  width: 2.4rem;
+  border: 1px solid #ccc;
+  border-radius: 0.106667rem;
+  box-sizing: border-box;
+  height: 0.666667rem;
+  background-color: #fff;
+}
+.number-field {
+  position: relative;
+  bottom: 0;
+  right: 5%;
+}
+.number-field .btn.minus.disabled {
+  background-color: transparent !important;
+  background-image: url(https://www.zxyj.com/static/images/icon-minus-gray.png) !important;
+}
+
+.number-field .btn.minus {
+  background-size: 10px 1px;
+  background-image: url(https://www.zxyj.com/static/images/icon-minus.png);
+}
+.number-field .btn {
+  width: 0.666667rem;
+  height: 100%;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  position: relative;
+}
+.btn.disabled {
+  background-color: #ccc !important;
+  color: #999 !important;
+}
+.number-field .btn:before {
+  content: "";
+  display: block;
+  width: 1.066667rem;
+  height: 1.333333rem;
+  position: absolute;
+  top: -0.346667rem;
+}
+.number-field .value {
+  -ms-flex: 1;
+  flex: 1;
+  border: solid #ccc;
+  border-width: 0 1px;
+  font-size: 0.373333rem;
+  line-height: 0.613333rem;
+  text-align: center;
+}
+.number-field .btn.plus {
+  background-size: 0.266667rem 0.266667rem;
+  background-image: url(https://www.zxyj.com/static/images/icon-plus.png);
+}
+.number-field .btn {
+  width: 0.666667rem;
+  height: 100%;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  position: relative;
+}
+.number-field .btn:before {
+  content: "";
+  display: block;
+  width: 1.066667rem;
+  height: 1.333333rem;
+  position: absolute;
+  top: -0.346667rem;
+}
+.product-sku-weight {
+  font-size: 0.5rem;
+  bottom: 12%;
+  position: absolute;
+  right: 6%;
+  color: #f45787;
+}
+.product-sku-bottom {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  height: 1.333333rem;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  background: #999;
+}
+.product-sku-bottom .btn.red {
+  background: #f51861;
+}
+
+.product-sku-bottom .btn {
+  -ms-flex: 1;
+  flex: 1;
+  line-height: 1.333333rem;
+  color: #fff;
+  text-align: center;
+  font-size: 0.48rem;
+}
+/* ---------- */
 html,
 body {
   width: 100%;

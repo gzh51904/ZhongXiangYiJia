@@ -154,102 +154,130 @@ export default {
         if (item.tags[0].tagName == "自营") {
           return item;
         }
-      });
-      this.desslist = this.zy ? this.desslist1 : gozyd;
-      //请看created里面的请求
-      console.log("true", this.desslist1);
-    },
-    //2.热度方法
-    async hot() {
-      function creatCompare(propertyName) {
-        return function(obj1, obj2) {
-          var value1 = obj1[propertyName];
-          var value2 = obj2[propertyName];
-          // console.log(obj1)
-          if (value1 < value2) {
-            return 1;
-          } else if (value1 > value2) {
-            return -1;
-          } else {
-            return 0;
-          }
-        };
-      }
-      //sort进行排序
-      this.desslist.sort(creatCompare("saleCount"));
-    },
-    //4.筛选
-    tank() {
-      this.aler = !this.aler;
-    },
-    //3.价格进行排序
-    async changeh() {
-      this.bj = false;
-      this.num = this.num * -1;
-      //获取传入id及标题名字
-      // let {categoryId,categoryName,parentId}=this.$route.params;
-      // console.log("id",categoryId);
-      // // //赋值给返回箭头，这里要不要无所谓
-      // //  this.parentId=parentId;
-      //请求要不要无所谓
-      //  let {data}=await this.$axios.get("https://api.zxyjsc.com/flyapi/product/sort/product/list?pageOffset=1&pageSize=15&json=%7B%22comprehensive%22:true,%22parentCategoryId%22:%22"+categoryId+"%22,%22memberType%22:0%7D&version=1.0&terminal=3")
-      //     console.log("da",data);
-      //     this.desslist=data.data.datas;
-      let num1 = this.num;
-      function creatCompare(propertyName) {
-        return function(obj1, obj2) {
-          var value1 = obj1[propertyName];
-          var value2 = obj2[propertyName];
-          // console.log(obj1)
-          if (value1 < value2) {
-            return num1 * -1;
-          } else if (value1 > value2) {
-            return num1 * 1;
-          } else {
-            return 0;
-          }
-        };
-      }
-      //sort进行排序
-      this.desslist.sort(creatCompare("retailPrice"));
-    },
-    //5.点击切换的时候，两套css来回切换
-    changecss() {
-      this.show = !this.show;
-    },
-    //点击返回箭头，返回到商品分类
-    goback(parentId) {
-      this.$router.push({ name: "Classify", path: "/classify/" + parentId });
-      // this.$router.back(-1)
-    },
-    //跳转详情页方法，直接解开即可
-    //在32行代码处加上@click="gotoproduct(dess.productId)"即可，然后到详情页组件进行接收
-    gotogooditem(productId, skuId) {
-      this.$router.push({ name: "Gooditem", params: { productId, skuId } });
-      console.log("6", this.$route);
+    })
+    //sort进行排序
+     this.desslist= this.zy ?this.desslist1:gozyd;
+       //请看created里面的请求
+              console.log("true",this.desslist1);
+      //  this.desslist.sort(creatCompare("retailPrice"))
+      },
+
+  //2.热度方法
+     async  hot(){
+            function creatCompare(propertyName) {
+        return function (obj1,obj2) {
+            var value1=obj1[propertyName];
+            var value2=obj2[propertyName];
+            // console.log(obj1)
+            if(value1<value2){
+                return 1
+            }else if(value1>value2){
+                return -1
+            }else {
+                return 0
+            }
+        }
     }
-  },
-  async created() {
-    console.log("rrrrrr", this.$route);
+//sort进行排序
+       this.desslist.sort(creatCompare("saleCount"))
 
-    //获取传入id及标题名字
-    let { categoryId, categoryName } = this.$route.params;
-    console.log("id", categoryId);
-    //把请求来的标题名字赋值给当前标题
-    this.detitle = categoryName;
+       },
+ //4.筛选
+       tank(){
+            this.aler=!this.aler
+       },
 
-    //发起请求，获取商品信息，渲染页面
-    let { data } = await this.$axios.get(
-      "https://api.zxyjsc.com/flyapi/product/sort/product/list?pageOffset=1&pageSize=15&json=%7B%22comprehensive%22:true,%22parentCategoryId%22:%22" +
-        categoryId +
-        "%22,%22memberType%22:0%7D&version=1.0&terminal=3"
-    );
-    this.desslist = data.data.datas;
-    //多配置一套是为了筛选自营店方法
-    this.desslist1 = data.data.datas;
-    console.log("dess", this.desslist);
-  }
-};
+
+      //5.点击切换的时候，两套css来回切换
+      changecss(){
+            this.show=!this.show;
+      },
+//3.价格进行排序
+     async  changeh(){
+            this.bj=false;
+            this.num=(this.num)*-1;
+            //获取传入id及标题名字
+        // let {categoryId,categoryName,parentId}=this.$route.params;
+        // console.log("id",categoryId);
+        // // //赋值给返回箭头，这里要不要无所谓
+        // //  this.parentId=parentId;
+        //请求要不要无所谓
+        //  let {data}=await this.$axios.get("https://api.zxyjsc.com/flyapi/product/sort/product/list?pageOffset=1&pageSize=15&json=%7B%22comprehensive%22:true,%22parentCategoryId%22:%22"+categoryId+"%22,%22memberType%22:0%7D&version=1.0&terminal=3")
+        //     console.log("da",data);
+        //     this.desslist=data.data.datas;
+             let  num1=this.num;
+            function creatCompare(propertyName) {
+        return function (obj1,obj2) {
+            var value1=obj1[propertyName];
+            var value2=obj2[propertyName];
+            // console.log(obj1)
+            if(value1<value2){
+                return (num1*-1)
+            }else if(value1>value2){
+                return (num1*1)
+            }else {
+                return 0
+            }
+        }
+    }
+    //sort进行排序
+       this.desslist.sort(creatCompare("retailPrice"))
+      },
+
+
+      //点击返回箭头，返回到商品分类
+      goback(){
+            let {parentId}=this.$route.params;
+              console.log("sss",parentId);
+       this.$router.push({name:'Classify',path:"/classify/"+parentId,params:{parentId}})
+       console.log("cc",this.$route);
+        // this.$router.back(-1)
+      },
+
+
+      //跳转详情页方法，直接解开即可
+      //在32行代码处加上@click="gotoproduct(dess.productId)"即可，然后到详情页组件进行接收
+      gotogooditem(productId,skuId){
+            this.$router.push({name:"Gooditem",params:{productId,skuId}})
+            console.log("6",this.$route);
+            
+      }
+
+   },
+
+
+
+ async created() {
+                console.log("rrrrrr",this.$route);
+                
+        //获取传入id及标题名字
+        // let {categoryId,categoryName}=this.$route.params;
+        // console.log("id",categoryId);
+        // //把请求来的标题名字赋值给当前标题
+        // this.detitle=categoryName;
+            
+        // //发起请求，获取商品信息，渲染页面
+        // let {data}=await this.$axios.get("https://api.zxyjsc.com/flyapi/product/sort/product/list?pageOffset=1&pageSize=15&json=%7B%22comprehensive%22:true,%22parentCategoryId%22:%22"+categoryId+"%22,%22memberType%22:0%7D&version=1.0&terminal=3")
+        //     this.desslist=data.data.datas;   
+        //     //多配置一套是为了筛选自营店方法
+        //     this.desslist1=data.data.datas; 
+        // console.log("dess",this.desslist);
+
+           // 获取所有商品
+    this.$axios.get("http://3.112.200.192:1904/goodslist").then(({ data }) => {
+      if (data.code == 1000) {
+        // console.log(data.data);
+        let data1 = data.data;
+        for (var i = 0; i < data1.length; i++) {
+          this.desslist.push(data1[i]);
+        }
+      }
+    });
+    },
+    
+}
+
+
 </script>
 
 <style scoped>

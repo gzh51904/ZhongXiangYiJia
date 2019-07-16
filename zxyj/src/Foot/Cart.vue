@@ -267,7 +267,7 @@ export default {
 
 #cart .Cart_main {
   flex: 1;
-  /*  margin-top: 1.2rem; */
+   /* margin-top: 12%; */
   height: 95%;
   overflow: auto;
   overflow-x: hidden;
