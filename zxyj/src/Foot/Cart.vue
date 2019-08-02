@@ -54,7 +54,7 @@
                   <img :src="item.images[0]" class="thumb" />
                   <!---->
                 </div>
-                <div class="item-detail">
+                <div class="item-detail" @click="hotbuysList(item.skuId, item.productId)">
                   <div class="title">{{item.skuName}}</div>
                   <div class="desc">
                     <label>{{item.properties}}</label>
@@ -68,13 +68,9 @@
                 <div class="item-amount">
                   <div>
                     <div class="number-field">
-                      <div
-                        class="btn minus"
-                        @click="item.qty > 1 ? item.qty--:''"
-                        v-bind="totalPrice()"
-                      ></div>
+                      <div class="btn minus" @click="minus(item)"></div>
                       <div class="value">{{item.qty}}</div>
-                      <div class="btn plus" @click="item.qty++" v-bind="totalPrice()"></div>
+                      <div class="btn plus" @click="add(item)"></div>
                       <!---->
                     </div>
                   </div>
@@ -103,16 +99,16 @@
             </div>
             <!--   @click="gotoPay" -->
             <div
-            v-if="click"
+              v-if="click"
               @click="gotoPay"
               class="btn next-btn disabled"
-              :style="item.checked==true  ? 'background: #f51861 !important;color:#ffffff !important;' : '  opacity: 0.6;' "
+              :style=" bacSelect || A_select ? 'background: #f51861 !important;color:#ffffff !important;' : '  opacity: 0.6;' "
             >去结算</div>
             <div
-            v-else
+              v-else
               @click="click==false ? remove(item) : gotoPay "
               class="btn next-btn btn-right"
-              :style="item.checked==true ? 'background: #f51861 !important;color:#ffffff !important;' : '  opacity: 0.6;' "
+              :style=" bacSelect || A_select ? 'background: #f51861 !important;color:#ffffff !important;' : '  opacity: 0.6;' "
             >删除</div>
           </div>
         </div>
@@ -136,7 +132,8 @@ export default {
       btnName: "去结算",
       A_select: false /* 购物车全选中状态，默认为没有全选中 */,
       S_select: false /* 购物车单个选择，默认为没有选中 */,
-      totalMoney: 0 /* 合计 */
+      totalMoney: 0 /* 合计 */,
+      bacSelect: false /*删除和结算按钮颜色默认为false，为灰色  */
     };
   },
   computed: {
@@ -148,6 +145,16 @@ export default {
   },
 
   methods: {
+    /* 减 */
+    minus(item) {
+      item.qty > 1 ? item.qty-- : "";
+      this.totalPrice();
+    },
+    /* 加 */
+    add(item) {
+      item.qty++;
+      this.totalPrice();
+    },
     goBack() {
       /* 返回上一级 */
       this.$router.back(-1);
@@ -162,14 +169,16 @@ export default {
       let Paylist = [];
       this.cartlist.forEach((item, idx) => {
         //遍历商品，如果选中就进行加个计算，然后累加
-
         if (item.checked) {
           Paylist.push(item);
-          this.$router.push({ name: "Pay", params: { Paylist } });
         }
       });
-
-      /*   MessageBox("提示", "亲，您还没有选择商品呢!"); */
+      if (Paylist.length == 0) {
+        /* 判断是否选择了商品 */
+        MessageBox("提示", "亲，您还没有选择商品!!!");
+        return;
+      }
+      this.$router.push({ name: "Pay", params: { Paylist } });
     },
     FinshAndEdit() {
       this.click = !this.click;
@@ -177,7 +186,6 @@ export default {
     /* 选择全选 */
     selectAll() {
       this.A_select = !this.A_select;
-
       this.cartlist.forEach((item, index) => {
         if (typeof item.checked == "undefined") {
           //检测属性是否存在
@@ -191,6 +199,7 @@ export default {
 
     /* 单个选择 */
     selectSinge(item) {
+      let _this = this;
       this.S_select = !this.S_select;
       if (typeof item.checked == "undefined") {
         //检测属性是否存在
@@ -206,9 +215,21 @@ export default {
           itemisChecked.push(item);
         }
       });
-      if (
-        itemisChecked.length === this.cartlist.length
-      ) {
+      /*  判断单个商品选中，结算按钮颜色为红色*/
+      var itemisSelected = [];
+      this.cartlist.forEach(function(item) {
+        if (item.checked === true) {
+          itemisSelected.push(item);
+        }
+      });
+
+      if (itemisSelected.length > 0) {
+        _this.bacSelect = true;
+      } else if (itemisSelected.length == 0) {
+        _this.bacSelect = false;
+      }
+
+      if (itemisChecked.length === this.cartlist.length) {
         this.A_select = true;
       } else {
         this.A_select = false;
@@ -218,14 +239,14 @@ export default {
     // 删除商品
     remove(item) {
       if (this.click === false) {
-        this.cartlist.forEach((item,index)=> {
-          if (this.A_select == true) {/* 删除所有商品 */
+        this.cartlist.forEach((item, index) => {
+          if (this.A_select == true) {
+            /* 删除所有商品 */
             this.cartlist.splice(0);
           }
-          if (item.checked == true) {/* 删除某个商品 */
+          if (item.checked == true) {
+            /* 删除某个商品 */
             this.cartlist.splice(index, 1);
-            console.log("Delindex:",index);
-            
           }
         });
       }
@@ -238,16 +259,29 @@ export default {
           this.totalMoney += ((item.marketPrice * 1) / 100) * item.qty; //累加的
         }
       });
+    },
+    hotbuysList(skuId, productId) {
+      this.$router.push({ name: "Gooditem", params: { skuId, productId } });
     }
   },
   created() {
+    let _this = this;
+    var itemisSelected = [];
+    this.cartlist.forEach(function(item) {
+      if (item.checked === true) {
+        itemisSelected.push(item);
+      }
+    });
+
+    if (itemisSelected.length > 0) {
+      _this.bacSelect = true;
+    } else if (itemisSelected.length == 0) {
+      _this.bacSelect = false;
+    }
     console.log("购物车上的商品：", this.cartlist);
 
     this.list = this.cartlist;
     this.haveInfo = this.list.length > 0 ? false : true;
-
-    console.log("length:", this.list.length);
-    console.log("商品", this.$store.state.cart.Cart_goodslist);
   }
 };
 </script>
@@ -267,7 +301,7 @@ export default {
 
 #cart .Cart_main {
   flex: 1;
-   /* margin-top: 12%; */
+  margin-top: 12%;
   height: 95%;
   overflow: auto;
   overflow-x: hidden;

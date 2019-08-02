@@ -4,7 +4,7 @@
     <div class="header">
       <mt-swipe :auto="4000">
         <mt-swipe-item v-for="itemImg in banner" :key="itemImg.image">
-          <img :src="itemImg.image" class="header-img" />
+          <img v-lazy="itemImg.image" class="header-img" />
         </mt-swipe-item>
       </mt-swipe>
     </div>
@@ -17,7 +17,7 @@
           @click="gotoFour(itemFont.target)"
           :key="itemFont.label"
         >
-          <img :src="itemFont.icon" />
+          <img v-lazy="itemFont.icon" />
           <p>{{itemFont.label}}</p>
         </li>
       </ul>
@@ -60,7 +60,7 @@
             @click="hotbuysList(second)"
           >
             <div class="miaosha-img">
-              <img :src="second.thumbUrl" />
+              <img v-lazy="second.thumbUrl" />
             </div>
             <div class="miaosha-title">
               <h3 class="miaosha-name">{{second.skuName}}</h3>
@@ -74,8 +74,12 @@
       </div>
     </div>
     <!-- 品牌专区 -->
-    <div class="goodlist" v-for="(goodsimgs,idx) in goodsimg" :key="idx" >
-      <div class="goodlist-img" v-bind:style="{backgroundImage:'url(' + goodsimgs.image + ')'}" @click="gotoBrand(goodsimgs.target)"></div>
+    <div class="goodlist" v-for="(goodsimgs,idx) in goodsimg" :key="idx">
+      <div
+        class="goodlist-img"
+        v-bind:style="{backgroundImage:'url(' + goodsimgs.image + ')'}"
+        @click="gotoBrand(goodsimgs.target)"
+      ></div>
       <div class="goodlist-top">
         <p class="tuijian">热卖推荐</p>
         <p class="gengduo">更多</p>
@@ -83,9 +87,14 @@
       <div class="goodlist-item">
         <div class="goodlist-repeat">
           <div class="goodlist-flex">
-            <div class="goodlist-shop" v-for="(goodslistItem,idx) in goodslist1[idx]" :key="idx"   @click="hotbuysList(goodslistItem)">
+            <div
+              class="goodlist-shop"
+              v-for="(goodslistItem,idx) in goodslist1[idx]"
+              :key="idx"
+              @click="hotbuysList(goodslistItem)"
+            >
               <div>
-                <img style="width:1.333333rem " :src="goodslistItem.thumbUrl" />
+                <img style="width:1.333333rem " v-lazy="goodslistItem.thumbUrl" />
               </div>
               <div>
                 <p class="title">{{goodslistItem.skuName}}</p>
@@ -142,15 +151,8 @@ export default {
       "https://api.zxyjsc.com/flyapi/secondKill/getIndexSecondKill?version=1.0&terminal=3"
     );
     this.secondKill.push(secondKill.data.data);
-this.secondKill=this.secondKill[0]
-    // console.log(this.secondKill);
+    this.secondKill = this.secondKill[0];
 
-    // console.log(itemlist);
-
-    // 请求遍历，里面的数据有
-    /*  event:"native"
-        image:"http://img.zxyjsc.com/G1/M00/03/71/rBLh9l0j7ZWAPWkMAAK3qUckxz4523.jpg" 
-        target:"custom?pageId=9aa4b76272404c3397a32f8dc8c9d287" */
     itemlist.map((item, idx) => {
       // 轮播图
       if (item.type == "carousel") {
@@ -215,7 +217,6 @@ this.secondKill=this.secondKill[0]
           });
       }
     });
-    console.log(this.hotbuys);
   },
   methods: {
     // 四宫格点击
@@ -236,6 +237,7 @@ this.secondKill=this.secondKill[0]
 .content {
   height: 100%;
   width: 100%;
+  background: rgb(250, 247, 247);
 }
 .header {
   width: 100%;

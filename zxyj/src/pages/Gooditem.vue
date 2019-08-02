@@ -5,7 +5,7 @@
       <div class="btn-backlist" @click="gotolist"></div>
       <mt-swipe :auto="4000">
         <mt-swipe-item v-for="(itemImg,idx) in goodlist.images" :key="idx">
-          <img :src="itemImg" class="header-img" />
+          <img v-lazy="itemImg" class="header-img" />
         </mt-swipe-item>
       </mt-swipe>
     </div>
@@ -23,12 +23,18 @@
           <span>{{goodlist.country.countryName}}</span>
         </div>
         <div class="love">
-          <img
-            style="width:.533333rem"
-            src="https://www.zxyj.com/static/images/detail-no-like.png"
-            alt
-          />
-          <p>喜欢</p>
+          <div>
+            <img
+              style="width:.533333rem"
+              src="https://www.zxyj.com/static/images/detail-no-like.png"
+              alt
+            />
+            <p>喜欢</p>
+          </div>
+          <div class="add_like" v-show="false">
+            <img src="https://www.zxyj.com//static/images/detail-like.png" style="width:.533333rem" />
+            <p>已收藏</p>
+          </div>
         </div>
         <div class="pirce">
           <span
@@ -217,16 +223,15 @@
       <div class="product-sku-container">
         <div class="product-sku-preview">
           <div class="product-sku-thumb-container">
-           <!--  <img src="http://img.zxyjsc.com/G1/M00/01/D6/rBLh9lyQaQuAUJHuAAF3a14Vgm0056.jpg" class /> -->
-           <img :src="turl" class />
+            <img :src="turl" class />
           </div>
-          <div class="product-sku-desc">
-            <div class="product-sku-price">¥ 29.9</div>
-            <div class="product-sku-line">库存 452 件</div>
+          <div class="product-sku-desc" v-for="inf in info" :key="inf.intro">
+            <div class="product-sku-price">¥{{(inf.retailPrice/100).toFixed(2)}}</div>
+            <div class="product-sku-line">库存{{inf.stock}}件</div>
             <div class="product-sku-line">
               已选：
-              <span>“均码”</span>
-              <span>“2件白色”</span>
+              <span>{{'“'+title+'”'}}</span>
+              <span v-if=" propertyValues2[0].propertyValue== '' ? false: true">{{'“'+style+'”'}}</span>
             </div>
           </div>
           <div class="close-btn" @click="clone"></div>
@@ -239,16 +244,20 @@
                 class="item"
                 v-for="(item,idx) in propertyValues1[0]"
                 :key="idx"
+                @click="checktitle(idx)"
+                :class="titleidx==idx ? 'selected': '' "
               >{{item.propertyValue}}</div>
             </div>
           </div>
-          <div class="product-sku" v-show="propertyValues2[0] =='undefined'? false : true">
+          <div class="product-sku" v-if=" propertyValues2[0].propertyValue== '' ? false: true">
             <div class="product-sku-title">选择颜色</div>
             <div class="product-sku-selector">
               <div
                 class="item"
                 v-for="(item,idx) in propertyValues2[0]"
                 :key="idx"
+                @click="checkstyle(idx)"
+                :class="styleidx==idx ? 'selected': '' "
               >{{ item.propertyValue}}</div>
             </div>
           </div>
@@ -262,21 +271,16 @@
             <div>
               <div class="number-field">
                 <div class="btn minus" @click="minus"></div>
-                <div class="value">1</div>
+                <div class="value">{{count}}</div>
                 <div class="btn plus" @click="adds"></div>
                 <!---->
               </div>
             </div>
           </div>
         </div>
-        <div class="product-sku-weight">
-          <span>
-            <span>(约重10g)</span>
-          </span>
-        </div>
       </div>
       <div class="product-sku-bottom">
-        <Button class="btn red" @click="addToCart">确定</Button>
+        <Button class="btn red" @click="addToCart(Cartinfo.skuId)">确定</Button>
       </div>
     </div>
 
@@ -301,7 +305,13 @@ export default {
       skus: [],
       propertyValues1: [],
       propertyValues2: [],
-      turl:''
+      turl: "",
+      /*     cartlist: {}, */
+      titleidx: 0,
+      styleidx: 0,
+      count: 1,
+      title: "",
+      style: ""
     };
   },
   computed: {
@@ -312,9 +322,6 @@ export default {
     })
   },
   methods: {
-    success() {
-      this.$Message.success("添加购物车成功");
-    },
     pledge() {
       this.displayPledge = true;
     },
@@ -323,14 +330,11 @@ export default {
     },
 
     gotolist() {
-      console.log(this.$router);
-
       this.$router.back(-1);
     },
     /* 加入购物车 */
-    async addToCart() {
-      this.$Message.success("添加购物车成功");
-      this.add = false;
+    async addToCart(id) {
+      this.add = !this.add;
       let { commit, state } = this.$store;
       let { Cart_goodslist } = state.cart;
       let { skuId } = this.Cartinfo;
@@ -339,46 +343,62 @@ export default {
       // 不存在：添加（数量为1）
       let current = Cart_goodslist.filter(item => item.skuId == skuId)[0];
 
-      console.log("current", current);
-      console.log("Cartinfo", skuId);
-      console.log("goodlist", Cart_goodslist);
-      console.log("state.cart:", state.cart);
-      console.log(" skuId: ", skuId);
-
       if (current) {
         commit("changeQty", {
-          skuId: this.Cartinfo.skuId,
-          qty: current.qty + 1
+          skuId: current.skuId,
+          qty: current.qty + this.count
         });
       } else {
-        commit("add", { qty: 1, ...this.Cartinfo, checked: false });
+        commit("add", {
+          qty: this.count,
+          ...this.Cartinfo,
+          checked: false
+        });
+      }
+      if (this.info.Cartinfo != "") {
+        this.$Message.success("添加购物车成功");
+      } else {
+        this.$Message.success("添加购物车失败");
       }
       /* 选择商品类型 */
-      new Promise((resolve, reject) => {
+      /* new Promise((resolve, reject) => {
         let Cartdata = this.$axios(
           "https://api.zxyjsc.com/flyapi/product/skuDetailByProperty?productId=" +
             this.productId +
             "&propertyValueIds=" +
-            this.skus[2].propertyValueIds +
+            this.skus[0].propertyValueIds +
             "&version=2.0&terminal=3"
         );
         resolve(Cartdata);
       }).then(res => {
-        console.log("cartdata", res.data.data);
-      });
+        this.cartlist = res.data.data;
+      }); */
     },
     /* 立即购买*/
     ToBuy() {},
     clone() {
       this.add = !this.add;
+      console.log("add");
     } /* 商品数量++ */,
     adds(item) {
-      item.qty++;
-      this.totalPrice();
+      this.count++;
     } /* 商品数量-- */,
     minus(item) {
-      item.qty > 1 ? item.qty-- : "";
-      this.totalPrice();
+      this.count > 1 ? this.count-- : "";
+    },
+    /* 选择尺码 */
+    checktitle(idx) {
+      this.titleidx = idx;
+
+      this.title = this.propertyValues1[0][idx].propertyValue; /* 选择尺码 */
+      this.titleid = this.propertyValues1[0][idx].propertyValueId;
+    },
+    /* 选择类型 */
+    checkstyle(idx) {
+      this.styleidx = idx;
+
+      this.style = this.propertyValues2[0][idx].propertyValue; /* 选择类型 */
+      this.styleid = this.propertyValues2[0][idx].propertyValueId;
     }
   },
   async created() {
@@ -398,11 +418,10 @@ export default {
         skuId +
         "&version=2.0&terminal=3"
     );
-    console.log("item", itemlist);
 
     /*-------- 购物车数据 ------------*/
-    this.Cartinfo = itemlist ? itemlist.data.data : this.cartlist;
-    console.log("Cartinfo:", itemlist.data.data);
+    this.Cartinfo = itemlist.data.data;
+
     /* ----------------------------------- */
     // // 请求店铺相关
     let dianpu = await this.$axios(
@@ -412,20 +431,12 @@ export default {
     );
 
     this.msg = dianpu.data.data;
-    console.log("msg", this.msg);
 
     this.info.push(itemlist.data.data);
-    console.log("info", this.info);
 
     this.content = data.data.content;
     this.goodlist = data.data;
-    console.log("xiangqing", data);
 
-    console.log("pId", data.data.productId);
-
-    console.log("pro", data.data.skus[0].propertyValueIds);
-
-    console.log("list", this.goodlist);
     new Promise((resolve, reject) => {
       let data = this.$axios(
         "https://api.zxyjsc.com/flyapi/product/spuDetail?spuId=" +
@@ -436,22 +447,25 @@ export default {
     }).then(res => {
       this.productId = res.data.data.productId;
       this.skus = res.data.data.skus;
-      this.turl=res.data.data.thumbUrl;
-      if (res.data.data.properties.length==1) {
-        this.propertyValues1.push(res.data.data.properties[0].propertyValues); /* 尺码 */
-    
-      }
+      this.turl = res.data.data.thumbUrl;
+
       if (res.data.data.properties.length > 1) {
         this.propertyValues1.push(res.data.data.properties[0].propertyValues);
-        this.propertyValues2.push(res.data.data.properties[1].propertyValues); /* 颜色 */
-      }
 
-      console.log("res", res.data.data);
-      console.log(this.propertyValues1[0]);
-      console.log(this.propertyValues2[0]);
-      console.log(res.data.data.properties.length);
-    
-      
+        this.propertyValues2.push(
+          res.data.data.properties[1].propertyValues
+        ); /* 类型*/
+
+        this.style =
+          res.data.data.properties.length > 1
+            ? this.propertyValues2[0][0].propertyValue
+            : ""; /* 默认选择类型 */
+      } else if (res.data.data.properties.length == 1) {
+        this.propertyValues1.push(res.data.data.properties[0].propertyValues);
+        this.propertyValues2.push({ propertyValue: "" });
+      }
+      /* 尺码 */
+      this.title = this.propertyValues1[0][0].propertyValue; /* 默认选择尺码 */
     });
   }
 };
@@ -550,17 +564,16 @@ export default {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
-.product-skus .product-sku .product-sku-selector .item.selected {
-  background: #f51861;
-  color: #fff;
+.product-skus .product-sku .product-sku-selector .selected {
+  background: #f51861 !important;
+  color: #fff !important;
 }
 .product-skus .product-sku .product-sku-selector .item {
-  -ms-flex: none;
-  flex: none;
   background: #e6e6e6;
   font-size: 0.32rem;
   line-height: 0.613333rem;
   height: 0.613333rem;
+  width: auto;
   padding: 0 0.266667rem;
   margin-bottom: 0.4rem;
   border-radius: 0.106667rem;

@@ -1,6 +1,6 @@
 <template>
   <div class="desscase">
-    <!-- <div >{{de}}</div> -->
+   
     <div class="desshead">
       <div class="dessheader">
         <div class="deleft">
@@ -143,21 +143,16 @@ export default {
   methods: {
     //筛选自营店方法
     zyd() {
-      console.log("lll", this.desslist.length);
-
       this.zy = !this.zy;
-      console.log(this.zy);
-
-      console.log("66666");
+ 
       let gozyd = this.desslist.filter(item => {
-        console.log("wasdsadsa");
+      
         if (item.tags[0].tagName == "自营") {
           return item;
         }
       });
       this.desslist = this.zy ? this.desslist1 : gozyd;
       //请看created里面的请求
-      console.log("true", this.desslist1);
     },
     //2.热度方法
     async hot() {
@@ -186,15 +181,6 @@ export default {
     async changeh() {
       this.bj = false;
       this.num = this.num * -1;
-      //获取传入id及标题名字
-      // let {categoryId,categoryName,parentId}=this.$route.params;
-      // console.log("id",categoryId);
-      // // //赋值给返回箭头，这里要不要无所谓
-      // //  this.parentId=parentId;
-      //请求要不要无所谓
-      //  let {data}=await this.$axios.get("https://api.zxyjsc.com/flyapi/product/sort/product/list?pageOffset=1&pageSize=15&json=%7B%22comprehensive%22:true,%22parentCategoryId%22:%22"+categoryId+"%22,%22memberType%22:0%7D&version=1.0&terminal=3")
-      //     console.log("da",data);
-      //     this.desslist=data.data.datas;
       let num1 = this.num;
       function creatCompare(propertyName) {
         return function(obj1, obj2) {
@@ -226,15 +212,14 @@ export default {
     //在32行代码处加上@click="gotoproduct(dess.productId)"即可，然后到详情页组件进行接收
     gotogooditem(productId, skuId) {
       this.$router.push({ name: "Gooditem", params: { productId, skuId } });
-      console.log("6", this.$route);
+    
     }
   },
   async created() {
-    console.log("rrrrrr", this.$route);
 
     //获取传入id及标题名字
     let { categoryId, categoryName } = this.$route.params;
-    console.log("id", categoryId);
+  
     //把请求来的标题名字赋值给当前标题
     this.detitle = categoryName;
 
@@ -247,7 +232,6 @@ export default {
     this.desslist = data.data.datas;
     //多配置一套是为了筛选自营店方法
     this.desslist1 = data.data.datas;
-    console.log("dess", this.desslist);
   }
 };
 </script>
@@ -304,7 +288,7 @@ export default {
   width: 1.173333rem;
   height: 1.173333rem;
   background-repeat: no-repeat;
-  background-image: url(../img/icon-back-black.png);
+  background-image: url(../assets/img/icon-back-black.png);
   background-size: 0.213333rem 0.373333rem;
   background-position: 50%;
 }

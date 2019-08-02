@@ -13,10 +13,10 @@ export default {
         },
 
         // 修改数量
-        changeQty(state, { stuId, qty }) {
+        changeQty(state, { skuId, qty }) {
             state.Cart_goodslist.forEach(item => {
-                if (item.stuId == stuId) {
-                    item.qty = qty
+                if (item.skuId == skuId) {
+                    item.qty = qty;    
                 }
             })
         },

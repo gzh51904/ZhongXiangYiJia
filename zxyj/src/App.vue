@@ -51,6 +51,8 @@ export default {
   name: "app",
   data() {
     return {
+      myData: [],
+      v1: "",
       pages: [
         {
           title: "首页",
@@ -90,7 +92,6 @@ export default {
       }
     }),
     Cartcount() {
-      /* this.len = this.cartlist.length; */
       this.len = 0;
       this.cartlist.forEach(item => {
         this.len += item.qty;
@@ -100,10 +101,6 @@ export default {
   methods: {
     goto(item, itemName) {
       this.toggle = itemName;
-      console.log(this.toggle);
-
-      // console.log("path", item.path);
-      console.log(itemName);
     }
   },
   created() {
@@ -114,8 +111,8 @@ export default {
       this.$router.history.current.path == "/pay";
     this.$router.history.current.path == "/login" ||
     this.$router.history.current.path == "/classify"
-      ? true
-      : false;
+      ? false
+      : true;
 
     localStorage.setItem("User", "lxw");
     /* 判断有商品是否，显示购物车数量 */
@@ -124,7 +121,7 @@ export default {
     // 刷新后保持高亮
     let hash = window.location.hash.slice(1);
     this.toggle = hash;
-     },
+  },
 
   components: {
     App
@@ -178,13 +175,11 @@ header .header-search {
 /* 内容区 */
 .main {
   flex: 1;
-  height: 100%;
   overflow: auto;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   width: 100%;
-  flex: 1;
   background: #efeff4;
 }
 
