@@ -170,7 +170,7 @@ export default {
   width: 0.293333rem;
   height: 0.333333rem;
   left: 0.133333rem;
-  top: 20%;
+  top: 15%;
 }
 #pay_header{
   width: 100%;

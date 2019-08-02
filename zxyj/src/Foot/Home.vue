@@ -4,7 +4,7 @@
     <div class="header">
       <mt-swipe :auto="4000">
         <mt-swipe-item v-for="itemImg in banner" :key="itemImg.image">
-          <img :src="itemImg.image" class="header-img" />
+          <img v-lazy="itemImg.image" class="header-img" />
         </mt-swipe-item>
       </mt-swipe>
     </div>

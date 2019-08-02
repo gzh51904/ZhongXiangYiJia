@@ -55,6 +55,8 @@ export default {
   name: "app",
   data() {
     return {
+      myData: [],
+      v1: "",
       pages: [
         {
           title: "首页",
@@ -95,7 +97,6 @@ export default {
       }
     }),
     Cartcount() {
-      /* this.len = this.cartlist.length; */
       this.len = 0;
       this.cartlist.forEach(item => {
         this.len += item.qty;
@@ -108,6 +109,17 @@ export default {
     }
   },
   created() {
+    /* 刷新后，如果是cart或是mine页面，搜索框都会是隐藏 */
+    this.showed =
+      this.$router.history.current.path == "/cart" ||
+      this.$router.history.current.path == "/mine" ||
+      this.$router.history.current.path == "/pay";
+    this.$router.history.current.path == "/login" ||
+    this.$router.history.current.path == "/classify"
+      ? false
+      : true;
+
+    localStorage.setItem("User", "lxw");
     /* 判断有商品是否，显示购物车数量 */
     let token = localStorage.getItem("User");
 

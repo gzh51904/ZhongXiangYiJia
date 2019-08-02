@@ -30,6 +30,7 @@ import AddEdit from "../pages/AddEdit" /* 新增地址页面 */
 
 let router = new VueRouter({
     //配置信息
+    mode: 'history',/* 去掉url上的# */
     routes: [{
             name: "Home",
             path: "/home",
@@ -117,11 +118,6 @@ let router = new VueRouter({
         }
     ]
 })
-
-
-/*    console.log('全局：beforeEach to',to); */
-
-
 
 router.beforeEach((to, from, next) => {
     // console.log('全局：beforeEach from', from);

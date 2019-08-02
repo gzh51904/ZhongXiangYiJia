@@ -110,7 +110,7 @@ h2 {
 }
 #address footer {
   width: 100%;
-  height: 1.173333rem;
+  height: 1.25rem;
   background: #f8246f;
   position: fixed;
   bottom: 0;

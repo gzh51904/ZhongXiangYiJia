@@ -5,7 +5,23 @@ import axios from 'axios'
 import store from './vuex';
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
+
+import Vuelazyload from 'vue-lazyload';
+
+import "./rem/rem.js";
+
 Vue.prototype.$axios = axios;
+
+export const $axios = axios.create({
+  timeout: 7000,
+});
+
+Vue.use(Vuelazyload, {
+  preLoad: 1,/* 图片加载的高度范围比例，默认为1.3，数字越大，预加载图片越多，数字越小，预加载图片数量越少 */
+  /*  error: require('./assets/img/loading.gif'), *//* 加载错误的代替图片（使用 require 直接引入 src 中的图片） */
+  loading: require('./assets/img/loading.gif')/* 加载时的 loading 图片（使用 require 直接引入 src 中的图片） */
+});
+
 Vue.use(iView);
 // 配置基础路径
 /* axios.defaults.baseURL = 'http://localhost:1904'; */
@@ -47,7 +63,7 @@ axios.interceptors.response.use(res => {
 
 Vue.config.productionTip = false;
 
-import "./rem/rem.js";
+
 
 
 new Vue({
