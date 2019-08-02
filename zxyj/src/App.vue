@@ -1,7 +1,13 @@
 <template>
   <div id="app">
     <header v-show="flag">
-      <input type="text" class="header-search" placeholder="想要买点什么" ref="header" />
+      <input
+        type="text"
+        @click="gotoSearch"
+        class="header-search"
+        placeholder="想要买点什么"
+        ref="header"
+      />
       <div class="header-msg">
         <i class="iconfont icon-xiaoxi"></i>
         <p>消息</p>
@@ -106,6 +112,9 @@ export default {
   methods: {
     goto(item, itemName) {
       this.toggle = itemName;
+    },
+    gotoSearch() {
+      this.$router.push("/search")
     }
   },
   created() {

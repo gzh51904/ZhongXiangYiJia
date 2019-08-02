@@ -42,7 +42,7 @@
             :key="item.id"
             v-bind:style="{backgroundImage:'url(' + item.image + ')'}"
           >
-            <div class="ice-click" ></div>
+            <div class="ice-click"></div>
           </div>
         </div>
       </div>
@@ -118,8 +118,8 @@
                 <div class="secondKill-box">
                   <div>
                     <dl class="secondKill-item" @click="gotoitem(item.skuId,item.productId)">
-                      <dd class="secondKill-image">
-                        <img v-lazy="item.thumbUrl" alt />
+                      <dd class="secondKill-image" v-lazy="item.thumbUrl">
+                        <img v-lazy="item.thumbUrl"  alt class="imgurl" />
                       </dd>
                       <dt class="secondKill-msg">
                         <div>

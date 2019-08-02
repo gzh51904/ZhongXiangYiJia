@@ -23,8 +23,9 @@ import Personal from "../pages/personal" /*详情页面 */
 // 首页跳转路由
 import Uplibao from "../Home/Uplibao"
 import Brand from "../Home/Brand"
+import Search from "../Home/Search"
 import AddEdit from "../pages/AddEdit" /* 新增地址页面 */
-
+// 
 
 //实例化router配置参数
 
@@ -89,6 +90,11 @@ let router = new VueRouter({
             name: "Brand",
             path: "/brand/:target",
             component: Brand,
+        }
+        , {
+            name: "Search",
+            path: "/search",
+            component: Search,
         }
 
         , {

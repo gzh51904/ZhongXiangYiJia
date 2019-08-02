@@ -283,6 +283,9 @@ export default {
     this.list = this.cartlist;
     this.haveInfo = this.list.length > 0 ? false : true;
   }
+  ,updated() {
+    this.haveInfo = this.list.length > 0 ? false : true;
+  },
 };
 </script>
 <style>
