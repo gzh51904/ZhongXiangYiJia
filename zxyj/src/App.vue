@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <header v-show="flag">
+    <header v-show="showed">
       <input type="text" class="header-search" placeholder="想要买点什么" ref="header" />
       <div class="header-msg">
         <i class="iconfont icon-xiaoxi"></i>
@@ -86,8 +86,7 @@ export default {
       showed: false,
       footshow: true,
       len: "",
-      toggle: "",
-      flag: true
+      toggle: "/home"
     };
   },
   computed: {
@@ -104,27 +103,24 @@ export default {
     }
   },
   methods: {
+    isShow() {
+      let path = this.$router.history.current.path;
+      this.showed = path == "/home" || path == "/classify" ? true : false;
+    },
     goto(item, itemName) {
       this.toggle = itemName;
+      this.isShow();
     }
   },
   created() {
     /* 刷新后，如果是cart或是mine页面，搜索框都会是隐藏 */
-    this.showed =
-      this.$router.history.current.path == "/cart" ||
-      this.$router.history.current.path == "/mine" ||
-      this.$router.history.current.path == "/pay";
-    this.$router.history.current.path == "/login" ||
-    this.$router.history.current.path == "/classify"
-      ? false
-      : true;
-
+    this.isShow();
     localStorage.setItem("User", "lxw");
     /* 判断有商品是否，显示购物车数量 */
     let token = localStorage.getItem("User");
 
     // 刷新后保持高亮
-    let hash = window.location.hash.slice(1);
+    let hash = window.location.pathname;
     this.toggle = hash;
   },
   components: {
@@ -154,6 +150,8 @@ header {
   position: fixed;
   z-index: 666;
   padding: 7px 0;
+  background: white;
+  z-index: 9999;
 }
 
 header .header-search {

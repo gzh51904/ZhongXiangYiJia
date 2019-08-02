@@ -278,9 +278,12 @@ export default {
     } else if (itemisSelected.length == 0) {
       _this.bacSelect = false;
     }
-    console.log("购物车上的商品：", this.cartlist);
-
     this.list = this.cartlist;
+     /* 监听购物车是否为空 */
+    this.haveInfo = this.list.length > 0 ? false : true;
+  },
+  /* 监听购物车是否为空 */
+  updated() {
     this.haveInfo = this.list.length > 0 ? false : true;
   }
 };
@@ -316,7 +319,7 @@ export default {
   width: 0.293333rem;
   height: 0.333333rem;
   left: 0.133333rem;
-  top: 30%;
+  top: 0.4rem;
 }
 #cart .header-right {
   position: absolute;
