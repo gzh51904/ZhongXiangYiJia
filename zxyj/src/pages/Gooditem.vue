@@ -217,8 +217,8 @@
       <div class="product-sku-container">
         <div class="product-sku-preview">
           <div class="product-sku-thumb-container">
-           <!--  <img src="http://img.zxyjsc.com/G1/M00/01/D6/rBLh9lyQaQuAUJHuAAF3a14Vgm0056.jpg" class /> -->
-           <img :src="turl" class />
+            <!--  <img src="http://img.zxyjsc.com/G1/M00/01/D6/rBLh9lyQaQuAUJHuAAF3a14Vgm0056.jpg" class /> -->
+            <img :src="turl" class />
           </div>
           <div class="product-sku-desc">
             <div class="product-sku-price">¥ 29.9</div>
@@ -301,7 +301,7 @@ export default {
       skus: [],
       propertyValues1: [],
       propertyValues2: [],
-      turl:''
+      turl: ""
     };
   },
   computed: {
@@ -323,7 +323,7 @@ export default {
     },
 
     gotolist() {
-      console.log(this.$router);
+      // console.log(this.$router);
 
       this.$router.back(-1);
     },
@@ -339,11 +339,11 @@ export default {
       // 不存在：添加（数量为1）
       let current = Cart_goodslist.filter(item => item.skuId == skuId)[0];
 
-      console.log("current", current);
-      console.log("Cartinfo", skuId);
-      console.log("goodlist", Cart_goodslist);
-      console.log("state.cart:", state.cart);
-      console.log(" skuId: ", skuId);
+      // console.log("current", current);
+      // console.log("Cartinfo", skuId);
+      // console.log("goodlist", Cart_goodslist);
+      // console.log("state.cart:", state.cart);
+      // console.log(" skuId: ", skuId);
 
       if (current) {
         commit("changeQty", {
@@ -364,7 +364,7 @@ export default {
         );
         resolve(Cartdata);
       }).then(res => {
-        console.log("cartdata", res.data.data);
+        // console.log("cartdata", res.data.data);
       });
     },
     /* 立即购买*/
@@ -398,11 +398,11 @@ export default {
         skuId +
         "&version=2.0&terminal=3"
     );
-    console.log("item", itemlist);
+    // console.log("item", itemlist);
 
     /*-------- 购物车数据 ------------*/
     this.Cartinfo = itemlist ? itemlist.data.data : this.cartlist;
-    console.log("Cartinfo:", itemlist.data.data);
+    // console.log("Cartinfo:", itemlist.data.data);
     /* ----------------------------------- */
     // // 请求店铺相关
     let dianpu = await this.$axios(
@@ -412,20 +412,20 @@ export default {
     );
 
     this.msg = dianpu.data.data;
-    console.log("msg", this.msg);
+    // console.log("msg", this.msg);
 
     this.info.push(itemlist.data.data);
-    console.log("info", this.info);
+    // console.log("info", this.info);
 
     this.content = data.data.content;
     this.goodlist = data.data;
-    console.log("xiangqing", data);
+    // console.log("xiangqing", data);
 
-    console.log("pId", data.data.productId);
+    // console.log("pId", data.data.productId);
 
-    console.log("pro", data.data.skus[0].propertyValueIds);
+    // console.log("pro", data.data.skus[0].propertyValueIds);
 
-    console.log("list", this.goodlist);
+    // console.log("list", this.goodlist);
     new Promise((resolve, reject) => {
       let data = this.$axios(
         "https://api.zxyjsc.com/flyapi/product/spuDetail?spuId=" +
@@ -436,22 +436,23 @@ export default {
     }).then(res => {
       this.productId = res.data.data.productId;
       this.skus = res.data.data.skus;
-      this.turl=res.data.data.thumbUrl;
-      if (res.data.data.properties.length==1) {
-        this.propertyValues1.push(res.data.data.properties[0].propertyValues); /* 尺码 */
-    
+      this.turl = res.data.data.thumbUrl;
+      if (res.data.data.properties.length == 1) {
+        this.propertyValues1.push(
+          res.data.data.properties[0].propertyValues
+        ); /* 尺码 */
       }
       if (res.data.data.properties.length > 1) {
         this.propertyValues1.push(res.data.data.properties[0].propertyValues);
-        this.propertyValues2.push(res.data.data.properties[1].propertyValues); /* 颜色 */
+        this.propertyValues2.push(
+          res.data.data.properties[1].propertyValues
+        ); /* 颜色 */
       }
 
-      console.log("res", res.data.data);
-      console.log(this.propertyValues1[0]);
-      console.log(this.propertyValues2[0]);
-      console.log(res.data.data.properties.length);
-    
-      
+      // console.log("res", res.data.data);
+      // console.log(this.propertyValues1[0]);
+      // console.log(this.propertyValues2[0]);
+      // console.log(res.data.data.properties.length);
     });
   }
 };
@@ -1069,7 +1070,7 @@ body {
   background-size: 100%;
 }
 
-.maijiaxiu >>> img {
+.maijiaxiu img {
   width: 100%;
   margin: 0;
 }

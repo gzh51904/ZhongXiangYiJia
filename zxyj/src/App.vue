@@ -1,7 +1,11 @@
 <template>
   <div id="app">
-    <header v-show="showed">
-      <mt-search cancel-text="取消" placeholder="搜索" class="header-search"></mt-search>
+    <header v-show="flag">
+      <input type="text" class="header-search" placeholder="想要买点什么" ref="header" />
+      <div class="header-msg">
+        <i class="iconfont icon-xiaoxi"></i>
+        <p>消息</p>
+      </div>
     </header>
     <main class="main">
       <router-view></router-view>
@@ -80,7 +84,8 @@ export default {
       showed: false,
       footshow: true,
       len: "",
-      toggle: ""
+      toggle: "",
+      flag: true
     };
   },
   computed: {
@@ -100,23 +105,9 @@ export default {
   methods: {
     goto(item, itemName) {
       this.toggle = itemName;
-      console.log(this.toggle);
-
-      // console.log("path", item.path);
-      console.log(itemName);
     }
   },
   created() {
-    /* 刷新后，如果是cart或是mine页面，搜索框都会是隐藏 */
-    this.showed =
-      this.$router.history.current.path == "/cart" ||
-      this.$router.history.current.path == "/mine" ||
-      this.$router.history.current.path == "/pay" ||
-      this.$router.history.current.path == "/login"
-        ? true
-        : false;
-
-    // localStorage.setItem("User", "lxw");
     /* 判断有商品是否，显示购物车数量 */
     let token = localStorage.getItem("User");
 
@@ -124,39 +115,17 @@ export default {
     let hash = window.location.hash.slice(1);
     this.toggle = hash;
   },
-
   components: {
     App
-  },
-  watch: {
-    // $route: function(newVal) {
-    //   //里面有路由的信息，根据路由信息做相关处理
-    //   let hash = window.location.hash.slice(1);
-    //   // 监听当前的路由信息
-    //   if (newVal.fullPath == "/cart" || "/mine") {
-    //     this.showed = false;
-    //   }
-    // }
   }
 };
 </script>
 
-<style scope>
-/* -------------- */
-a {
-  text-decoration: none;
-}
-
+<style scoped>
 html,
 body {
   width: 100%;
   height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-ul li {
-  list-style: none;
 }
 
 #app {
@@ -169,36 +138,55 @@ ul li {
 
 /* 头部 */
 header {
-  height: 1.066667rem;
+  width: 100%;
+  position: fixed;
+  z-index: 666;
+  padding: 7px 0;
 }
+
 header .header-search {
-  height: 100%;
+  height: 0.8rem;
+  border: none;
+  padding: 0.093333rem 0.093333rem 0.093333rem 0.666667rem;
+  color: #d2d2d2;
+  border-radius: 0.4rem;
+  width: 85%;
+  background-color: rgb(242, 242, 242);
+  font-size: 0.293333rem;
+  margin-left: 0.4rem;
 }
+
+header::before {
+  font-family: "iconfont" !important;
+  font-size: 26px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\e61c";
+  position: fixed;
+  left: 0.466667rem;
+  line-height: 0.8rem;
+}
+
+header .header-msg {
+  top: 0;
+  right: 0.266667rem;
+  position: fixed;
+  color: #fff;
+  text-align: center;
+}
+
 /* 内容区 */
 .main {
   flex: 1;
-  height: 100%;
   overflow: auto;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
   width: 100%;
-  flex: 1;
   background: #efeff4;
 }
 
 /* 底部四件套 */
 footer {
-  height: 1.146667rem;
-}
-.item .item-btn {
-  height: 1.146667rem;
-  display: flex;
-  justify-content: center;
-  width: 25%;
-  padding-top: 0.133333rem;
-  box-sizing: border-box;
-  position: relative;
+  height: 1.5rem;
 }
 
 .item {
@@ -213,8 +201,11 @@ footer {
   width: 25%;
   padding-top: 0.133333rem;
   box-sizing: border-box;
+  position: relative;
+  text-align: center;
 }
-.badge {
+
+.item .badge {
   border-radius: 50%;
   font-size: 0.16rem;
   text-align: center;
@@ -239,6 +230,7 @@ footer {
   color: #7c7e86;
   font-size: 0.24rem;
 }
+
 .item .toggle .iconfont {
   color: red;
 }

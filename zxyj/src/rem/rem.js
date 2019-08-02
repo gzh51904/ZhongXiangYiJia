@@ -22,7 +22,7 @@
     }
     var d, e = a.document, f = e.documentElement, g = e.querySelector('meta[name="viewport"]'), h = e.querySelector('meta[name="flexible"]'), i = 0, j = 0, k = b.flexible || (b.flexible = {});
     if (g) {
-        console.warn("将根据已有的meta标签来设置缩放比例");
+        // console.warn("将根据已有的meta标签来设置缩放比例");
         var l = g.getAttribute("content").match(/initial\-scale=([\d\.]+)/);
         l && (j = parseFloat(l[1]),
             i = parseInt(1 / j))
