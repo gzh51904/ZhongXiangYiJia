@@ -19,6 +19,7 @@ import NewAddressList from "../pages/newAddressList" /* 添加地址 */
 import Fydess from '../pages/Fydess'
 //引入详情页组件
 import Gooditem from "../pages/Gooditem" /*详情页面 */
+import Personal from "../pages/personal" /*详情页面 */
 // 首页跳转路由
 import Uplibao from "../Home/Uplibao"
 import Brand from "../Home/Brand"
@@ -100,8 +101,12 @@ let router = new VueRouter({
             name: "AddEdit",
             path: "/addEdit",
             component: AddEdit
-        },
-        {
+        }, {
+            /* 个人信息 */
+            name: "Personal",
+            path: "/personal",
+            component: Personal
+        }, {
             /* 详情页面 */
             name: "Gooditem",
             path: "/gooditem/:productId",
@@ -115,11 +120,13 @@ let router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-
+    // console.log('全局：beforeEach from', from);
+    // console.log('全局：beforeEach to', to);
     // 判断目标路由是否需要登录权限才可访问
     if (to.matched.some(item => item.meta.requiresAuth)) {
-        let token = localStorage.getItem('User');
-        /*  axios.get('/verify') */
+        // let token = localStorage.getItem('User');
+        let token = localStorage.getItem('Authorization');
+        axios.get('http://3.112.200.192:1904/verify')
         // 用户已登录
         if (token) {
             next();

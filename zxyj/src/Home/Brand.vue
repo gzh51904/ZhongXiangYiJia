@@ -1,8 +1,8 @@
 <template>
   <div class="brand">
     <header>
-      <div class="header">
-        <div>&lt;</div>
+      <div class="brand-header">
+        <div @click="gotoback">&lt;</div>
         <h2 class="title">{{title[0].title}}</h2>
         <div>...</div>
       </div>
@@ -193,11 +193,10 @@ export default {
         this.peopo = this.peopo[0].data;
       }
     });
-    // console.log(this.peopo);
   },
   methods: {
-    gotoitem(target) {
-      console.log(target);
+    gotoback() {
+      this.$router.back(-1);
     }
   }
 };
@@ -216,16 +215,17 @@ img {
   width: 100%;
 }
 
-.header {
+.brand-header {
   font-size: 0.4rem;
   width: 100%;
   line-height: 1.2rem;
+  height: 100%;
   display: flex;
   justify-content: space-between;
   padding: 0 0.426667rem 0 0.426667rem;
   box-sizing: border-box;
 }
-.header .title {
+.brand-header .title {
   font-size: 0.4rem;
 }
 .banner {

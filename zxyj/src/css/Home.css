@@ -1,0 +1,345 @@
+.content {
+    height: 100%;
+    width: 100%;
+    background: #efeff4;
+}
+
+.header {
+    width: 100%;
+    height: 6.666667rem;
+}
+
+.header .header-img {
+    width: 100%;
+    height: 6.666667rem;
+    width: 100%;
+}
+
+/* 公告样式弹性盒 */
+.flex {
+    display: flex;
+}
+
+.brand {
+    width: 100%;
+    margin-bottom: 0.066667rem;
+}
+
+.brand img {
+    width: 100%;
+}
+
+.fourIcon {
+    font-size: 0.32rem;
+    color: #da053b;
+    line-height: 0.32rem;
+}
+
+.fourIcon .fourIcon-item {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 2.32rem;
+}
+
+.fourIcon .fourIcon-item-list {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.fourIcon .fourIcon-item-list img {
+    width: 1.093333rem;
+}
+
+.fourIcon .fourIcon-item-list p {
+    margin-top: 0.12rem;
+}
+
+.buying {
+    background-size: 100%;
+    background-repeat: no-repeat;
+    height: 3.066667rem;
+    width: 100%;
+    display: inline-flex;
+}
+
+.buying .buying-left {
+    height: 100%;
+    width: 50%;
+}
+
+.ice .ice-banner {
+    width: 100%;
+}
+
+.ice .ice-banner img {
+    width: 100%;
+}
+
+.ice .ice-item .ice-box {
+    position: relative;
+}
+
+.ice .ice-item .ice-box .ice-img:nth-child(1) {
+    height: 3.6rem;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.ice .ice-item:nth-child(1) .ice-box .ice-img .ice-click {
+    width: 50%;
+    height: 100%;
+    position: absolute;
+}
+
+.ice .ice-item:nth-child(1) .ice-img:nth-child(1) .ice-click {
+    left: 0;
+    top: 0;
+}
+
+.ice .ice-item:nth-child(1) .ice-img:nth-child(2) .ice-click {
+    top: 0;
+    right: 0;
+}
+
+.ice .ice-item:nth-child(2) .ice-box .ice-img:nth-child(1) {
+    height: 8.266667rem;
+}
+
+.ice .ice-item:nth-child(2) .ice-box .ice-img .ice-click {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+}
+
+.ice .ice-item:nth-child(2) .ice-box .ice-img:nth-child(1) .ice-click {
+    left: 0;
+    top: 0;
+}
+
+.ice .ice-item:nth-child(2) .ice-box .ice-img:nth-child(2) .ice-click {
+    right: 0;
+    top: 0;
+}
+
+.ice .ice-item:nth-child(2) .ice-box .ice-img:nth-child(3) .ice-click {
+    bottom: 0;
+    left: 0;
+}
+
+.ice .ice-item:nth-child(2) .ice-box .ice-img:nth-child(4) .ice-click {
+    right: 0;
+    bottom: 0;
+}
+
+/* .ice .ice-img:not(:first-child) {
+    background: red;
+} */
+
+
+
+/* 秒杀商品 */
+.secondKill {
+    height: 5.333333rem;
+    /* background: pink; */
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    padding-bottom: .426667rem;
+    box-sizing: border-box;
+}
+
+.secondKill .secondKill-top {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    padding: 0 .226667rem 0 .346667rem;
+    line-height: .933333rem;
+    height: .933333rem;
+    box-sizing: border-box;
+}
+
+.secondKill .secondKill-top .secondKill-title {
+    width: 70%;
+}
+
+.secondKill .secondKill-top .secondKill-title ul {
+    display: flex;
+}
+
+.secondKill .secondKill-top .secondKill-title ul li:nth-child(2) {
+    font-size: .4rem;
+    font-weight: 600;
+    color: #e03b65;
+}
+
+.secondKill .secondKill-top .secondKill-title ul li:nth-child(4) {
+    font-weight: 600;
+}
+
+
+.secondKill .secondKill-top .secondKill-title ul li {
+    margin-right: .133333rem;
+}
+
+.secondKill .secondKill-top .secondKill-title ul img {
+    width: .466667rem;
+    margin-top: .24rem;
+}
+
+.secondKill .secondKill-top .secondKill-more {
+    text-align: right;
+    width: 30%;
+}
+
+.secondKill .secondKill-top .secondKill-more div:nth-child(2) {
+    float: right;
+    padding-top: .066667rem;
+    ;
+}
+
+.secondKill .secondKill-top .secondKill-more img {
+    width: .373333rem;
+    margin-left: .133333rem;
+}
+
+.secondKill .secondKill-bottom {
+    width: 100%;
+    height: 4.2rem;
+    /* margin-bottom: .426667rem; */
+}
+
+.secondKill-box {
+    width: 100%;
+    overflow-x: auto;
+    padding: 0 0 0 .266667rem;
+}
+
+.secondKill-item {
+    margin-right: .266667rem;
+    text-align: center;
+    width: 2.426667rem;
+}
+
+.secondKill-box .secondKill-item .secondKill-image {
+    width: 100%;
+}
+
+.secondKill-box .secondKill-item .secondKill-image img {
+    width: 100%;
+}
+
+.secondKill-box .secondKill-msg {}
+
+.secondKill-box .secondKill-msg div:first-child h3 {
+    line-height: .933333rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: .293333rem;
+}
+
+.secondKill-box .secondKill-msg div:last-child p:nth-child(1) {
+    font-size: .333333rem;
+    line-height: .333333rem;
+    color: #f50c55;
+}
+
+.secondKill-box .secondKill-msg div:last-child p::before {
+    content: "￥"
+}
+
+.secondKill-box .secondKill-msg div:last-child p:nth-child(2) {
+    font-size: .24rem;
+
+    color: #a19a9b;
+}
+
+.goodsbrand {
+    background: #fff;
+}
+
+
+.goodsbrand .goodsbrand-img {
+    /* height: 4.4rem; */
+}
+
+.goodsbrand .goodsbrand-img .goodsbrand-top {
+    height: 3.866667rem;
+}
+
+.goodsbrand .goodsbrand-img .goodsbrand-top img {
+    width: 100%;
+}
+
+.goodsbrand .goodsbrand-img .goodsbrand-middle {
+    margin: .4rem 0 .346667rem 0;
+    display: flex;
+    padding-left: .373333rem;
+    font-size: .4rem;
+    color: #000;
+    padding-right: .32rem;
+    box-sizing: border-box;
+    justify-content: space-between;
+}
+
+.goodsbrand .goodsbrand-img .goodsbrand-middle .goodsbrand-middle-hot {
+    vertical-align: middle;
+}
+
+.goodsbrand .goodsbrand-img .goodsbrand-middle .goodsbrand-middle-more p {
+    vertical-align: middle;
+    float: left;
+    margin-right: .226667rem;
+    color: #999;
+    font-size: .32rem;
+}
+
+.goodsbrand .goodsbrand-img .goodsbrand-middle .goodsbrand-middle-more img {
+    transform: rotate(180deg);
+    margin-top: .066667rem;
+    width: .213333rem;
+}
+
+.goodsMAX {
+    overflow-x: auto;
+}
+
+.goodsbrand-goods {
+    margin-bottom: .4rem;
+}
+
+.pack {
+    width: 1.2rem;
+    height: 1.2rem;
+    position: fixed;
+    right: 0;
+    bottom: 5.6rem;
+}
+
+.pack img {
+    width: 100%;
+}
+
+.copy {
+    padding: .266667rem 0 .133333rem 0;
+    color: #999;
+    text-align: center;
+    font-size: .32rem;
+}
+
+.copy a {
+    color: #999;
+    font-size: .32rem;
+}
+
+.copy p {
+    line-height: .666667rem;
+}
+
+image[lazy="loading"] {
+    width: 100%;
+}

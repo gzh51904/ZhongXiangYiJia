@@ -223,6 +223,7 @@
       <div class="product-sku-container">
         <div class="product-sku-preview">
           <div class="product-sku-thumb-container">
+            <!--  <img src="http://img.zxyjsc.com/G1/M00/01/D6/rBLh9lyQaQuAUJHuAAF3a14Vgm0056.jpg" class /> -->
             <img :src="turl" class />
           </div>
           <div class="product-sku-desc" v-for="inf in info" :key="inf.intro">
@@ -330,6 +331,8 @@ export default {
     },
 
     gotolist() {
+      // console.log(this.$router);
+
       this.$router.back(-1);
     },
     /* 加入购物车 */
@@ -342,6 +345,12 @@ export default {
       // 存在：数量+1
       // 不存在：添加（数量为1）
       let current = Cart_goodslist.filter(item => item.skuId == skuId)[0];
+
+      // console.log("current", current);
+      // console.log("Cartinfo", skuId);
+      // console.log("goodlist", Cart_goodslist);
+      // console.log("state.cart:", state.cart);
+      // console.log(" skuId: ", skuId);
 
       if (current) {
         commit("changeQty", {
@@ -1082,7 +1091,7 @@ body {
   background-size: 100%;
 }
 
-.maijiaxiu >>> img {
+.maijiaxiu img {
   width: 100%;
   margin: 0;
 }
