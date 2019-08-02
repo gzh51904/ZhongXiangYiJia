@@ -2,7 +2,7 @@
   <div class="content">
     <!-- 轮播图 -->
     <div class="bannerItem">
-      <div class="btn-backlist" @click="gotolist"></div>
+      <div class="btn-backlist" @click="goback"></div>
       <mt-swipe :auto="4000">
         <mt-swipe-item v-for="(itemImg,idx) in goodlist.images" :key="idx">
           <img :src="itemImg" class="header-img" />
@@ -322,7 +322,7 @@ export default {
       this.displayPledge = false;
     },
 
-    gotolist() {
+    goback() {
       // console.log(this.$router);
 
       this.$router.back(-1);
