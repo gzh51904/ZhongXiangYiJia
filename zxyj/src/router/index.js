@@ -132,7 +132,7 @@ router.beforeEach((to, from, next) => {
     if (to.matched.some(item => item.meta.requiresAuth)) {
         // let token = localStorage.getItem('User');
         let token = localStorage.getItem('Authorization');
-        axios.get('http://3.112.200.192:1904/verify')
+        axios.get('http://18.139.229.218:3000/verify')
         // 用户已登录
         if (token) {
             next();

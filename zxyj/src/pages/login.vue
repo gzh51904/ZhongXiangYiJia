@@ -94,7 +94,7 @@ export default {
     submitFormLogin() {
       let { username, password } = this.userform;
       this.$axios
-        .post("http://3.112.200.192:1904/login", {
+        .post("http://18.139.229.218:3000/login", {
           username,
           password
         })
@@ -105,6 +105,7 @@ export default {
             // 保存登录信息
             localStorage.setItem("Authorization", data.data);
             localStorage.setItem("Username", username);
+            localStorage.setItem("Imgurl",data.msg);
             // 获取目标路径
             let targetPath = this.$route.query.redirectTo;
             // console.log("目标路径：", targetPath);
@@ -191,7 +192,7 @@ export default {
       if (phoneReg.test(this.userform.username)) {
         // 发起请求，检查该用户是否已存在
         this.$axios
-          .get("http://3.112.200.192:1904/reg/check", {
+          .get("http://18.139.229.218:3000/reg/check", {
             params: {
               username: this.userform.username
             }
@@ -233,7 +234,7 @@ export default {
       // 三者都为ture才能发起请求
       if (yanZhenmcheck && this.phonecheck && passwordcheck) {
         this.$axios
-          .post("http://3.112.200.192:1904/reg", { username, password })
+          .post("http://18.139.229.218:3000/reg", { username, password,imgurl:"/uploads/user-login-portrait.png" })
           .then(({ data }) => {
             if (data.code == 1000) {
               // this.$router.replace({ name: "Login" });
