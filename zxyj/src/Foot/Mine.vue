@@ -1,13 +1,15 @@
 <template>
-  <div>
-    <router-view />
+  <div class="z-mine">
+    <!-- <router-view /> -->
     <div class="mine-header">
       <div class="header-setting">
         <i class="setting"></i>
         <i class="msg" @click="exit"></i>
       </div>
       <dl class="mine-info">
-        <dt class="head-portrait" @click="goto"></dt>
+        <dt class="head-portrait" @click="goto">
+          <img :src="this.headPos" >
+        </dt>
         <dd>
           <span class="mine-username">{{username}}</span>
           <span class="real-name">去实名</span>
@@ -119,7 +121,8 @@ export default {
       title: "个人信息",
       name: "personal",
       path: `/personal`,
-      username: ""
+      username: "",
+      headPos:""
     };
   },
   methods: {
@@ -139,6 +142,9 @@ export default {
   created() {
     let username1 = localStorage.getItem("Username");
     this.username = username1;
+    let Imgurl = localStorage.getItem("Imgurl");    
+    // this.headPos = "http://18.139.229.218:3000/" + Imgurl;
+    this.headPos = "http://18.139.229.218:3000/" + Imgurl;
   }
 };
 </script>
@@ -262,10 +268,15 @@ export default {
   height: 1.6rem;
   border-radius: 50%;
   border: 0.026667rem solid #ffffff;
-  background: url(../assets/img/user-login-portrait.png) no-repeat;
+  /* background: url(../assets/img/user-login-portrait.png) no-repeat; */
   background-size: cover;
   background-position: center;
   background-color: #ffffff;
+}
+.mine-header .mine-info .head-portrait img{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
 }
 .mine-header .mine-info {
   display: flex;

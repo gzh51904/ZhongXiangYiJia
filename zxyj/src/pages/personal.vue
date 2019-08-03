@@ -8,19 +8,14 @@
     <div class="head-pos">
       头像
       <img :src="this.headPos" />
-      <!-- <form action="server/03-form-upload.php" method="POST" enctype="multipart/form-data">
-        <input type="file" name="fileName" />
-        <input type="submit" value="上传" />
-      </form>-->
-      <!-- <form enctype="multipart/form-data" name="fileName">
-        <input type="file" name="fileName" />
+
+      <!-- 头像上传 -->
+      <div>
+        <form name="item-form" ref="itemform" enctype="multipart/form-data">
+          <input type="file" name="avatar" />
+        </form>
         <button @click="upload">上传</button>
-         <button value="上传" @click="upload" /> 
-      </form>-->
-      <form name="item-form" ref="posform">
-        <input type="file" name="fileName" />
-      </form>
-      <button style="z-index:1;" @click="upload">上传</button>
+      </div>
     </div>
     <ul>
       <li>
@@ -51,25 +46,42 @@ export default {
     };
   },
   methods: {
+    // 头像上传
     upload() {
-      let data = new FormData(this.$refs.posform);
-      this.$axios.post("http://localhost:1904/upload/avatar", {
-        data: "data"
-      });
+      let data = new FormData(this.$refs.itemform);
+      // console.log(data.get("fileName"));
+
+      this.$axios
+        .post("http://18.139.229.218:3000/uploadfile/avatar", data, {
+          headers: { "Content-Type": "multipart/form-data" }
+        })
+        .then(({ data }) => {
+          // console.log(data.code);
+          if (data.code == 1000) {
+            this.headPos = "http://18.139.229.218:3000/" + data.data.path;
+            this.$axios.post("/reg", { avatar: data.data.path }); //粗略写法，应该发起请求更新对应用户的头像，头像再从数据库中获取
+          } else {
+            alert("上传失败");
+          }
+        });
     },
+
     // 退回我的页面
     goback() {
       this.$router.replace({ name: "Mine" });
     }
   },
   created() {
-    this.headPos = require("../assets/img/" + this.headPos);
+    // console.log("http://localhost:1904/" + Imgurl);
+    let Imgurl = localStorage.getItem("Imgurl");    
+    // this.headPos = "http://18.139.229.218:3000/" + Imgurl;
+    this.headPos = "http://localhost:3000/" + Imgurl;
   }
 };
 </script>
 <style scoped>
 .personal {
-  height: 100%;
+  /* height: 100%; */
   font-size: 0.426667rem;
 }
 /* personal-header  */
@@ -114,6 +126,7 @@ export default {
 .personal .head-pos img {
   width: 1.653333rem;
   height: 1.653333rem;
+  border-radius: 50%;
 }
 
 /* ul */
