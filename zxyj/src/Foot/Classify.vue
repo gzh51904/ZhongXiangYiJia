@@ -1,27 +1,30 @@
 <template>
-  <div class="classify-main">
-    <div class="classify-left">
-      <mt-cell
-        v-for="list in lists"
-        :key="list.name"
-        :class="activeClass == list.name ? 'changes':''"
-        @click.native.stop="goto(list)"
-      >{{list.title}}</mt-cell>
-    </div>
-    <div class="classify-right clearfix">
-      <!-- <router-view></router-view> -->
-      <div
-        class="itemmain"
-        v-for="fy in fylist"
-        :key="fy.categoryId"
-        @click="godess(fy.categoryId,fy.categoryName,fy.parentId)"
-      >
-        <!-- <router-link :to="'/classify/'+fy.categoryId"> -->
-        <div class="itemmain-img">
-          <img v-lazy="fy.iconUrl" :key="fy.iconUrl" class="icon" alt />
+  <div>
+    <Searchs />
+    <div class="classify-main">
+      <div class="classify-left">
+        <mt-cell
+          v-for="list in lists"
+          :key="list.name"
+          :class="activeClass == list.id ? 'changes':''"
+          @click.native.stop="goto(list)"
+        >{{list.title}}</mt-cell>
+      </div>
+      <div class="classify-right clearfix">
+        <!-- <router-view></router-view> -->
+        <div
+          class="itemmain"
+          v-for="fy in fylist"
+          :key="fy.categoryId"
+          @click="godess(fy.categoryId,fy.categoryName,fy.parentId)"
+        >
+          <!-- <router-link :to="'/classify/'+fy.categoryId"> -->
+          <div class="itemmain-img">
+            <img v-lazy="fy.iconUrl" :key="fy.iconUrl" class="icon" alt />
+          </div>
+          <div class="label">{{fy.categoryName}}</div>
+          <!-- </router-link> -->
         </div>
-        <div class="label">{{fy.categoryName}}</div>
-        <!-- </router-link> -->
       </div>
     </div>
   </div>
@@ -30,7 +33,7 @@
 import Vue from "vue";
 import MintUI from "mint-ui";
 import "mint-ui/lib/style.css";
-
+import Searchs from "../Home/Component";
 Vue.use(MintUI);
 export default {
   data() {
@@ -117,6 +120,9 @@ export default {
       activeClass: "cd22b005da5f4f3785af45f8729e01fc"
     };
   },
+  components: {
+    Searchs
+  },
 
   async created() {
     let { parentId } = this.$route.params;
@@ -191,7 +197,7 @@ export default {
 }
 .classify-right {
   height: 100%;
- /*  margin-top: 0.133333rem; */
+  /*  margin-top: 0.133333rem; */
   overflow: auto;
 }
 .active {

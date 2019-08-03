@@ -1122,7 +1122,7 @@ body {
 }
 .product-bottom {
   position: fixed;
-  height: 1.333333rem;
+  height:1.533333rem;
   left: 0;
   right: 0;
   bottom: 0;
