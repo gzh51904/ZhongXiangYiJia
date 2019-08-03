@@ -52,14 +52,14 @@
     <div class="secondKill">
       <div class="secondKill-top">
         <div class="secondKill-title">
-          <ul>
+          <ul class="secondKill-box">
             <li>
-              <img src="../img/icon.png" alt />
+              <img src="../img/icon.png" alt style="" />
             </li>
             <li>超级秒杀</li>
             <li style=" font-weight: 600; font-size: .4rem">·</li>
             <li>距结束</li>
-            <li></li>
+            <li>{{miaosha}}</li>
           </ul>
         </div>
         <div class="secondKill-more">
@@ -157,6 +157,7 @@ import Vue from "vue";
 import "../css/Home.css";
 import { Swipe, SwipeItem, Lazyload, Popup } from "mint-ui";
 import Searchs from "../Home/Component.vue";
+import { setInterval } from "timers";
 Vue.component(
   Swipe.name,
   Swipe,
@@ -179,7 +180,8 @@ export default {
       ices: [],
       secondKill: [],
       goodsbrand: [],
-      goodsbrandimg: []
+      goodsbrandimg: [],
+      miaosha: ''
     };
   },
   components: {
@@ -256,6 +258,22 @@ export default {
     );
     this.secondKill.push(data);
     this.secondKill = this.secondKill[0];
+    setInterval(() => {
+      let nowdata =
+        Date.parse(data.secondKill.endDate) -
+        Date.parse(data.secondKill.startDate);
+      var days = parseInt(new Date(nowdata) / (1000 * 60 * 60 * 24));
+      var hours = parseInt(
+        (new Date(nowdata) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      var minutes = parseInt(
+        (new Date(nowdata) % (1000 * 60 * 60)) / (1000 * 60)
+      );
+      var seconds = (new Date(nowdata) % (1000 * 60)) / 1000;
+       var second = (new Date(nowdata) % 86400 % 3600 % 60)
+      this.miaosha = days + " 天 " + hours + " 小时 " + minutes + " 分钟 "+second+"秒";
+      // console.log(this.miaosha);
+    }, 1000);
   },
   methods: {
     // // 四宫格点击

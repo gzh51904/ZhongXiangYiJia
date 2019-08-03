@@ -168,10 +168,13 @@
 
 .secondKill .secondKill-top .secondKill-title ul {
     display: flex;
+    height: 100%;
+    flex: 1;
 }
 
+.secondKill .secondKill-top .secondKill-title .secondKill-box {}
+
 .secondKill .secondKill-top .secondKill-title ul li:nth-child(2) {
-    font-size: .4rem;
     font-weight: 600;
     color: #e03b65;
 }
@@ -179,10 +182,10 @@
 .secondKill .secondKill-top .secondKill-title ul li:nth-child(4) {
     font-weight: 600;
 }
-
-
 .secondKill .secondKill-top .secondKill-title ul li {
     margin-right: .133333rem;
+    height: 100%;
+
 }
 
 .secondKill .secondKill-top .secondKill-title ul img {
@@ -192,7 +195,7 @@
 
 .secondKill .secondKill-top .secondKill-more {
     text-align: right;
-    width: 30%;
+    width: 20%;
 }
 
 .secondKill .secondKill-top .secondKill-more div:nth-child(2) {

@@ -75,7 +75,7 @@ export default {
     // console.log("http://localhost:1904/" + Imgurl);
     let Imgurl = localStorage.getItem("Imgurl");    
     // this.headPos = "http://18.139.229.218:3000/" + Imgurl;
-    this.headPos = "http://localhost:3000/" + Imgurl;
+    this.headPos = "http://18.139.229.218:3000/" + Imgurl;
   }
 };
 </script>

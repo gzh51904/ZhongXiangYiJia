@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="login-header">
-      <div class="btn-back" v-show="showed"></div>
+      <div class="btn-back" v-show="showed" @click="goback" ></div>
       <div class="btn-back" v-show="!showed" @click="changeFrom"></div>
       <span>{{title}}</span>
     </div>
@@ -53,11 +53,11 @@
           </li>
           <li>
             <i class="password-icon"></i>
-            <input type="text" placeholder="密码" v-model="userform.password" />
+            <input type="password" placeholder="密码" v-model="userform.password" />
           </li>
           <li>
             <i class="checkpass-icon"></i>
-            <input type="text" placeholder="确认密码" v-model="userform.checkPass" />
+            <input type="password" placeholder="确认密码" v-model="userform.checkPass" />
           </li>
           <p>{{notice}}</p>
           <button @click="submitFormReg">注册</button>
@@ -89,7 +89,13 @@ export default {
       }
     };
   },
+  created() {
+    this.showed = true
+  },
   methods: {
+    goback(){
+      this.$router.push({name:"Home"})
+    },
     // 登录
     submitFormLogin() {
       let { username, password } = this.userform;
@@ -201,7 +207,8 @@ export default {
             if (data.code == 250) {
               this.phonecheck = true;
               this.yanText = `区分大小写：${this.yanZhenm}`;
-              this.notice =
+              console.log(this.yanText );
+                            this.notice =
                 "密码请输入以字母开头，长度6-16之间，只能包含字母、数字和下划线";
             } else if (data.code === 1000) {
               this.notice = "该用户已存在";

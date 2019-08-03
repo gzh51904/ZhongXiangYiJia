@@ -1,6 +1,5 @@
 <template>
   <div class="desscase">
-    <Searchs />
     <div class="desshead">
       <div class="dessheader">
         <div class="deleft">
@@ -125,7 +124,7 @@
 <script>
 import iView from "iview";
 import "iview/dist/styles/iview.css";
-import Searchs from "../Home/Component";
+
 Vue.use(iView);
 import { Popup } from "mint-ui";
 import Vue from "vue";
@@ -146,9 +145,7 @@ export default {
       zy: true
     };
   },
-  components: {
-    Searchs
-  },
+
   methods: {
     //筛选自营店方法
     zyd() {
