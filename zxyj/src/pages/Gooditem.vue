@@ -1040,7 +1040,7 @@ body {
   left: 0;
   width: 100%;
   position: absolute;
-  bottom: 0;
+  bottom: 1.333333rem;
   height: 9.333333rem;
   background: #fff;
   z-index: 1;

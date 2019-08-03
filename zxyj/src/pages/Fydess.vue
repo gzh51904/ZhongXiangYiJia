@@ -1,6 +1,6 @@
 <template>
   <div class="desscase">
-   
+    <Searchs />
     <div class="desshead">
       <div class="dessheader">
         <div class="deleft">
@@ -69,7 +69,9 @@
           <div class="desstitle">{{dess.skuName}}</div>
           <div class="dessprice">
             {{((dess.retailPrice)/100).toFixed(2)}}
-            <span class="old">{{((dess.marketPrice)/100).toFixed(2)}}</span>
+            <span
+              class="old"
+            >{{((dess.marketPrice)/100).toFixed(2)}}</span>
           </div>
           <div>
             <span class="li">立省￥{{((dess.marketPrice-dess.retailPrice)/100).toFixed(2)}}</span>
@@ -98,7 +100,9 @@
             <div class="itemmsg-title">{{dess.skuName}}</div>
             <div class="dessprice">
               {{((dess.retailPrice)/100).toFixed(2)}}
-              <span class="old">{{((dess.marketPrice)/100).toFixed(2)}}</span>
+              <span
+                class="old"
+              >{{((dess.marketPrice)/100).toFixed(2)}}</span>
             </div>
             <div>
               <span class="li">立省￥{{((dess.marketPrice-dess.retailPrice)/100).toFixed(2)}}</span>
@@ -121,10 +125,12 @@
 <script>
 import iView from "iview";
 import "iview/dist/styles/iview.css";
+import Searchs from "../Home/Component";
 Vue.use(iView);
 import { Popup } from "mint-ui";
 import Vue from "vue";
 Vue.component(Popup.name, Popup);
+
 export default {
   data() {
     return {
@@ -140,13 +146,15 @@ export default {
       zy: true
     };
   },
+  components: {
+    Searchs
+  },
   methods: {
     //筛选自营店方法
     zyd() {
       this.zy = !this.zy;
- 
+
       let gozyd = this.desslist.filter(item => {
-      
         if (item.tags[0].tagName == "自营") {
           return item;
         }
@@ -212,14 +220,12 @@ export default {
     //在32行代码处加上@click="gotoproduct(dess.productId)"即可，然后到详情页组件进行接收
     gotogooditem(productId, skuId) {
       this.$router.push({ name: "Gooditem", params: { productId, skuId } });
-    
     }
   },
   async created() {
-
     //获取传入id及标题名字
     let { categoryId, categoryName } = this.$route.params;
-  
+
     //把请求来的标题名字赋值给当前标题
     this.detitle = categoryName;
 

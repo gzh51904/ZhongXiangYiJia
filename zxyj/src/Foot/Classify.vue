@@ -113,20 +113,20 @@ export default {
           id: "521e247d067348d7a3669825ae36bb63"
         }
       ],
-       // 0为默认选择第一个，-1为不选择
-       activeClass: "cd22b005da5f4f3785af45f8729e01fc"
+      // 0为默认选择第一个，-1为不选择
+      activeClass: "cd22b005da5f4f3785af45f8729e01fc"
     };
   },
 
   async created() {
-    
-     let {parentId}=this.$route.params;
-    
-     
+    let { parentId } = this.$route.params;
+
     //刷新保持高亮、并且发起第一个数据请求
-     this.activeClass="cd22b005da5f4f3785af45f8729e01fc"
+    this.activeClass = "cd22b005da5f4f3785af45f8729e01fc";
     let { data } = await this.$axios.get(
-      "https://api.zxyjsc.com/flyapi/category/child?parentCategoryId="+this.activeClass+"&version=1.0&terminal=3"
+      "https://api.zxyjsc.com/flyapi/category/child?parentCategoryId=" +
+        this.activeClass +
+        "&version=1.0&terminal=3"
     );
 
     this.fylist = data.data.datas;
@@ -142,22 +142,22 @@ export default {
     },
     async goto(list) {
       // 把当前点击元素的index，赋值给activeClass,改变css样式
-        this.activeClass = list.id;
+      this.activeClass = list.id;
       // console.log("name", list.name);
       // // console.log("$route",this.$route)
       //点击每类跳转地址后面加id
       this.$router.push("/classify/" + list.id);
-   
-      
-      // console.log("$route", this.$route);
-//当点击事件发生，就发起请求，，请求路径根据list的id来获取
- let {data}=await this.$axios.get("https://api.zxyjsc.com/flyapi/category/child?parentCategoryId="+list.id+"&version=1.0&terminal=3")
-    // console.log("data", data);
-    this.fylist = data.data.datas
-    //将请求来的数据放进空数组
-     
 
-          
+      // console.log("$route", this.$route);
+      //当点击事件发生，就发起请求，，请求路径根据list的id来获取
+      let { data } = await this.$axios.get(
+        "https://api.zxyjsc.com/flyapi/category/child?parentCategoryId=" +
+          list.id +
+          "&version=1.0&terminal=3"
+      );
+      // console.log("data", data);
+      this.fylist = data.data.datas;
+      //将请求来的数据放进空数组
     }
   }
 };
@@ -166,6 +166,7 @@ export default {
 .classify-main {
   height: 100%;
   background: #fff;
+  padding-top: 1.066667rem;
 }
 .classify-left {
   width: 2.4rem;
@@ -190,8 +191,7 @@ export default {
 }
 .classify-right {
   height: 100%;
-  margin-top: 0.133333rem;
-  /*   padding: 0.133333rem 0.133333rem 0rem 2.533333rem; */
+ /*  margin-top: 0.133333rem; */
   overflow: auto;
 }
 .active {

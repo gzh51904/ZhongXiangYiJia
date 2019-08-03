@@ -1,20 +1,27 @@
 <template>
-  <div id="Search">
-    <div class="search-title">热门搜索</div>
-    <div
-      class="search-keyWord"
-      v-for="(item, index) in text"
-      :key="index"
-      @click="gotolist(item.keyWord)"
-    >{{item.keyWord}}</div>
+  <div>
+    <Searchs />
+    <div id="Search">
+      <div class="search-title">热门搜索</div>
+      <div
+        class="search-keyWord"
+        v-for="(item, index) in text"
+        :key="index"
+        @click="gotolist(item.keyWord)"
+      >{{item.keyWord}}</div>
+    </div>
   </div>
 </template>
 <script>
+import Searchs from "../Home/Component.vue";
 export default {
   data() {
     return {
       text: []
     };
+  },
+  components: {
+    Searchs
   },
   async created() {
     let { data } = await this.$axios.get(
@@ -40,11 +47,10 @@ export default {
             terminal: 3
           },
           headers: {
-             'Content-Type': 'application/x-www-form-urlencoded'
+            "Content-Type": "application/x-www-form-urlencoded"
           }
         }
       );
-    //   console.log(data);
     }
   }
 };

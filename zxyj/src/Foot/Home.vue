@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <Searchs></Searchs>
     <!-- 轮播图 -->
     <div class="header">
       <mt-swipe :auto="4000">
@@ -12,7 +13,7 @@
     <div class="fourIcon">
       <ul class="fourIcon-item">
         <li v-for="itemFont in fourIcon" class="fourIcon-item-list" :key="itemFont.label">
-          <img :src="itemFont.icon" />
+          <img v-lazy="itemFont.icon" />
           <p>{{itemFont.label}}</p>
         </li>
       </ul>
@@ -21,7 +22,7 @@
     <div class="home-brand">
       <div v-for="(item, index) in brand" :key="index" @click="gotoBrand(item.target)">
         <div class="brand">
-          <img :src="item.image" alt />
+          <img v-lazy="item.image" alt />
         </div>
       </div>
     </div>
@@ -33,7 +34,7 @@
     <div class="ice">
       <div v-for="(item, index) in ice" :key="index" class="ice-item">
         <div class="ice-banner">
-          <img :src="item.image" alt />
+          <img v-lazy="item.image" alt />
         </div>
         <div class="ice-box">
           <div
@@ -101,7 +102,7 @@
       <div>
         <div v-for="item in goodsbrandimg" :key="item.data.target" class="goodsbrand-img">
           <div class="goodsbrand-top">
-            <img :src="item.data.image" />
+            <img v-lazy="item.data.image" />
           </div>
           <div class="goodsbrand-middle">
             <div class="goodsbrand-middle-hot">热卖推荐</div>
@@ -119,7 +120,7 @@
                   <div>
                     <dl class="secondKill-item" @click="gotoitem(item.skuId,item.productId)">
                       <dd class="secondKill-image" v-lazy="item.thumbUrl">
-                        <img v-lazy="item.thumbUrl"  alt class="imgurl" />
+                        <img v-lazy="item.thumbUrl" alt class="imgurl" />
                       </dd>
                       <dt class="secondKill-msg">
                         <div>
@@ -155,6 +156,7 @@
 import Vue from "vue";
 import "../css/Home.css";
 import { Swipe, SwipeItem, Lazyload, Popup } from "mint-ui";
+import Searchs from "../Home/Component.vue";
 Vue.component(
   Swipe.name,
   Swipe,
@@ -179,6 +181,9 @@ export default {
       goodsbrand: [],
       goodsbrandimg: []
     };
+  },
+  components: {
+    Searchs
   },
 
   async created() {
